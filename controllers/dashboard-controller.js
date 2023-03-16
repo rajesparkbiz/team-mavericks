@@ -10,7 +10,7 @@ class StdentQuestion {
         for (let i = 0; i < allQuestions.length; i++) {
 
             const question_options = await queryExecurter(`SELECT * FROM exam_admin.option_master where question_id=${allQuestions[i].question_id}`);
-
+            
             var options = [];
 
             var trueOption=[];
