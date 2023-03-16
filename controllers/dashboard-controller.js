@@ -1,6 +1,12 @@
 class StdentQuestion{
     static UserQuestion= async(req,res)=>{
-        res.render('questions');
+        let session=req.session;
+        if (session.username) {
+            res.render('questions');
+        }
+        else{
+            res.redirect('/auth/login');
+        }
     }
 }
 
