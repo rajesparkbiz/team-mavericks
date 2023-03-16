@@ -4,4 +4,4 @@ class UserAuth{
     }
 }
 
-module.exports=UserAuth;
+module.exports=UserAuth; 

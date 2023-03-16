@@ -1,0 +1,20 @@
+.main{
+    background-color: lightgray;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 30px;
+    border-radius: 20px;
+}
+.main input{
+    margin-bottom: 16px;
+    border-radius: 18px;
+}
+body h1,h2{
+    font-family: poppins, sans-serif;
+    padding-top: 30px;
+    text-align: center;
+}
+h2{
+    padding-bottom: 50px;
+}
