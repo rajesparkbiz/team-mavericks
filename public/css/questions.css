@@ -1,0 +1,8 @@
+.question-page-container{
+    min-height: 100vh;
+    background-color: var(--bg-clr);
+}
+
+.large-font{
+    font-size: 30px;
+}
