@@ -4,7 +4,7 @@ function loginemail(){
     let email = document.getElementById('email').value;
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(email)) {
-        document.getElementById('emailchk').innerHTML = 'email format is invalid.';
+        document.getElementById('emailchk').innerHTML = 'enter valid email!';
         // return false;
         emailflaglog = 0;
     }
@@ -21,7 +21,7 @@ function loginpass(){
         passflaglog = 1;
     }
     else{
-        document.getElementById('passchk').innerHTML = 'password length is greater than zero';
+        document.getElementById('passchk').innerHTML = 'enter valid password!';
         // return false;
         passflaglog = 0;
     }

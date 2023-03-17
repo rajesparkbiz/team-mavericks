@@ -62,10 +62,12 @@
                         <input type="password" class="form-control form-control-lg login-input" placeholder="Password" id="pass" name="Password" onkeyup="loginpass()">
                         <small class="warn2" id="passchk"></small>
                     </div>
-                    
-                    <small class="alert" role="alert">
-                        <%=msg%>
-                    </small>
+
+                    <% if(status != ''){%>
+                        <small class="alert" role="alert">
+                            <%=status%>
+                        </small>
+                    <%}%>
                     <div class="col-12 col-lg-8 submit-forgotPass-container mb-24">
                         <button type="submit" class="submit-btn" id="loginbtn" disabled>Login</button>
                         <a href="#" class="forgotPass-link dark-font">Forgot Password?</a>

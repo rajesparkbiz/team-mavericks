@@ -4,17 +4,10 @@ const bcrypt = require('bcrypt');
 class UserAuth {
     static userLogin = async (req, res) => {
         let session=req.session;
-        let msg = req.query.msg;
         if (session.username) {
             res.redirect('/dashboard/questions');
         }else{
-            if (msg == undefined) {
-                msg='';
-                res.render('login',{msg});
-            }
-            else{
-                res.render('login',{msg});
-            }
+            res.render('login',{status:""});
         }
     }
     static userLoginchk = async (req, res) => {
@@ -38,12 +31,14 @@ class UserAuth {
                         });
                     });
                 } else {
-                    res.redirect('/auth/login?msg=username or password incorrect');
+                    
+                    res.render('login',{status:"username or password incorrect"});
                 }
             });
         }
         else {
-            res.redirect('/auth/login?msg=username or password incorrect');
+            // res.redirect('/auth/login?msg=username or password incorrect');
+            res.render('login',{status:"username or password incorrect"});
         }
 
     }
