@@ -89,8 +89,8 @@
     function addCategory(){
 
         var categoryName = document.getElementById("category_name").value;
-
-        if(categoryName == " ")
+        
+        if(categoryName.trim().length == 0)
         {   
             console.log("inside category");
             document.getElementById("error_mssg").innerHTML="Field must be required !!";
@@ -98,7 +98,7 @@
             document.getElementById("add_category_btn").disabled = true;
         }
 
-        fetch('/exam/addCategory',{
+        fetch('/add/addCategory',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -108,7 +108,10 @@
                 "category_name": categoryName,
             })
         }).then((response)=>{
-            response.json();
+            if(response.json())
+            {
+              categoryName.innerHTML = response.json();
+            }
         }).then((data)=>{
             //window.location.redirect('http://localhost:3000/exam/showcategory');
         }).catch((error)=>{
@@ -124,7 +127,7 @@
         console.log(categoryName);
 
         
-        fetch('/exam/verifycategory')
+        fetch('/add/verifycategory')
         .then((data)=>data.json())
         .then((data)=>{
             
