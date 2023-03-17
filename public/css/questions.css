@@ -13,22 +13,33 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
 }
 
-.question-title p{
+.blur-card{
+    opacity: 0.5;
+}
+
+.mt-check{
+    margin-top: 12px;
+}
+
+.question-title,.question-add-btn{
     margin-left: 15px;
 }
 
+
+
 .true-answer{
+    font-weight: 600;
     color: green;
 }
-
 
 
 .question {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 2px 2px;
     padding: 10px;
-    width: 75%;
+    width: 100%;
     background-color: #ffffff;
     border-radius: 10px;
 }

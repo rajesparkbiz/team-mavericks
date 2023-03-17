@@ -11,50 +11,198 @@
 </head>
 
 <body>
-  <div class="container-fluid question-page-container">
+
+  <!-- main question page -->
+  <div class="container-fluid question-page-container" id="question-page-container">
     <div class="row question-page-wrapper m-5">
 
       <section class="col">
         <div class="col">
-          <div class="question-title">
-            <h5 class="large-font">All Questions</h5>
+
+          <div class="d-flex question-category-card my-3">
+
+            <% for(let k=0;k<categories.length;k++){%>
+              <div class="question-title">
+                <button type="button" class="btn btn-primary">
+                  <%= categories[k].category_name.toString().toUpperCase()%>
+                </button>
+              </div>
+              <%}%>
+
           </div>
+
+          <div class="d-flex">
+
+            <div class="question-title">
+              <button type="button" class="btn btn-primary">
+                Questions <span class="badge text-bg-secondary">
+                  <%=questions.length%>
+                </span>
+              </button>
+            </div>
+
+            <div class="question-add-btn">
+              <button type="button" class="btn btn-primary">
+                Add Question
+              </button>
+            </div>
+
+          </div>
+
           <div class="col">
+
+            <!-- all questions -->
             <% for(let i=0;i<questions.length;i++){%>
+
               <div class="container-fluid my-1">
                 <div class="question pt-2 mt-2">
                   <div class="py-2 h5"><b>
-                      <%= questions[i].question %>
+                      <%= (i+1) %>. <%= questions[i].question %>
                     </b></div>
                   <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
 
+                    <!-- all question options -->
                     <%for (let j=0;j<questions[i].option.length;j++){%>
 
-                          <% if(questions[i].correct_ans[j]){ %>
-                            <p class="true-answer">
-                              <%= questions[i].option[j] %>
-                            </p>
-                          <%}else{%>
+                      <!-- check true question answer -->
+                      <% if(questions[i].correct_ans[j]){ %>
+                        <p class="true-answer">
+                          <%= optionTitle[j].toUpperCase() %> )<%= questions[i].option[j] %>
+                        </p>
+                        <%}else{%>
                           <p class="false-answer">
-                            <%= questions[i].option[j] %>
+                            <%= optionTitle[j].toUpperCase() %> )<%= questions[i].option[j] %>
                           </p>
                           <%}%>
-                        
-                        
-                    <%}%>
+                            <%}%>
 
+                  </div>
+                  <div class="question-btns">
+                    <button class="btn btn-primary" onclick="showModal(this.id)"
+                      id="<%= questions[i].question_id%>">Edit</button>
+                    <a href="#" class="btn btn-danger">Delete</a>
                   </div>
                 </div>
               </div>
+
               <%}%>
           </div>
-        </div>
-      </section>
 
+        </div>
+
+      </section>
     </div>
   </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="question-modal" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+    <div class="modal-dialog d-flex justify-content-center">
+      <div class="modal-content w-100">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Question</h5>
+          <button type="button" id="disable-modal" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+            onclick="disableModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form action="/question/update" method="post">
+            <!-- textarea input -->
+            <div class="form-outline mb-4">
+              <label class="form-label" for="question">Question</label>
+              <textarea id="question" rows="4" class="form-control" name="question"></textarea value="">
+            </div>
+
+            <div class="question-option" id="question-option">
+              
+            </div>
+
+            <!-- Submit button -->
+            <input type="submit" id="" class="editQuestion-btn btn btn-primary btn-block" onclick="editQuestionBtn(this.id)" value="Save">
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+<script>
+
+
+  var questionPage = document.getElementById('question-page-container');
+
+  async function showModal(question_id) {
+
+    //get request for get perticular one question
+    const questionDataReq = await fetch(`/question/data/one/?id=${question_id}`);
+    const questionData = await questionDataReq.json();
+
+    const question = questionData.questionData.question;
+    const questionAnswer = questionData.questionData.question_answer;
+
+    const options = questionData.questionOption;
+
+    var option_content = '';
+    for (let i = 0; i < options.length; i++) {
+      option_content += 
+              `<div class="form-check my-3">
+                <input class="form-check-input mt-check question-option-input" type="radio" name="option">
+                <input class="form-control" type="text" value="${options[i].option_value}" name="option-value">
+              </div>`;
+    }
+
+    document.getElementById("question-option").innerHTML = option_content;
+
+    //set dynamic edit modal save btn id
+    const editQuestionBn = document.getElementsByClassName("editQuestion-btn");
+    editQuestionBn[0].id = question_id;
+
+    //display modal sheet
+    var questionModal = document.getElementById("question-modal");
+    questionModal.classList.add("show");
+    questionModal.style.display = "block";
+    questionModal.classList.add("modal-open");
+
+    questionPage.classList.add('blur-card');
+
+    bindModalData(question, questionAnswer,options);
+  }
+
+  function disableModal() {
+    var questionModal = document.getElementById("question-modal");
+
+    questionModal.classList.remove("show");
+    questionModal.style.display = "none";
+    questionModal.classList.remove("modal-open");
+    questionPage.classList.remove('blur-card');
+  }
+
+  function bindModalData(question, answer, ...questionOptions) {
+    const option=questionOptions[0];
+    const options = document.getElementsByClassName('question-option-input');
+
+    for (let i = 0; i < option.length; i++) {
+      if (option[i].option_value == answer) {
+        options[i].checked = "true"
+      }
+    }
+
+    var questionTag = document.getElementById("question");
+
+    questionTag.value = question;
+  }
+
+  async function editQuestionBtn(id) {
+    
+
+
+  }
+
+
+</script>
 
 </html>
