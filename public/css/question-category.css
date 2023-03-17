@@ -1,0 +1,150 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.screen_container{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+   align-items: center;
+   background-color: aqua;
+}
+
+.category_container{
+    background-color: whitesmoke;
+    border: 1px solid gray;
+    width: 500px;
+    margin: auto;
+    padding: 1rem 1rem;
+    border-radius: 10px;
+}
+
+
+
+.category_div{
+    position: relative;
+    animation-name: example;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    transition: 0.5s ease;
+    opacity: 1;
+    /* animation: fade 2s linear; */
+/* } */
+
+/* @keyframes example {
+    0%{
+        transform: translateX(500px);
+        opacity: -5;
+    }
+    100%{
+        transform: translateX(0);
+        opacity: 1;
+    }
+} */
+ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.body{
+    max-height: 100vh;
+}
+.card-1{
+    height:max-content;
+    border: 1px solid gray;
+    background-color: aliceblue;
+    border-radius: 20px ;
+    justify-content: center;
+    width: 200%;
+}
+
+.category_btn{
+    padding:1rem;
+    width: 115px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    margin: 10px 10px;
+    font-size: 2rem;
+}
+
+.card-1-title{
+ padding: 5rem 5rem;   
+ 
+}
+
+.card-1-title h1{
+    font-size: 5rem;    
+}
+
+.card-2{
+    height:max-content;
+    border: 1px solid gray;
+    justify-content: center;
+    background-color: aliceblue;
+    border-radius: 15px;
+    width: 120%;
+}
+
+.card-2-btn{
+    padding: 1rem 0;
+}
+.card-2-container{
+    padding: 4rem 1rem;
+}
+
+.card-2-title h4{
+    font-size: 4rem;
+}
+
+.card-body{
+    padding: 5rem 1rem;    
+}
+
+.card-container {
+    margin: 6rem 5rem;
+    display: flex;
+    gap: 20px;
+}
+
+ .category_list{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5rem 9rem;
+    text-align: center;
+}
+
+.erro_mssg{
+    font-size: 1.5rem;
+    color: red;
+}
+/* .gradient-custom-2 {
+    /* fallback for old browsers */
+ 
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+ 
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ 
+    /* }
+    
+    @media (min-width: 768px) {
+    .gradient-form {
+    
+    }
+    }
+    @media (min-width: 769px) {
+    .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+    }
+    }
+ */ 

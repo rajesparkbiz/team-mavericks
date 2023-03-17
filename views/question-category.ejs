@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/question-category.css">
+    <title>question Category</title>
+</head>
+
+
+<body>
+            <div class="screen_container">
+                <div class="category_container">
+                   
+                   
+                    
+                </div>
+            </div>
+           
+            
+            <section class="h-100 gradient-form" style="background-color: #eee;">
+                <div class="container py-5 h-100">
+                  <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-xl-10">
+                      <div class="card rounded-3 text-black">
+                        <div class=" card-container row g-0">
+                            
+                          <div class=" card-1 col-lg-6 d-flex align-items-center gradient-custom-2">
+                            <div class="card-1-title">
+                                <h1>Your Categories</h1>
+                            </div>
+                            
+                            <div class="category_list">
+    
+                                <% for(var i=0;i<category_list.length;i++) {%>
+                                    <div class="category_div">
+                                
+                                        <button type="button" class="category_btn btn-primary" value="<%= category_list[i].category_name %>"  > <%= category_list[i].category_name %></button>
+                
+                                    </div>
+                                <% } %>
+            
+                            </div>
+                          </div>
+
+                          <div class=" card-2 col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+              
+                              <div class=" card-2-title text-center">
+                                
+                                <h4 class="mt-1 mb-5 pb-1">Add any category you want</h4>
+                              </div>
+              
+                              <form method="post">
+                                <div class="card-2-container">
+                                    <p><strong>Please enter your category</strong></p>
+              
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="category_name" class="form-control"
+                                        placeholder="Category name" onchange="checkCategory()"/>
+                                        <label id="erro_mssg" class="erro_mssg"></label>
+                                    </div>                            
+              
+                                    <div class=" card-2-btn text-center pt-1 mb-5 pb-1">
+                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" id="add_category_btn" onclick="addCategory()">Add Category</button>
+                                    </div>
+            
+                                </div>
+                                
+                              </form>
+              
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+
+    function addCategory(){
+
+        var categoryName = document.getElementById("category_name").value;
+
+        if(categoryName == " ")
+        {   
+            console.log("inside category");
+            document.getElementById("error_mssg").innerHTML="Field must be required !!";
+            document.getElementById("error_mssg").style.color="red";
+            document.getElementById("add_category_btn").disabled = true;
+        }
+
+        fetch('/exam/addCategory',{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "category_name": categoryName,
+            })
+        }).then((response)=>{
+            response.json();
+        }).then((data)=>{
+            //window.location.redirect('http://localhost:3000/exam/showcategory');
+        }).catch((error)=>{
+            console.log(error);
+        })
+
+    }
+
+    function checkCategory()
+    {
+        console.log("Inside the category");
+        var categoryName = document.getElementById("category_name").value; 
+        console.log(categoryName);
+
+        
+        fetch('/exam/verifycategory')
+        .then((data)=>data.json())
+        .then((data)=>{
+            
+            for(let i=0; i<data.length;i++)
+            {
+                if(data[i].match(categoryName))
+                {   
+                    document.getElementById('category_name').style.borderColor = "red";
+                    document.getElementById('erro_mssg').innerHTML = "This Category Already Exist !!";
+                    document.getElementById("add_category_btn").disabled = true;
+                }
+                else{
+                    document.getElementById('erro_mssg').innerHTML = " ";
+                    document.getElementById("add_category_btn").disabled = false;
+                    document.getElementById('category_name').style.borderColor = "white";
+                }
+            }
+        })
+    }
+
+</script>
+</html>

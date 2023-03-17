@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 .question-page-container {
+=======
+.question-page-container{
+>>>>>>> dev-meet
     min-height: 100vh;
     background-color: var(--bg-clr);
 }
 
+<<<<<<< HEAD
 .large-font {
     font-size: 30px;
 }
@@ -103,4 +108,8 @@
         width: 100%;
         word-spacing: 2px;
     }
+=======
+.large-font{
+    font-size: 30px;
+>>>>>>> dev-meet
 }
