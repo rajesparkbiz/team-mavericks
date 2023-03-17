@@ -10,10 +10,15 @@ const app=express();
 
 app.set('view engine','ejs')
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/auth',authRoute);
 app.use('/dashboard',dashboardRoute);
 app.use('/create_exam',create_examRoute);
-app.use(express.static(__dirname+"/public"))
+// app.use('/exam',create_examRoute);
+
+app.use(express.static(__dirname+"/public"));
+ 
 
 app.listen(port,()=>{
     console.log(`Server is Running on ${port}`);
