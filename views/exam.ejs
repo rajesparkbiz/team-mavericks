@@ -16,14 +16,14 @@
       <div class="user-table warpper m-2">
 
 
-        <table class="table " border="1">
+        <table class="table table-bordered" border="1">
           <thead>
             <tr>
               <th>No</th>
-              <th scope="col">Name</th>
-              <th scope="col">Acess Code</th>
-              <th scope="col">Total Qustion</th>
-              <th scope="col">Createdate</th>
+              <th scope="col">Exam Title</th>
+              <th scope="col">Access Code</th>
+              <th scope="col">Total Question</th>
+              <th scope="col">CreateDate</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -34,22 +34,22 @@
                 <%= (i+1)%>
               </td>
               <td>
-                <%= data[i].exam_name%>
+                <%= data[i].exam_name %>
               </td>
               <td>
-                <%= data[i].exam_access_code%>
+                <%= data[i].exam_access_code %>
               </td>
               <td>
-                <%= data[i].exam_total_question%>
+                <%= data[i].exam_total_question %>
               </td>
               <td>
-                <%= data[i].creadtedDate%>
+                <%= data[i].createdDate %>
               </td>
 
               <td>
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" async function isactive1(exam_id) {
-                    onchange="toogleSwitch('<%=data[i].exam_id%>')" 
+                  <input class="form-check-input switch" type="checkbox" role="switch"
+                    onchange="toggleSwitch('<%=data[i].exam_id%>')" 
                     <% if(data[i].exam_isActive=='yes' ) {%> 
                       checked id="flexSwitchCheckDefault">
                       <%}%>
@@ -72,11 +72,10 @@
 
 
 
-  async function toogleSwitch(exam_id) {
+  async function toggleSwitch(exam_id) {
 
-    const toogleRequest =await fetch(`/exam/update/?id=${exam_id}`)
+    const toggleRequest =await fetch(`/exam/update/?id=${exam_id}`)
   }
-
 
 
 
