@@ -8,7 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	
+
 	<link id="theme-style" rel="stylesheet" href="/css/dashboard.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
@@ -38,14 +38,12 @@
 
 						<div class="app-utilities col-auto">
 
-
 							<div class="app-utility-item app-user-dropdown dropdown">
 								<a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#"
 									role="button" aria-expanded="false"><img src="/images/user.png"
 										alt="user profile"></a>
 								<ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
 									<li><a class="dropdown-item" href="account.html">Account</a></li>
-									<li><a class="dropdown-item" href="settings.html">Settings</a></li>
 									<li>
 										<hr class="dropdown-divider">
 									</li>
@@ -70,7 +68,7 @@
 				<nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
 					<ul class="app-menu list-unstyled accordion" id="menu-accordion">
 						<li class="nav-item">
-							<a class="nav-link active" href="dashboard.ejs">
+							<a class="nav-link active" href="#">
 								<span class="nav-icon">
 									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door"
 										fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +83,7 @@
 						</li>
 						<li class="nav-item">
 
-							<a class="nav-link" href="#">
+							<a class="nav-link" href="/dashboard/exams">
 								<span class="nav-icon">
 									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder"
 										fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -134,7 +132,7 @@
 
 						</li>
 						<li class="nav-item has-submenu">
-							<a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse"
+							<a class="nav-link submenu-toggle" href="/dashboard/students" data-bs-toggle="collapse"
 								data-bs-target="#submenu-2" aria-expanded="false" aria-controls="submenu-2">
 								<span class="nav-icon">
 									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap"
@@ -174,8 +172,8 @@
 	<div class="app-wrapper">
 
 		<div class="app-content pt-3 p-md-3 p-lg-4">
-		
-		<div class="container-xl">
+
+			<div class="container-xl">
 
 				<div class="app-card alert alert-dismissible shadow-sm mb-4 border-left-decoration" role="alert">
 					<div class="inner">
@@ -278,7 +276,7 @@
 
 									<% for(let i=0;i<data[4].length;i++){%>
 
-										
+
 
 										<div class="item p-3">
 											<div class="row align-items-center">
@@ -289,8 +287,8 @@
 													</div>
 													<div class="progress">
 														<div class="progress-bar bg-success" role="progressbar"
-															style="<%=questionsRatio[i]%>" aria-valuenow="25" aria-valuemin="0"
-															aria-valuemax="100"></div>
+															style="<%=questionsRatio[i]%>" aria-valuenow="25"
+															aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 												</div>
 
@@ -307,7 +305,7 @@
 								<div class="app-card-header p-3">
 									<div class="row justify-content-between align-items-center">
 										<div class="col-auto">
-											<h4 class="app-card-title">Student Status</h4>
+											<h4 class="app-card-title">Student Report</h4>
 										</div>
 										<div class="col-auto">
 											<div class="card-header-action">
@@ -326,11 +324,14 @@
 													<th class="meta stat-cell">Attempts</th>
 												</tr>
 											</thead>
+											</thead>
 											<tbody>
 
 												<% for(let i=0;i<exam_attempt.length;i++) {%>
 													<tr>
-														<td><%=student_name[i].fname%></td>
+														<td>
+															<%=student_name[i].fname %>
+														</td>
 														<td class="stat-cell">
 															<%=exam_attempt[i].exam_result%>
 														</td>
@@ -338,10 +339,10 @@
 															<%=exam_attempt[i].exam_attempt%>
 														</td>
 													</tr>
-														
-												<%}%>
 
-												
+													<%}%>
+
+
 											</tbody>
 										</table>
 									</div><!--//table-responsive-->
@@ -351,16 +352,31 @@
 					</div>
 
 
-						
-			
+
+
 				</div>
-				
-		</div>	
-			
+
+			</div>
 		</div>
-		<%- include ('footer.ejs') %>	
-	</div>		
+
+		<!-- Remove the container if you want to extend the Footer to full width. -->
+	<div class="container-fluid">
+
+		<section>
+			<footer class="text-center text-white" style="background-color: #0a4275;">
+				
+				<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+					© 2023 Copyright: esparkbiz
+				</div>
+			</footer>
+		</section>
+
+	</div>
+
+	</div>
+	
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
 	crossorigin="anonymous"></script>

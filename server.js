@@ -21,8 +21,6 @@ con.connect();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
-// ..........................queryExecutor...............................
-
 const queryExecutor = (query) => {
 
     return new Promise((resolve, reject) => {
@@ -72,6 +70,39 @@ app.get('/dashboard', async (req, res) => {
     var student_name = await queryExecutor(`select student_master.fname from student_master inner join  exam_attempt_master on exam_attempt_master.student_id=student_master.student_id `);
     res.render('dashboard.ejs', { data: data,questionsRatio:questionsRatio,exam_attempt:exam_attempt,student_name});
 })
+
+app.get('/dashboard/students', async (req, res) => {
+    var student_master = await queryExecutor(`SELECT * FROM student_master`);
+    res.render('user.ejs', { data: student_master });
+})
+
+app.get('/dashboard/exams', async (req, res) => {
+    var exam_master = await queryExecutor(`SELECT * FROM exam_master`);
+    res.render('exam.ejs', { data: exam_master });
+})
+
+app.get('/exam/update', async (req, res) => {
+
+    const currentStatus = await queryExecutor(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=1`);
+
+
+    const isActive = currentStatus[0].status;
+
+    var query;
+    if (isActive == 'yes') {
+
+        query = `update exam_master set exam_isActive = 'no' where exam_id=${req.query.id}`;
+
+    } else {
+        query = `update exam_master set exam_isActive = 'yes' where exam_id=${req.query.id}`;
+    }
+
+    const toogleSwitchQuesry = await queryExecutor(query);
+    res.redirect('/exam');
+
+})
+
+
 app.listen(5001, function () {
     console.log('Server is running on port 5001');
 })
