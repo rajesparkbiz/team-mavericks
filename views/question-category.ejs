@@ -11,15 +11,7 @@
 
 
 <body>
-            <div class="screen_container">
-                <div class="category_container">
-                   
-                   
-                    
-                </div>
-            </div>
            
-            
             <section class="h-100 gradient-form" style="background-color: #eee;">
                 <div class="container py-5 h-100">
                   <div class="row d-flex justify-content-center align-items-center h-100">
@@ -32,7 +24,7 @@
                                 <h1>Your Categories</h1>
                             </div>
                             
-                            <div class="category_list">
+                            <div class="category_list" id="style-1">
     
                                 <% for(var i=0;i<category_list.length;i++) {%>
                                     <div class="category_div">
@@ -53,7 +45,7 @@
                                 <h4 class="mt-1 mb-5 pb-1">Add any category you want</h4>
                               </div>
               
-                              <form method="post">
+                              <form method="">
                                 <div class="card-2-container">
                                     <p><strong>Please enter your category</strong></p>
               
@@ -64,7 +56,7 @@
                                     </div>                            
               
                                     <div class=" card-2-btn text-center pt-1 mb-5 pb-1">
-                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" id="add_category_btn" onclick="return addCategory()">Add Category</button>
+                                        <input class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button" id="add_category_btn" onclick=" return addCategory()" value="Add Category">
                                     </div>
             
                                 </div>
@@ -86,7 +78,7 @@
 
 <script>
 
-    function addCategory(){
+    async function addCategory(){
 
         var categoryName = document.getElementById("category_name").value;
         var categoryNameUpper = categoryName.toUpperCase();
@@ -102,26 +94,11 @@
              document.getElementById("add_category_btn").disabled = true;
         }
 
-        fetch('/add/addCategory',{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "category_name": categoryNameUpper,
-            })
-        }).then((response)=>{
-            if(response.json())
-            {
-              response.json();
-            }
-        }).then((data)=>{
-            
-        }).catch((error)=>{
-            console.log(error);
-        })
-
+        const url=`/category/addcategory/?category_name=${categoryNameUpper}`;
+        
+        
+        const categoryRequest=await fetch(url);
+       
     }
 
     function checkCategory()
@@ -131,7 +108,7 @@
         var categoryNameUpper = categoryName.toUpperCase();
         console.log(categoryNameUpper);
         
-        fetch('/add/verifycategory')
+        fetch('/category/verifycategory')
         .then((data)=>data.json())
         .then((data)=>{
             

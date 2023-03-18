@@ -16,8 +16,9 @@ app.set('view engine','ejs')
 
 app.use('/auth',authRoute);
 app.use('/dashboard',dashboardRoute);
-app.use('/exam',examRoute);
-app.use('/add',addCategory);
+// app.use('/exam',examRoute);
+// app.use('/add',addCategory);
+app.use('/category',addCategory);
 
 app.use(express.static(__dirname+"/public"))
 
