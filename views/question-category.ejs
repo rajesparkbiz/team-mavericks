@@ -64,7 +64,7 @@
                                     </div>                            
               
                                     <div class=" card-2-btn text-center pt-1 mb-5 pb-1">
-                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" id="add_category_btn" onclick="addCategory()">Add Category</button>
+                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" id="add_category_btn" onclick="return addCategory()">Add Category</button>
                                     </div>
             
                                 </div>
@@ -89,13 +89,17 @@
     function addCategory(){
 
         var categoryName = document.getElementById("category_name").value;
-        
-        if(categoryName.trim().length == 0)
+        var categoryNameUpper = categoryName.toUpperCase();
+        if(categoryNameUpper.trim().length == 0)
         {   
-            console.log("inside category");
-            document.getElementById("error_mssg").innerHTML="Field must be required !!";
-            document.getElementById("error_mssg").style.color="red";
-            document.getElementById("add_category_btn").disabled = true;
+            // console.log("inside category");
+            // document.getElementById("error_mssg").innerHTML="Field must be required !!";
+            // document.getElementById("error_mssg").style.color="red";
+            
+
+            alert('The field must be filled');
+            return false;
+             document.getElementById("add_category_btn").disabled = true;
         }
 
         fetch('/add/addCategory',{
@@ -105,15 +109,15 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "category_name": categoryName,
+                "category_name": categoryNameUpper,
             })
         }).then((response)=>{
             if(response.json())
             {
-              categoryName.innerHTML = response.json();
+              response.json();
             }
         }).then((data)=>{
-            //window.location.redirect('http://localhost:3000/exam/showcategory');
+            
         }).catch((error)=>{
             console.log(error);
         })
@@ -124,8 +128,8 @@
     {
         console.log("Inside the category");
         var categoryName = document.getElementById("category_name").value; 
-        console.log(categoryName);
-
+        var categoryNameUpper = categoryName.toUpperCase();
+        console.log(categoryNameUpper);
         
         fetch('/add/verifycategory')
         .then((data)=>data.json())
@@ -133,16 +137,20 @@
             
             for(let i=0; i<data.length;i++)
             {
-                if(data[i].match(categoryName))
+                if(data[i].match(categoryNameUpper))
                 {   
+
                     document.getElementById('category_name').style.borderColor = "red";
                     document.getElementById('erro_mssg').innerHTML = "This Category Already Exist !!";
-                    document.getElementById("add_category_btn").disabled = true;
+                    document.getElementById("add_category_btn").disabled = true;        
+
                 }
                 else{
+
                     document.getElementById('erro_mssg').innerHTML = " ";
                     document.getElementById("add_category_btn").disabled = false;
                     document.getElementById('category_name').style.borderColor = "white";
+                    
                 }
             }
         })

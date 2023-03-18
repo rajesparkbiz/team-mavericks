@@ -5,12 +5,12 @@ class addCategory{
 
     static addCategory = async (req,res) =>{
         var category_name = req.body.category_name;
- 
-        con.query(`INSERT INTO question_category(category_name) values('${category_name}');`,(err,inserted_category_name)=>{
+        
+          con.query(`INSERT INTO question_category(category_name) values('${category_name.toUpperCase()}');`,(err,inserted_category_name)=>{
           if(err) throw err
           
-          console.log(inserted_category_name);
-          res.json(inserted_category_name);
+            console.log(inserted_category_name);
+            res.json(inserted_category_name);
           
        })
       }
