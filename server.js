@@ -65,10 +65,12 @@ app.get('/dashboard', async (req, res) => {
         const questionCount=que[0].questions;
         questionsRatio[i]=`width:${Math.floor((questionCount/data[4].length)*10)}%`;
     }
-
+   
     const exam_attempt=await queryExecutor(`SELECT * FROM exam_admin.exam_attempt_master`);
+     var s_id = req.body.student_id;
     
-    res.render('dashboard.ejs', { data: data,questionsRatio:questionsRatio,exam_attempt:exam_attempt });
+    var student_name = await queryExecutor(`select student_master.fname from student_master inner join  exam_attempt_master on exam_attempt_master.student_id=student_master.student_id `);
+    res.render('dashboard.ejs', { data: data,questionsRatio:questionsRatio,exam_attempt:exam_attempt,student_name});
 })
 app.listen(5001, function () {
     console.log('Server is running on port 5001');
