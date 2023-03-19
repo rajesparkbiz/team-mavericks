@@ -7,6 +7,5 @@ const routers=express.Router();
 
 routers.get('/login',authController.userLogin);
 routers.post('/login',authController.userLoginchk);
-// routers.get('/fpass',mailSender.mailOption);
 
 module.exports=routers;
