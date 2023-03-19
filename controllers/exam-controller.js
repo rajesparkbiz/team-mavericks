@@ -3,7 +3,7 @@ var conn = mysql2.createConnection({
     user: 'root',
     password: 'root',
     host: 'localhost',
-    database: 'project'
+    database: 'exam_admin'
 })
 
 conn.connect((err) => {
