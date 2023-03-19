@@ -6,9 +6,9 @@ const showCategory = require('../controllers/add-category.js');
 
 const routers = express.Router();
 
-routers.get('/addcategory',addCategory.addCategory);
-routers.get('/verifycategory',verifyCategory.verifyCategory);
-routers.get('/showcategory', showCategory.showCategory);
+routers.get('/addCategory',addCategory.addCategory);
+routers.get('/verifyCategory',verifyCategory.verifyCategory);
+routers.get('/showCategory', showCategory.showCategory);
 
 
 module.exports = routers;

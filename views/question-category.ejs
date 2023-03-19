@@ -1,137 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/question-category.css">
-    <title>question Category</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/question-category.css">
+  <title>question Category</title>
 </head>
 
 
 <body>
-           
-            <section class="h-100 gradient-form" style="background-color: #eee;">
-                <div class="container py-5 h-100">
-                  <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-xl-10">
-                      <div class="card rounded-3 text-black">
-                        <div class=" card-container row g-0">
-                            
-                          <div class=" card-1 col-lg-6 d-flex align-items-center gradient-custom-2">
-                            <div class="card-1-title">
-                                <h1>Your Categories</h1>
-                            </div>
-                            
-                            <div class="category_list" id="style-1">
-    
-                                <% for(var i=0;i<category_list.length;i++) {%>
-                                    <div class="category_div">
-                                
-                                        <button type="button" class="category_btn btn-primary" value="<%= category_list[i].category_name %>"  > <%= category_list[i].category_name %></button>
-                
-                                    </div>
-                                <% } %>
-            
-                            </div>
-                          </div>
 
-                          <div class=" card-2 col-lg-6">
-                            <div class="card-body p-md-5 mx-md-4">
-              
-                              <div class=" card-2-title text-center">
-                                
-                                <h4 class="mt-1 mb-5 pb-1">Add any category you want</h4>
-                              </div>
-              
-                              <form method="">
-                                <div class="card-2-container">
-                                    <p><strong>Please enter your category</strong></p>
-              
-                                    <div class="form-outline mb-4">
-                                        <input type="text" id="category_name" class="form-control"
-                                        placeholder="Category name" onchange="checkCategory()"/>
-                                        <label id="erro_mssg" class="erro_mssg"></label>
-                                    </div>                            
-              
-                                    <div class=" card-2-btn text-center pt-1 mb-5 pb-1">
-                                        <input class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button" id="add_category_btn" onclick=" return addCategory()" value="Add Category">
-                                    </div>
-            
-                                </div>
-                                
-                              </form>
-              
-                            </div>
-                          </div>
+  <section class="gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+          <div class="card rounded-3 text-black">
+            <div class=" card-container row g-0">
 
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div class=" card-1 col-lg-6 d-flex align-items-center gradient-custom-2">
+                <div class="card-1-title">
+                  <h1>Your Categories</h1>
                 </div>
-              </section>
+
+                <div class="category_list" id="style-1">
+
+                  <% for(var i=0;i<category_list.length;i++) {%>
+                    <div class="category_div">
+
+                      <button type="button" class="category_btn btn-primary"
+                        value="<%= category_list[i].category_name %>">
+                        <%= category_list[i].category_name %>
+                      </button>
+
+                    </div>
+                    <% } %>
+
+                </div>
+              </div>
+
+              <div class=" card-2 col-lg-6">
+                <div class="card-body p-md-5 mx-md-4">
+
+                  <div class=" card-2-title text-center">
+
+                    <h4 class="mt-1 mb-5 pb-1">Add any category you want</h4>
+                  </div>
+
+                  <form method="">
+                    <div class="card-2-container">
+                      <p><strong>Please enter your category</strong></p>
+
+                      <div class="form-outline mb-4">
+                        <input type="text" id="category_name" class="form-control" placeholder="Category name"
+                          oninput="checkCategory()" />
+                        <label id="error_message" class="erro_mssg"></label>
+                      </div>
+
+                      <div class=" card-2-btn text-center pt-1 mb-5 pb-1">
+                        <input class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button"
+                          id="add_category_btn" onclick="addCategory()" value="Add Category">
+                      </div>
+
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <script>
 
-    async function addCategory(){
+  async function addCategory() {
+    var categoryName = document.getElementById("category_name").value;
+    if (categoryName.trim().length == 0) {
 
-        var categoryName = document.getElementById("category_name").value;
-        var categoryNameUpper = categoryName.toUpperCase();
-        if(categoryNameUpper.trim().length == 0)
-        {   
-            // console.log("inside category");
-            // document.getElementById("error_mssg").innerHTML="Field must be required !!";
-            // document.getElementById("error_mssg").style.color="red";
-            
-
-            alert('The field must be filled');
-            return false;
-             document.getElementById("add_category_btn").disabled = true;
-        }
-
-        const url=`/category/addcategory/?category_name=${categoryNameUpper}`;
-        
-        
-        const categoryRequest=await fetch(url);
-       
+      alert('The field must be filled');
+      return false;
+      document.getElementById("add_category_btn").disabled = true;
     }
 
-    function checkCategory()
-    {
-        console.log("Inside the category");
-        var categoryName = document.getElementById("category_name").value; 
-        var categoryNameUpper = categoryName.toUpperCase();
-        console.log(categoryNameUpper);
-        
-        fetch('/category/verifycategory')
-        .then((data)=>data.json())
-        .then((data)=>{
-            
-            for(let i=0; i<data.length;i++)
-            {
-                if(data[i].match(categoryNameUpper))
-                {   
+    const url = `/category/addCategory/?category=${categoryName.toUpperCase()}`;
 
-                    document.getElementById('category_name').style.borderColor = "red";
-                    document.getElementById('erro_mssg').innerHTML = "This Category Already Exist !!";
-                    document.getElementById("add_category_btn").disabled = true;        
 
-                }
-                else{
+    const categoryRequest = await fetch(url);
 
-                    document.getElementById('erro_mssg').innerHTML = " ";
-                    document.getElementById("add_category_btn").disabled = false;
-                    document.getElementById('category_name').style.borderColor = "white";
-                    
-                }
-            }
-        })
+    
+  }
+
+  async function checkCategory() {
+    var categoryName = document.getElementById("category_name").value;
+
+    const data = await fetch(`/category/verifyCategory/?category=${categoryName.toUpperCase()}`)
+    const isAvailableCategory = await data.json();
+
+
+    const status = isAvailableCategory.status;
+
+    if (status == 1) {
+      document.getElementById('category_name').style.borderColor = "red";
+      document.getElementById('error_message').innerHTML = "This Category Already Exist!";
+      document.getElementById("add_category_btn").disabled = true;
+    } else {
+      document.getElementById('error_message').innerHTML = " ";
+      document.getElementById("add_category_btn").disabled = false;
+      document.getElementById('category_name').style.borderColor = "white";
     }
+
+  }
 
 </script>
+
 </html>

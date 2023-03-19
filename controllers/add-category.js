@@ -4,30 +4,29 @@ const queryExecuter=require('../database/dbHelper');
 
 class addCategory {
   static addCategory = async (req, res) => {
-    var category_name = req.query.category_name;
+    var category_name = req.query.category;
     
     
-    const categoryQuery=await queryExecuter(`INSERT INTO question_category(category_name) values('${category_name.toUpperCase()}');`);
+    const categoryQuery=await queryExecuter(`INSERT INTO exam_admin.question_category (category_name) VALUES ('${category_name.toUpperCase()}');
+    `);
 
-    const categoryAllQuesry=await queryExecuter(`SELECT category_name FROM question_category`);
+    const categoryAllQuery=await queryExecuter(`SELECT category_name FROM exam_admin.question_category;`);
 
-    res.redirect('/category/showcategory');
+    res.redirect('/category/showCategory');
   };
 
   static verifyCategory = async (req, res) => {
+    
+    const verifyCat=await queryExecuter(`SELECT count(*) as status FROM exam_admin.question_category where question_category.category_name='${req.query.category}'`);
+    const status=verifyCat[0].status;
 
-    var query = util.promisify(con.query).bind(con);
-    var verifyCategory = await query(
-      `SELECT category_name FROM question_category;`
-    );
-    console.log("category names", verifyCategory);
-    res.json(verifyCategory.map((name) => name.category_name));
+    res.json({status:status});
   };
 
-   // function for showinf caategoires from the database
+  
    static showCategory = async (req, res) => {
   
-    const ans=await queryExecuter("SELECT category_name from question_category");
+    const ans=await queryExecuter(`SELECT category_name FROM exam_admin.question_category;`);
     res.render("question-category", { category_list :ans});
   };
 }
