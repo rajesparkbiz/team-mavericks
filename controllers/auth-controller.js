@@ -12,11 +12,9 @@ class UserAuth {
     }
     static userLoginchk = async (req, res) => {
         let { Username, Password } = req.body;
-        let userchk = await querySolver(`SELECT username,password,role FROM exam_admin.user_master WHERE username = '${Username}';`);
+        let userchk = await querySolver(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master`);
         if (userchk.length == 1 && userchk[0]['role'] == "admin") {
-            bcrypt.compare(Password, userchk[0]['password'], function (err, hashres) {
-                if (err) throw err;
-                if (hashres === true) {
+                if (Password === userchk[0]['password']) {
                     req.session.regenerate(function (err) {
                         if (err) next(err)
 
@@ -34,10 +32,9 @@ class UserAuth {
                     
                     res.render('login',{status:"username or password incorrect"});
                 }
-            });
+            
         }
         else {
-            // res.redirect('/auth/login?msg=username or password incorrect');
             res.render('login',{status:"username or password incorrect"});
         }
 
