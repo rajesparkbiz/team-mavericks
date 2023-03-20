@@ -26,8 +26,8 @@ class addCategory {
   
    static showCategory = async (req, res) => {
   
-    const ans=await queryExecuter(`SELECT category_name FROM exam_admin.question_category;`);
-    res.render("question-category", { category_list :ans});
+    const ans=await queryExecuter(`SELECT * FROM exam_admin.question_category;`);
+    res.render("question-category", { category_list :ans,actionState:'add'});
   };
 }
 
