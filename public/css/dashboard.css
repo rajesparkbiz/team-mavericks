@@ -13552,8 +13552,7 @@ button.close:focus {
 }
 
 .app-card-doc .app-card-thumb-holder .thumb-image {
-    -webkit-opacity: .7;
-    -moz-opacity: .7;
+  
     opacity: .7;
     width: 100%;
     height: auto
@@ -13747,7 +13746,7 @@ button.close:focus {
     color: #15a362
 }
 
-.app-card-accordion .faq-accordion .accordion-button:after {
+/* .app-card-accordion .faq-accordion .accordion-button:after {
     display: none
 }
 
@@ -13783,9 +13782,9 @@ button.close:focus {
 
 .settings-section .section-intro {
     font-size: .875rem
-}
+} */
 
-.app-card-settings {
+/* .app-card-settings {
     font-size: 1rem
 }
 
@@ -13795,9 +13794,9 @@ button.close:focus {
 
 .app-card-settings .form-control {
     font-size: 1rem
-}
+} */
 
-.app-404-page {
+/* .app-404-page {
     padding-top: 2rem
 }
 
@@ -13805,26 +13804,26 @@ button.close:focus {
     font-size: 3rem;
     line-height: .8;
     font-weight: bold
-}
+} */
 
-.app-404-page .page-title span {
+/* .app-404-page .page-title span {
     font-size: 1.5rem
-}
+} */
 
-.chart-container {
+/* .chart-container {
     position: relative
-}
+} */
 
 .app-table-hover>tbody>tr:hover {
     background-color: #fafbff
 }
-
+/* 
 .app-card-notification .notification-type .badge {
     font-size: .65rem;
     text-transform: uppercase
-}
+} */
 
-.app-card-notification .profile-image {
+/* .app-card-notification .profile-image {
     width: 60px;
     height: 60px
 }
@@ -13848,8 +13847,8 @@ button.close:focus {
 
 .app-card-notification .app-card-footer {
     background: #fafbff
-}
-
+} */
+/* 
 @media(min-width: 1200px) {
     .table-search-form .form-control {
         min-width: 300px
@@ -13864,22 +13863,22 @@ button.close:focus {
     .app-card-stat .stats-type {
         font-size: .75rem
     }
-}
+} */
 
-.app-login .auth-background-holder {
+/* .app-login .auth-background-holder {
     background: url("../images/background/background-1.jpg") no-repeat center center;
     background-size: cover;
     height: 100vh;
     min-height: 100%
-}
-
+} */
+/* 
 .app-signup .auth-background-holder {
     background: url("../images/background/background-2.jpg") no-repeat center center;
     background-size: cover;
     height: 100vh;
     min-height: 100%
-}
-
+} */
+/* 
 .app-reset-password .auth-background-holder {
     background: url("../images/background/background-3.jpg") no-repeat center center;
     background-size: cover;
@@ -13890,9 +13889,9 @@ button.close:focus {
 .auth-main-col,
 .auth-background-col {
     position: relative
-}
+} */
 
-.auth-background-mask {
+/* .auth-background-mask {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -13900,29 +13899,29 @@ button.close:focus {
     top: 0;
     z-index: 10;
     background: rgba(0, 0, 0, .1)
-}
+} */
 
-.auth-background-overlay {
+/* .auth-background-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
     z-index: 11
-}
-
+} */
+/* 
 .auth-background-overlay .overlay-title {
     color: #fff;
     font-size: 1rem;
     font-weight: bold
-}
+} */
 
-.auth-background-overlay .overlay-content {
+/* .auth-background-overlay .overlay-content {
     background: rgba(37, 41, 48, .6);
     color: #fff
-}
+} */
 
-.auth-background-overlay .overlay-content a {
+/* .auth-background-overlay .overlay-content a {
     text-decoration: underline;
     color: #fff
 }
@@ -13932,9 +13931,9 @@ button.close:focus {
     bottom: 0;
     left: 0;
     width: 100%
-}
+} */
 
-.app-auth-wrapper {
+/* .app-auth-wrapper {
     background: #fff;
     height: 100vh
 }
@@ -13962,30 +13961,30 @@ button.close:focus {
 
 .app-auth-wrapper .form-control::-moz-placeholder {
     color: #828d9f
-}
+} */
 
-.app-auth-wrapper .form-control:-ms-input-placeholder {
+/* .app-auth-wrapper .form-control:-ms-input-placeholder {
     color: #828d9f
-}
+} */
 
-.app-auth-wrapper .legal-note {
+/* .app-auth-wrapper .legal-note {
     font-size: .875rem
-}
+} */
 
-.app-auth-wrapper .extra {
+/* .app-auth-wrapper .extra {
     font-size: .75rem
-}
+} */
 
-.app-auth-wrapper .extra a {
+/* .app-auth-wrapper .extra a {
     text-decoration: underline;
     color: #828d9f
 }
 
 .app-auth-wrapper .extra a:hover {
     color: #5d6778
-}
+} */
 
-.app-auth-wrapper .auth-heading-desc {
+/* .app-auth-wrapper .auth-heading-desc {
     font-weight: 500;
     font-size: 1.125rem
 }
@@ -14010,4 +14009,4 @@ button.close:focus {
     .app-auth-wrapper .app-auth-body {
         width: 100%
     }
-}
+} */
