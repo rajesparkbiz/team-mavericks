@@ -18,18 +18,48 @@ class ExamController {
     }
 
     static data = async (req, res) => {
-        try{
-        let x = req.body.examname
-        let y = req.body.examcode
-        let z = req.body.totalque
-        let w = req.body.duration
-        console.log(x, y, z,w)
-        conn.query(`insert into exam_master(exam_name,exam_access_code,exam_total_question,exam_duration) values('${x}','${y}','${z}','${w}')`)
-        res.render('nextpage')
-        } catch(err){
+        try {
+            let x = req.body.examname
+            let examname = x.toUpperCase();
+            let examcode = req.body.examcode
+            let totalque = req.body.totalque
+            let duration = req.body.duration
+            // console.log(x, y, z, w)
+            conn.query(`insert into exam_master(exam_name,exam_access_code,exam_total_question,exam_duration) values('${examname}','${examcode}','${totalque}','${duration}')`,(err,data)=>{
+                res.render('nextpage');
+            })
+          
+        } catch (err) {
             console.log(err);
+        }
+    }
+
+    static validatename = async (req, res) => {
+        try {
+            let name = req.query.name;
+            console.log(name);
+            conn.query(`select exam_name from exam_master`,(err,data)=>{
+                if(err) throw err;
+                console.log(data)
+                res.json(data)
+            })
+        } catch (err){
+            console.log(err);
+        }
+    }
+
+    static questionpage = async(req,res)=>{
+        try{
+            conn.query(`select question from question_master`,(err,data)=>{
+                if(err) throw err;
+                console.log(data)
+                res.render('nextpage',data);
+            })
+
+        }catch(err){
+            console.log(err)
         }
     }
 }
 
-module.exports = {ExamController};
+module.exports = { ExamController };
