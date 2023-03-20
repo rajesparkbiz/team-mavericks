@@ -9,10 +9,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 var connection = mysql.createConnection({
+
     host: 'localhost',
     user: 'root',
     password: 'root',
     database: 'exam_admin'
+    
 });
 
 const queryExecutor = (query) => {
@@ -64,3 +66,4 @@ app.listen(3000, function () {
 })
 
 
+ 
