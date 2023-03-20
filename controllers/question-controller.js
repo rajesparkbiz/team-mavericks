@@ -18,8 +18,6 @@ class QuestionController{
         for(let i=0;i<questionOptions.length;i++){
             const updateOptionQuery=await queryExecurter(`UPDATE exam_admin.option_master SET option_value = '${questionOptions[i]}' WHERE option_id = ${optionsId[i]}`);
         }
-
-        
     }
 }
 

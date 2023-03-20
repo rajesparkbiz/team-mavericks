@@ -8,6 +8,7 @@ async function showModal(question_id) {
     const questionData = await questionDataReq.json();
 
     const question = questionData.questionData.question;
+
     const questionAnswer = questionData.questionData.question_answer;
 
     const options = questionData.questionOption;
@@ -37,6 +38,16 @@ async function showModal(question_id) {
     questionPage.classList.add('blur-card');
 
     bindModalData(question, questionAnswer, options);
+
+}
+
+function showAddQuestionModal(){
+    var questionModal = document.getElementById("question-edit-modal");
+    questionModal.classList.add("show");
+    questionModal.style.display = "block";
+    questionModal.classList.add("modal-open");
+
+    questionPage.classList.add('blur-card');
 }
 
 function disableModal() {
@@ -47,6 +58,17 @@ function disableModal() {
     questionModal.classList.remove("modal-open");
     questionPage.classList.remove('blur-card');
 }
+
+function disableAddQuestionModal() {
+    var questionModal = document.getElementById("question-edit-modal");
+
+    questionModal.classList.remove("show");
+    questionModal.style.display = "none";
+    questionModal.classList.remove("modal-open");
+    questionPage.classList.remove('blur-card');
+}
+
+
 
 function bindModalData(question, answer, ...questionOptions) {
 
@@ -138,4 +160,46 @@ async function customAlert(id) {
     } else {
         return false;
     }
+}
+
+function addQuestionOption(){
+    const optionContent=document.getElementById("question-option-content");
+
+    const content=`<div class="form-check mb-2 d-flex justify-content-between">
+    <input class="form-check-input" type="radio" name="exampleForm" id="radio4Example1" />
+
+    <input type="text" class="form-control w-100">
+
+    </div>`;
+
+    const div=document.createElement("div");
+
+    div.innerHTML=content;
+
+
+    optionContent.appendChild(div);
+
+
+}
+
+function toggleCodingInput(value){
+    const status=value.checked;
+    const codingInput=document.getElementById("coding-input");
+    
+    if(status){
+        const content=`
+        <div class="form-outline mb-4">
+        <label class="form-label" for="question">Question Code</label>
+        <textarea id="question" rows="4" class="form-control" name="question"></textarea>
+        </div>`;
+    
+        codingInput.innerHTML=content;
+    }else{
+        codingInput.innerHTML="";
+    }
+    
+
+    
+
+
 }
