@@ -7,6 +7,6 @@ const routers=express.Router();
 routers.get('/create_exam',examController.ExamController.create_exam);
 routers.post('/exam_data',examController.ExamController.data);
 routers.get('/validatename',examController.ExamController.validatename);
-routers.get('/nextpage',examController.ExamController.questionpage);
+
 
 module.exports=routers;

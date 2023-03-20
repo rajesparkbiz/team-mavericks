@@ -15,17 +15,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/auth',authRoute);
 app.use('/dashboard',dashboardRoute);
 app.use('/create_exam',create_examRoute);
-// app.use('/exam',create_examRoute);
 
 app.use(express.static(__dirname+"/public"));
 
-
-// app.get('/nextpage',(req,res)=>{
-//     conn.query(`select question, question_answer from question`,(err,data)=>{
-//         if(err) throw err
-//         res.render('')
-//     })
-// })
 app.listen(port,()=>{
     console.log(`Server is Running on ${port}`);
 })
