@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Question Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/questions.css">
+</head>
+
+<body>
+
+    <!-- main question page -->
+    <div class="question-add-btn">
+        <button type="button" class="btn btn-primary" onclick="showAddQuestionModal()">
+            Add Question
+        </button>
+    </div>
+
+    <!-- add question modal -->
+
+    <div class="modal fade" id="question-edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog mx-0 mx-sm-auto">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Add New Question</h5>
+                    <button type="button" class="btn-close text-white" data-mdb-dismiss="modal" aria-label="Close"
+                        onclick="disableAddQuestionModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/que/add">
+                        <div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="question">Question</label>
+                                <textarea id="question" rows="4" class="form-control" name="question" onkeyup="questionchk()"></textarea>
+                                <small class="warn" id="questionwarn"></small>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input class="form-check-input" type="checkbox" name="coding_question_chkbox" id="coding_question_chkbox"
+                                onchange="toggleCodingInput(this); codingquechk()"/>
+                            <label class="form-label" for="coding_question_chkbox">Coding Question</label>
+                        </div>
+
+                        <div id="coding-input-div">
+
+                        </div>
+
+                        <p><strong>Question Options</strong></p>
+
+                        <div id="question-option-content">
+                            <div class="form-check mb-2" id="option0">
+                                <input class="form-check-input" type="radio" name="optionid" value="0" onclick="optionschk()">
+                                <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
+                            </div>
+                            <div class="form-check mb-2" id="option1">
+                                <input class="form-check-input" type="radio" name="optionid" value="1" onclick="optionschk()">
+                                <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
+                            </div>
+                            <div class="form-check mb-2" id="option2">
+                                <input class="form-check-input" type="radio" name="optionid" value="2" onclick="optionschk()">
+                                <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
+                            </div>
+                            <div class="form-check mb-2" id="option3">
+                                <input class="form-check-input" type="radio" name="optionid" value="3" onclick="optionschk()">
+                                <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
+                            </div>
+                        </div>
+
+                        <p><strong>Select Question Category</strong></p>
+
+
+                        <div class="form-group mb-3">
+                            <label for="exampleFormControlTextarea1">Categories: </label>
+                            <select class="form-select form-select-sm" name="categories_id">
+                                <% for (let index=0; index < queCategories.length; index++) {%>
+                                    <option value="<%=queCategories[index].category_id%>">
+                                        <%=queCategories[index].category_name%>
+                                    </option>
+                                    <% } %>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary" data-mdb-dismiss="modal"
+                        onclick='addQuestionOption()'>
+                        Add Option
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="addque-btn" disabled>Submit</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- question edit modal -->
+    <div class="modal fade" id="question-modal" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+        <div class="modal-dialog d-flex justify-content-center">
+            <div class="modal-content w-100">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Question</h5>
+                    <button type="button" id="disable-modal" class="btn-close" data-mdb-dismiss="modal"
+                        aria-label="Close" onclick="disableModal()"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form action="/question/update" method="post">
+
+                        <div class="form-outline mb-4">
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="question">Question</label>
+                                <textarea id="question" rows="4" class="form-control" name="question"></textarea>
+                            </div>
+
+
+                            <div class="question-option" id="question-option">
+
+                            </div>
+
+                            <input type="button" class="editQuestion-btn btn btn-primary btn-block"
+                                onclick="editQuestionBtn(this.id)" value="Save">
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+<script src="/script/question.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+</html>
