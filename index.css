@@ -324,7 +324,7 @@ nav .profile-details i{
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* left box */
+
 
 
 
@@ -356,7 +356,7 @@ nav .profile-details i{
   font-weight: 400;
   color: #333;
 }
-/* Responsive Media Query */
+
 @media (max-width: 1240px) {
   .sidebar{
     width: 60px;
@@ -369,7 +369,7 @@ nav .profile-details i{
     left: 60px;
   }
   .sidebar.active ~ .home-section{
-    /* width: calc(100% - 220px); */
+    
     overflow: hidden;
     left: 220px;
   }
@@ -546,7 +546,7 @@ table {
 }
 
 tbody tr:nth-child(odd) {
-  /* background: #eee; */
+
 }
 .wrapper{
   display: flex;
