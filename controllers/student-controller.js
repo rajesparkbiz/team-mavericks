@@ -10,20 +10,16 @@ class StudentController {
     static filterExams = async (req, res) => {
 
         const { flag, search } = req.query;
-
-        let searchfname;
-        
-        searchfname = await queryExecurter(`select * from student_master where ${flag} like '%${search}%'`);
-
-        if (!searchfname) {
-            searchfname = await queryExecurter(`SELECT * FROM exam_admin.student_master where student_master.${flag}='${search}'`);
+        let exam;
+        exam = await queryExecurter(`select * from exam_master where ${flag} like '%${search}%'`);
+        if (!exam) {
+            exam = await queryExecurter(`select * from exam_admin.exam_master where exam_master.${flag} = '%${search}%'`);
         }
         if (search.length == "") {
-            searchfname = await queryExecurter(`SELECT * FROM exam_admin.student_master;`);
+            exam = await queryExecurter(`select * from exam_admin.exam_master;`);
         }
 
-
-        res.json({ searchfname });
+        res.json({ exam });
     }
 }
 

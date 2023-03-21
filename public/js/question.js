@@ -2,13 +2,11 @@
 var questionPage = document.getElementById('question-page-container');
 
 async function showModal(question_id) {
-
     //get request for get perticular one question
-    const questionDataReq = await fetch(`/dashboard/question/data/one/?id=${question_id}`);
+    const questionDataReq = await fetch(`/question/questions/data/one/?id=${question_id}`);
     const questionData = await questionDataReq.json();
 
     const question = questionData.questionData.question;
-
     const questionAnswer = questionData.questionData.question_answer;
 
     const options = questionData.questionOption;
@@ -38,10 +36,9 @@ async function showModal(question_id) {
     questionPage.classList.add('blur-card');
 
     bindModalData(question, questionAnswer, options);
-
 }
 
-function showAddQuestionModal(){
+function showAddQuestionModal() {
     var questionModal = document.getElementById("question-edit-modal");
     questionModal.classList.add("show");
     questionModal.style.display = "block";
@@ -68,8 +65,6 @@ function disableAddQuestionModal() {
     questionPage.classList.remove('blur-card');
 }
 
-
-
 function bindModalData(question, answer, ...questionOptions) {
 
     const option = questionOptions[0];
@@ -81,21 +76,20 @@ function bindModalData(question, answer, ...questionOptions) {
         }
     }
 
-    var questionTag = document.getElementById("question");
+    var questionTag = document.getElementById("question-add-input");
 
     questionTag.value = question;
 }
 
 
 async function editQuestionBtn(id) {
-
-    const questionId=id;
+    const questionId = id;
     var questionAnswer;
     var questionOptions = [];
-    var optionsId=[];
+    var optionsId = [];
 
-    const questionTag = document.getElementById("question");
-    const question=questionTag.value;
+    const questionTag = document.getElementById("question-add-input");
+    const question = questionTag.value;
     const optionsAnswer = document.getElementsByClassName("question-option-input-radio");
     const options = document.getElementsByClassName("question-option-input");
     const option_ids = document.getElementsByClassName("option-id");
@@ -111,33 +105,32 @@ async function editQuestionBtn(id) {
     for (let i = 0; i < options.length; i++) {
         questionOptions[i] = options[i].value;
     }
-    
+
     //fetch all question options
     for (let i = 0; i < option_ids.length; i++) {
         optionsId[i] = option_ids[i].value;
     }
-        
+
 
     const url = "/question/update";
-    const data = {questionId,question,questionAnswer,questionOptions,optionsId};
+    const data = { questionId, question, questionAnswer, questionOptions, optionsId };
     const fetchOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
     };
 
-    const updateRequest=await fetch(url,fetchOptions);
+    const updateRequest = await fetch(url, fetchOptions);
 }
 
 async function deleteQuestion(id) {
     const questionId = id;
-    const status = await customAlert(id);
+    const status = await customAlert(id)
+        ;
     if (status) {
         const deleteQuestion = await fetch(`/question/delete/?id=${id}`);
     }
 }
-
-
 
 async function customAlert(id) {
     const isDelete = await swal({
@@ -162,44 +155,195 @@ async function customAlert(id) {
     }
 }
 
-function addQuestionOption(){
-    const optionContent=document.getElementById("question-option-content");
+let optionflag = 4;
+function addQuestionOption() {
+    const optionContent = document.getElementById("question-option-content");
+    const content = `<div class="form-check mb-2" id="option${optionflag}">
+    <input class="form-check-input" type="radio" name="optionid" value="${optionflag}" onchange="optionschk()">
+    <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
+</div>`;
+    if (optionflag < 7) {
+        const div = document.createElement("div");
 
-    const content=`<div class="form-check mb-2 d-flex justify-content-between">
-    <input class="form-check-input" type="radio" name="exampleForm" id="radio4Example1" />
-
-    <input type="text" class="form-control w-100">
-
-    </div>`;
-
-    const div=document.createElement("div");
-
-    div.innerHTML=content;
+        div.innerHTML = content;
 
 
-    optionContent.appendChild(div);
-
-
+        optionContent.appendChild(div);
+        optionflag++;
+    }
 }
 
-function toggleCodingInput(value){
-    const status=value.checked;
-    const codingInput=document.getElementById("coding-input");
-    
-    if(status){
-        const content=`
+function toggleCodingInput(value) {
+    const status = value.checked;
+    const codingInput = document.getElementById("coding-input-div");
+
+    if (status) {
+        const content = `
         <div class="form-outline mb-4">
-        <label class="form-label" for="question">Question Code</label>
-        <textarea id="question" rows="4" class="form-control" name="question"></textarea>
+        <label class="form-label" for="coding_question">Question Code</label>
+        <textarea id="coding_question" rows="4" class="form-control" name="coding_question" onkeyup="codingquechk()"></textarea>
         </div>`;
-    
-        codingInput.innerHTML=content;
-    }else{
-        codingInput.innerHTML="";
+
+        codingInput.innerHTML = content;
+    } else {
+        codingInput.innerHTML = "";
     }
+}
+
+let questionchk_flag=0,optionschk_flag=0,optionsradiochk_flag=0,coding_question_flag=1;
+
+function questionchk() {
+    let question = document.getElementById("question").value;
+    if ((question.trim()).length > 0) {
+        questionchk_flag = 1;
+        addquebtn();
+    }
+    else{
+        questionchk_flag = 0;
+        addquebtn();
+    }
+}
+
+function optionschk(){
+    let noofoption=0;
+    let options = document.getElementsByName("option");
+    let optionslen = document.getElementsByName("option").length;
+    for (let index = 0; index < optionslen; index++) {
+        if (options[index].value.trim().length > 0) {
+            let optionradiochk = document.getElementsByName("optionid")[index].checked;
+            if (optionradiochk == true) {
+                optionsradiochk_flag = 1;
+            }
+            noofoption++;
+        }
+    }
+    if (noofoption >= 4) {
+        optionschk_flag = 1;
+    }
+    else{
+        optionschk_flag = 0;
+    }
+    addquebtn();
+}
+
+function codingquechk(){
+    let coding_question_chkbox = document.getElementById("coding_question_chkbox").checked;
+    if (coding_question_chkbox == true) {
+        let coding_question = document.getElementById('coding_question').value;
+        if ((coding_question.trim()).length > 0) {
+            coding_question_flag = 1;
+            addquebtn();
+        }
+        else{
+            coding_question_flag = 0;
+            addquebtn();
+        }
+    }
+    else{
+        coding_question_flag = 1;
+    }
+    addquebtn();
+}
+
+function addquebtn(){
+    let addque = document.getElementById("addque-btn");
+    if (questionchk_flag == 1 && optionschk_flag == 1 && optionsradiochk_flag ==1 && coding_question_flag ==1) {
+        addque.disabled = false;
+    }
+    else{
+        addque.disabled = true;
+    }
+}
+
+async function toogle(value) {
+
+    const categoryId=value.id;
+        //this code use for chnage the tab 
+    const allTabs = document.querySelectorAll('.nav-link');
+    allTabs.forEach((tab) => {
+        tab.classList.remove('active');
+    })
     
+
+    //this code use for active only one clicked tab
+    const tabId = value.id;
+    const tab = document.getElementById(tabId);
+    tab.classList.add('active');
+    
+    const questionRequest=await fetch(`/question/questions/category/?category=${categoryId}`)
+    const data=await questionRequest.json();
+    const questions=data.questions;
+    const optionTitle=data.optionTitle;
+    
+
+
+    var content=``;
+    const question_container=document.getElementById("question-container");
+    if(questions.length==0 || questions==undefined){
+        content+='<h3 class="data-eror">Question Not Found</h3>'
+        question_container.innerHTML=content;
+    }else{
+
+    
+    var options=``;
+    
+    question_container.innerHTML="";
 
     
 
+    for(let i=0;i<questions.length;i++){
+    content+=
+    `
+                    <div class="container-fluid my-1">
+                        <div class="question pt-2 mt-2">
+                        <div class="py-2 h5"><b>
+                            ${(i+1)}. ${questions[i].question} 
+                            </b></div>
+                        <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">`
+
+                        for (let j=0;j<questions[i].option.length;j++){
+
+                            if(questions[i].correct_ans[j]){ 
+                                content+=
+                                `
+                                <p class="true-answer">
+                                ${optionTitle[j].toUpperCase()}  ) ${questions[i].option[j]} 
+                                </p>`;
+                            }else{
+                                content+=`<p class="false-answer">
+                                ${optionTitle[j].toUpperCase()}  ) ${questions[i].option[j]} 
+                                </p>
+                                
+                                `;
+                                
+                            }
+                        
+                        }
+
+                        content+=`</div>
+                        <div class="question-btns">
+                            <button class="btn btn-primary" onclick="showModal(this.id)"
+                            id="${questions[i].question_id}">Edit</button>
+                            <input type="button" class="btn btn-danger"
+                            onclick="deleteQuestion('${questions[i].question_id}')" value="Delete">
+                        </div>
+                        </div>
+                    </div>
+
+                    `;
+    }
+
+
+    
+    question_container.innerHTML=content;
+    }
+
+
+    //this code use for chnage the content based on tab clicked.
+    // const content = document.querySelectorAll('.content');
+    // content.forEach((con) => {
+    //     con.classList.remove('active-content');
+    //     con.classList.add('disable-content');
+    // })
 
 }

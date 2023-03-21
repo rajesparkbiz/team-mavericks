@@ -1,5 +1,4 @@
 const queryExecurter = require('../database/dbHelper.js');
-
 class ExamController {
     static toogleSwitch = async (req, res) => {
         const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);

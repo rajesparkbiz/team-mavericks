@@ -9,6 +9,7 @@ class UserAuth{
             res.render('login',{status:""});
         }
     }
+
     static userLoginchk = async (req, res) => {
         let { Username, Password } = req.body;
         let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master`);
@@ -37,6 +38,16 @@ class UserAuth{
             res.render('login',{status:"username or password incorrect"});
         }
 
+    }
+
+    static alreadyLogin = async (req, res, next) => {
+        let session=req.session;
+        if (session.username) {
+            res.redirect('/dashboard');
+        }
+        else{
+           next();
+        } 
     }
 }
 

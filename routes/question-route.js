@@ -5,5 +5,9 @@ const routers=express.Router();
 
 routers.get('/delete',questionController.deleteQuestion);
 routers.post('/update',questionController.updateQuestion);
+routers.post('/add',questionController.addQuestion);
+routers.get('/questions',questionController.displayQuestion);
+routers.get('/questions/category',questionController.displayCategoryQuestion);
+routers.get('/questions/data/one',questionController.question);
 
 module.exports=routers;
