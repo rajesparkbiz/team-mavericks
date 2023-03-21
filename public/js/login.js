@@ -1,6 +1,7 @@
 let emailflaglog = 0;
 let passflaglog = 0;
-function loginemail(){
+
+function validateEmail(){
     let email = document.getElementById('email').value;
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(email)) {
@@ -14,7 +15,7 @@ function loginemail(){
     }
     loginbtn();
 }
-function loginpass(){
+function validatePassword(){
     let pass = document.getElementById('pass').value;
     if (pass.length > 0) {
         document.getElementById('passchk').innerHTML = '';

@@ -1,7 +1,6 @@
 var questionPage = document.getElementById('question-page-container');
-
+let totaloptions;
 async function showModal(question_id) {
-
     //get request for get perticular one question
     const questionDataReq = await fetch(`/dashboard/question/data/one/?id=${question_id}`);
     const questionData = await questionDataReq.json();
@@ -17,10 +16,11 @@ async function showModal(question_id) {
             `<div class="form-check my-3">
                 <input class="form-check-input mt-check question-option-input-radio" type="radio" name="option" value="${options[i].option_value}">
                 <input type='hidden' value='${options[i].option_id}' class='option-id'>
-                <input class="form-control question-option-input" type="text" value="${options[i].option_value}" name="option-value">
+                <input class="form-control question-option-input" type="text" value="${options[i].option_value}" name="option-value" onkeyup="editoptionschk()">
               </div>`;
     }
-
+    option_content += `<small class="warn" id="editoptionquestionwarn"></small>`;
+    totaloptions = options.length;
     document.getElementById("question-option").innerHTML = option_content;
 
     //set dynamic edit modal save btn id
@@ -36,7 +36,6 @@ async function showModal(question_id) {
     questionPage.classList.add('blur-card');
 
     bindModalData(question, questionAnswer, options);
-
 }
 
 function showAddQuestionModal() {
@@ -49,12 +48,15 @@ function showAddQuestionModal() {
 }
 
 function disableModal() {
+    editquestionchk_flag = 1;
+    editoptionschk_flag = 1;
     var questionModal = document.getElementById("question-modal");
 
     questionModal.classList.remove("show");
     questionModal.style.display = "none";
     questionModal.classList.remove("modal-open");
     questionPage.classList.remove('blur-card');
+    editquebtn();
 }
 
 function disableAddQuestionModal() {
@@ -79,7 +81,7 @@ function bindModalData(question, answer, ...questionOptions) {
         }
     }
 
-    var questionTag = document.getElementById("question");
+    var questionTag = document.getElementById("question-add-input");
 
     questionTag.value = question;
 }
@@ -92,7 +94,7 @@ async function editQuestionBtn(id) {
     var questionOptions = [];
     var optionsId = [];
 
-    const questionTag = document.getElementById("question");
+    const questionTag = document.getElementById("question-add-input");
     const question = questionTag.value;
     const optionsAnswer = document.getElementsByClassName("question-option-input-radio");
     const options = document.getElementsByClassName("question-option-input");
@@ -187,76 +189,133 @@ function toggleCodingInput(value) {
         <div class="form-outline mb-4">
         <label class="form-label" for="coding_question">Question Code</label>
         <textarea id="coding_question" rows="4" class="form-control" name="coding_question" onkeyup="codingquechk()"></textarea>
-        </div>`;
-
+        </div>
+        <small class="warn" id="addcodingwarn"></small>
+        `;
+addquestionwarn
         codingInput.innerHTML = content;
     } else {
         codingInput.innerHTML = "";
     }
 }
-let questionchk_flag=0,optionschk_flag=0,optionsradiochk_flag=0,coding_question_flag=1;
+let questionchk_flag = 0, optionschk_flag = 0, optionsradiochk_flag = 0, coding_question_flag = 1, editoptionschk_flag = 1, editquestionchk_flag = 1;
 
 function questionchk() {
     let question = document.getElementById("question").value;
+    let warning = document.getElementById("addquestionwarn");
     if ((question.trim()).length > 0) {
         questionchk_flag = 1;
+        warning.innerHTML="";
         addquebtn();
     }
-    else{
+    else {
         questionchk_flag = 0;
+        warning.innerHTML="Enter a question!";
         addquebtn();
     }
 }
 
-function optionschk(){
-    let noofoption=0;
+function optionschk() {
+    let noofoption = 0;
     let options = document.getElementsByName("option");
     let optionslen = document.getElementsByName("option").length;
+    let warning = document.getElementById("optionquestionwarn");
+    let rightwarning = document.getElementById("rightoptionwarn");
+    rightwarning.innerHTML = "select right option!";
     for (let index = 0; index < optionslen; index++) {
         if (options[index].value.trim().length > 0) {
             let optionradiochk = document.getElementsByName("optionid")[index].checked;
-            console.log(optionradiochk);
             if (optionradiochk == true) {
                 optionsradiochk_flag = 1;
+                rightwarning.innerHTML = "";
             }
-            console.log(noofoption);
             noofoption++;
         }
     }
-    console.log(noofoption);
     if (noofoption >= 4) {
         optionschk_flag = 1;
+        warning.innerHTML = "";
     }
-    else{
+    else {
         optionschk_flag = 0;
+        warning.innerHTML="Enter at least 4 options!";
     }
     addquebtn();
 }
 
-function codingquechk(){
+function codingquechk() {
     let coding_question_chkbox = document.getElementById("coding_question_chkbox").checked;
+    let warning = document.getElementById("addcodingwarn");
     if (coding_question_chkbox == true) {
         let coding_question = document.getElementById('coding_question').value;
         if ((coding_question.trim()).length > 0) {
             coding_question_flag = 1;
+            warning.innerHTML="";
             addquebtn();
         }
-        else{
+        else {
             coding_question_flag = 0;
+            warning.innerHTML="Enter a coding question!";
             addquebtn();
         }
     }
-    else{
+    else {
         coding_question_flag = 1;
     }
     addquebtn();
 }
-function addquebtn(){
+function editquestionchk() {
+    let question = document.getElementById("question-add-input").value;
+    let warning = document.getElementById("editquestionwarn");
+
+    if ((question.trim()).length > 0) {
+        editquestionchk_flag = 1;
+        warning.innerHTML="";
+        editquebtn();
+    }
+    else {
+        editquestionchk_flag = 0;
+        warning.innerHTML="Enter a question!";
+        editquebtn();
+    }
+}
+
+function editoptionschk() {
+    let noofoptions = 0;
+    let warning = document.getElementById("editoptionquestionwarn");
+    const options = document.getElementsByClassName("question-option-input");
+
+    for (let index = 0; index < totaloptions; index++) {
+        if (((options[index].value).trim()).length > 0) {
+            noofoptions++;
+        }
+    }
+    if (noofoptions == totaloptions) {
+        editoptionschk_flag = 1;
+        warning.innerHTML='';
+        editquebtn();
+    }
+    else {
+        editoptionschk_flag = 0;
+        warning.innerHTML='Enter all options!';
+        editquebtn();
+    }
+}
+function addquebtn() {
     let addque = document.getElementById("addque-btn");
-    if (questionchk_flag == 1 && optionschk_flag == 1 && optionsradiochk_flag ==1 && coding_question_flag ==1) {
+    if (questionchk_flag == 1 && optionschk_flag == 1 && optionsradiochk_flag == 1 && coding_question_flag == 1) {
         addque.disabled = false;
     }
-    else{
+    else {
         addque.disabled = true;
+    }
+}
+function editquebtn(){
+    let editquebtn = document.getElementsByName('editbtn');
+    if (editquestionchk_flag == 1 && editoptionschk_flag == 1) {
+        editquebtn[0].disabled = false;
+    }
+    else {
+        editquebtn[0].disabled = true;
     }
 }
