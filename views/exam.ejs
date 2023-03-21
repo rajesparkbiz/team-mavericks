@@ -30,7 +30,11 @@
       <div class="user-table warpper m-2">
 
 
+<<<<<<< HEAD
         <table  id = "myTable" class="table table-bordered" border="1">
+=======
+        <table class="table table-bordered" border="1">
+>>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
           <thead>
             <tr>
               <th>No</th>
@@ -46,15 +50,23 @@
             <tr>
               <td> <%= (i+1)%></td>
               <td>
+<<<<<<< HEAD
                 <%=data[i].exam_name%>
+=======
+                <%= (i+1)%>
               </td>
               <td>
-                <%= data[i].exam_access_code%>
+                <%= data[i].exam_name %>
+>>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
               </td>
               <td>
-                <%= data[i].exam_total_question%>
+                <%= data[i].exam_access_code %>
               </td>
               <td>
+                <%= data[i].exam_total_question %>
+              </td>
+              <td>
+<<<<<<< HEAD
                 <%= data[i].creadtedDate%>
                   <%= data[i].exam_name %>
               </td>
@@ -65,16 +77,25 @@
                 <%= data[i].exam_total_question %>
               </td>
               <td>
+=======
+>>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
                 <%= data[i].createdDate %>
               </td>
 
               <td>
                 <div class="form-check form-switch">
                   <input class="form-check-input switch" type="checkbox" role="switch"
+<<<<<<< HEAD
                     onchange="toogleSwitch('<%=data[i].exam_id%>')"
                     <% if(data[i].exam_isActive=='yes' ) {%>
                   checked id="flexSwitchCheckDefault">
                   <%}%>
+=======
+                    onchange="toggleSwitch('<%=data[i].exam_id%>')" 
+                    <% if(data[i].exam_isActive=='yes' ) {%> 
+                      checked id="flexSwitchCheckDefault">
+                      <%}%>
+>>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
                 </div>
               </td>
             </tr>
@@ -99,8 +120,15 @@
 
     const toogleRequest = await fetch(`/exam/update/?id=${exam_id}`)
 
+<<<<<<< HEAD
   } 
 
+=======
+  async function toggleSwitch(exam_id) {
+
+    const toggleRequest =await fetch(`/exam/update/?id=${exam_id}`)
+  }
+>>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
 
 
   async function search(tag){
@@ -120,6 +148,7 @@
             </tr>
           </thead>`;
 
+<<<<<<< HEAD
           data.searchfname.forEach(e => {
             html += `<tr>
             
@@ -156,6 +185,8 @@
 
   }
 
+=======
+>>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
 </script>
 
 
