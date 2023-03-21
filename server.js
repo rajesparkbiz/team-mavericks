@@ -80,6 +80,27 @@ app.get('/dashboard/exams', async (req, res) => {
     var exam_master = await queryExecutor(`SELECT * FROM exam_master`);
     res.render('exam.ejs', { data: exam_master });
 })
+app.get('/dashboard/result', async (req, res) => {
+
+   var status = [];
+    var data = await queryExecutor(`select fname, exam_name,exam_total_question,exam_result 
+    from exam_attempt_master  exam inner join exam_master e on exam.exam_id = e.exam_id inner join
+     student_master s on s.student_id = exam.student_id;`);
+ for(var i=0; i<data.length; i++){
+    var total = data[i].exam_total_question;
+    var obtained = data[i].exam_result;
+    var marks = parseInt((total * 33)/100);
+    if(obtained >= marks){
+       status.push('pass');
+       }
+    else
+       {
+        status.push('fail');
+       }
+
+ }
+     res.render('result.ejs',{data:data,status});
+})
 
 app.get('/exam/update', async (req, res) => {
 
@@ -117,6 +138,21 @@ app.get('/student', async (req, res) => {
         
 
     res.json({ searchfname });
+})
+
+app.get('/searchexam', async (req, res) => {
+  const {flag, search}= req.query;
+    let exam;
+    exam = await queryExecutor(`select * from exam_master where ${flag} like '%${search}%'`);
+    if(!exam){
+        exam = await queryExecutor(`select * from exam_admin.exam_master where exam_master.${flag} = '%${search}%'`);
+    }
+    if(search.length==" ")
+    {
+        exam = await queryExecutor(`select * from exam_admin.exam_master;`);
+    }
+
+    res.json({ exam });
 })
 
 app.listen(5001, function () {
