@@ -15,19 +15,23 @@
 </head>
 
 <body>
+
+
+    <h1>Search here</h1>
+    <form action="search">
+        <input type="exam" name="title " placeholder="search exam">
+        <input type="access" name="code" placeholder="access code">
+        <input type="submit" value="Search">
+    </form>
+
   <section>
 
 
     <div class="contaner-fluid">
 
-      <div class="action-btn">
-        <div class="search-input d-flex justify-content-center">
-          <label for="exam-search-label">Search</label>
-          <input type="text" class="form-control" id="search" oninput="search(this.value)">
-        </div>
-      </div>
 
       <div class="user-table warpper m-2">
+
 
 
         <table  id = "myTable" class="table table-bordered" border="1">
@@ -41,6 +45,10 @@
               <th scope="col">Status</th>
             </tr>
           </thead>
+
+          <% if(student.length > 0){ %> 
+        
+        
 
           <% for(i=0; i<data.length; i++) {%>
             <tr>
@@ -68,18 +76,18 @@
                 <%= data[i].createdDate %>
               </td>
 
-              <td>
-                <div class="form-check form-switch">
-                  <input class="form-check-input switch" type="checkbox" role="switch"
-                    onchange="toogleSwitch('<%=data[i].exam_id%>')"
-                    <% if(data[i].exam_isActive=='yes' ) {%>
-                  checked id="flexSwitchCheckDefault">
-                  <%}%>
-                </div>
-              </td>
             </tr>
             <% }%>
 
+            <% } else { %>
+
+                <tr>
+                    <td>data not found </td>
+                </tr>
+            
+            }
+            <% } %}
+            
         </table>
 
       </div>
@@ -100,61 +108,11 @@
     const toogleRequest = await fetch(`/exam/update/?id=${exam_id}`)
 
   } 
+</script>
 
+<script>
 
-
-  async function search(tag){
-    var searching = document.getElementById("search").value;
-    var res = await fetch(`/student/?search=${searching}`);
-    var data = await res.json();
-    var table = document.getElementById("myTable");
-    table.innerHTML= "";
-    var html = `<thead>
-            <tr>
-              <th>No</th>
-              <th scope="col">Exam Title</th>
-              <th scope="col">Access Code</th>
-              <th scope="col">Total Question</th>
-              <th scope="col">CreateDate</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>`;
-
-          data.searchfname.forEach(e => {
-            html += `<tr>
-            
-              <td>
-                ${e.exam_name}
-              </td>
-              <td>
-                ${e.exam_access_code}
-              </td>
-              <td>
-                ${e.exam_total_question}
-              </td>
-              <td>
-                ${e.creadtedDate}
-                  ${e.exam_name}
-              </td>
-              <td>
-                ${e.exam_access_code}
-              </td>
-              <td>
-                ${e.exam_total_question}
-              </td>
-              <td>
-                ${ e.createdDate }
-              </td>
-
-              <td>
-                
-              </td>
-            </tr>  `;
-            
-          });
-          table.innerHTML = html;
-
-  }
+  
 
 </script>
 
