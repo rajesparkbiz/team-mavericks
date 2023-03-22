@@ -596,8 +596,6 @@ tbody tr:nth-child(odd) {
 .progress{
  
   
-  
-  
 }
 .title{
   margin-left: 5%;
@@ -612,3 +610,11 @@ tbody tr:nth-child(odd) {
 .head{
   color:rgb(12, 12, 12)
 }
+
+footer {
+  text-align: center;
+  padding: 3px;
+  background-color: rgb(35, 23, 80);
+  color: white;
+}
+ 
