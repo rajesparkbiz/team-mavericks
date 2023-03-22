@@ -6,7 +6,7 @@ class createExams {
   // function for showinf caategoires from the database
   static showCategory = async (req, res) => {
   
-    const ans=await queryExecuter("SELECT category_name from question_category");
+    const ans=await queryExecuter("SELECT category_name from question_category where isdel = '0' ");
     res.render("question-category", { category_list :ans});
 
 
