@@ -20,7 +20,13 @@
         <div class="search-input d-flex justify-content-center">
           <label for="exam-search-label">Search</label>
           <input type="text" id="search" class="form-control" oninput="Search(this.value)">
-         
+          <select id="filter-box" class="form-select form-select-sm" aria-label=".form-select-sm example">
+            <option id="fname" value="fname" selected>Name</option>
+            <option id="exam_name" value="exam_name">Exam Name</option>
+            <option id="exam_result" value="exam_result">Marks</option>
+            <option id="status" value="status">status</option>
+          </select>
+
         </div>
       </div>
 
@@ -84,6 +90,7 @@
 
   </script>
    
-
+  
+  
 
 </html>

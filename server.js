@@ -154,6 +154,28 @@ app.get('/searchexam', async (req, res) => {
 
     res.json({ exam });
 })
+app.get('/searchresult', async (req, res) => {
+    const {flag, search}= req.query;
+      let result;
+      result = await queryExecutor(`select fname, exam_name,exam_total_question,exam_result 
+      from exam_attempt_master  exam inner join exam_master e on exam.exam_id = e.exam_id inner join
+       student_master s on s.student_id = exam.student_id where ${flag} like '%${search}%'`);
+       console.log(result);
+      if(!result){
+          result = await queryExecutor(`select fname, exam_name,exam_total_question,exam_result 
+          from exam_attempt_master  exam inner join exam_master e on exam.exam_id = e.exam_id inner join
+           student_master s on s.student_id = exam.student_id where ${flag} = '%${search}%'`);
+      }
+      if(search.length==" ")
+      {
+          exam = await queryExecutor(`select fname, exam_name,exam_total_question,exam_result 
+          from exam_attempt_master  exam inner join exam_master e on exam.exam_id = e.exam_id inner join
+           student_master s on s.student_id = exam.student_id;`);
+      }
+  
+      res.json({ result });
+  })
+  
 
 app.listen(5001, function () {
     console.log('Server is running on port 5001');
