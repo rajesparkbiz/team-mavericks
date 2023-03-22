@@ -1,51 +1,25 @@
-var mysql2 = require('mysql2')
-var conn = mysql2.createConnection({
-    user: 'root',
-    password: 'root',
-    host: 'localhost',
-    database: 'exam_admin'
-})
-
-conn.connect((err) => {
-    if (err) throw err
-    console.log('connected!')
-})
-
+const queryExecurter = require('../database/dbHelper.js');
 class ExamController {
-    static create_exam = async (req, res) => {
-        // console.log('hello')
-        res.render('create_exam')
-    }
+    static toogleSwitch = async (req, res) => {
+        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);
+        const isActive = currentStatus[0].status;
 
-    static data = async (req, res) => {
-        try {
-            let x = req.body.examname
-            let examname = x.toUpperCase()
-            let examcode = req.body.examcode
-            let totalque = req.body.totalque
-            let duration = req.body.duration
-
-            conn.query(`insert into exam_master(exam_name,exam_access_code,exam_total_question,exam_duration) values('${examname}','${examcode}','${totalque}','${duration}')`,(err,data)=>{
-                if(err) throw err;
-                res.render('nextpage');
-            })
-          
-        } catch (err) {
-            console.log(err);
+        var query;
+        if (isActive == 'yes') {
+            query = `update exam_admin.exam_master set exam_isActive = 'no' where exam_id=${req.query.id}`;
+        } else {
+            query = `update exam_admin.exam_master set exam_isActive = 'yes' where exam_id=${req.query.id}`;
         }
+
+        const toggleSwitchQuery = await queryExecurter(query);
+
+        res.redirect('/dashboard/exams');
     }
 
-    static validatename = async (req, res) => {
-        try {
-            const name=req.query.name;
-            conn.query(`select exam_name from exam_master`,(err,data)=>{
-                if(err) throw err;
-                res.json(data)
-            })
-        } catch (err){
-            console.log(err);
-        }
+    static displayCreateExam= async(req,res)=>{
+        res.render('create_exam');
     }
+    
 }
 
-module.exports = { ExamController };
+module.exports = ExamController;

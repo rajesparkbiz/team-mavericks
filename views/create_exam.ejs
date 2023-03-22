@@ -38,7 +38,8 @@
                                     <div class="form-holder">
                                         <label>Exam Access Code</label>
                                         <input type="text" placeholder="write access code here" class="form-control"
-                                            id="examcode" name="examcode" autocomplete="off">
+                                            oninput="validateExamCode()" id="examcode" name="examcode"
+                                            autocomplete="off">
                                         <p id="err1"></p>
                                     </div>
                                 </div>
@@ -48,17 +49,19 @@
                                 <div class="form-row">
                                     <div class="form-holder">
                                         <label for="total_que">Total Questions</label>
-                                        <input type="number" placeholder="write total questions here"
-                                            class="form-control" min="5" id="totalque" name="totalque"
+                                        <input type="text" placeholder="write total questions here" oninput="valtidateQuestion()"
+                                            class="form-control"  id="totalque" name="totalque"
                                             autocomplete="off">
+                                        <p id="err2"></p>
                                     </div>
                                     <div class="form-holder">
                                         <label for="duration">Duration Of Exam</label>
-                                        <input type="number" min="10" placeholder="minimum 10 minutes"
+                                        <input type="text" min="10" placeholder="minimum 10 minutes"  oninput="valtidateDuration()"
                                             class="form-control" id="duration" name="duration" autocomplete="off">
+                                        <p id="err3"></p>
                                     </div>
                                 </div>
-                                <p id="err2"></p>
+                                <p id="err4"></p>
                             </div>
                             <input type="submit" id="button1" class="btn btn-primary" value="save">
                         </section>
@@ -71,122 +74,221 @@
 <script src="/js/main.js"></script>
 <script>
 
+    function validateExamName() {
+        let x = document.getElementById('examname').value;
+        let err1 = document.getElementById('err');
+        // let name1 = name.toUpperCase();
+
+        let symbol = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '?', '/', ',', '.', '"', ':', ';', '+', '-', '`', '~', '=', '[', ']', '{', '}', "'"];
+        let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        if (x == '') {
+            err1.innerHTML = 'plz fill the name!';
+            document.getElementById('button1').disabled = true;
+            document.getElementById('button1').style.opacity = 0.3;
+            return false;
+        }
+        else {
+            for (i = 0; i < symbol.length; i++) {
+                if (x.includes(symbol[i])) {
+                    err1.innerHTML = '*you cannot enter special character!';
+                    document.getElementById('button1').disabled = true;
+                    return false;
+                }
+            }
+            if (!isNaN(x)) {
+                err1.innerHTML = '*you cannot enter a number value in exam name';
+                document.getElementById('button1').disabled = true;
+                document.getElementById('button1').style.opacity = 0.3;
+                return false;
+            }
+            else if (x.startsWith('_') || x.endsWith('_')) {
+                err1.innerHTML = '*cannot give _ at first or last character in exam name';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else if (x.length > 20) {
+                err1.innerHTML = '*your exam name is too long! try short name instead';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else {
+                err1.innerHTML = '';
+                document.getElementById('button1').disabled = false;
+                document.getElementById('button1').style.opacity = null;
+                return true;
+            }
+        }
+    }
+
+    function validateExamCode() {
+        let y = document.getElementById('examcode').value;
+        let err2 = document.getElementById('err1');
+
+        let symbol1 = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '?', '/', ',', '.', '"', ':', ';', '+', '-', '`', '~', '=', '[', ']', '{', '}', '_'];
+
+        if (y == '') {
+            err2.innerHTML = 'plz enter excess code!';
+            document.getElementById('button1').disabled = true;
+            document.getElementById('button1').style.opacity = 0.3;
+            return false;
+        }
+        else {
+            for (i = 0; i < symbol1.length; i++) {
+                if (y.includes(symbol1[i])) {
+                    err2.innerHTML = '*you cannot enter special character!';
+                    document.getElementById('button1').disabled = true;
+                    return false;
+                }
+            }
+            if ((y.length > 6 || y.length < 6)) {
+                err2.innerHTML = '*you cannot enter a more or less than 6 digitcode';
+                document.getElementById('button1').disabled = true;
+                document.getElementById('button1').style.opacity = 0.3;
+                return false;
+            } else {
+                err2.innerHTML = '';
+                document.getElementById('button1').disabled = false;
+                document.getElementById('button1').style.opacity = null;
+                return true;
+            }
+        }
+
+    }
+
+    function valtidateQuestion() {
+        var que = document.getElementById('totalque').value
+        let err2 = document.getElementById('err2');
+
+        let symbol = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '?', '/', ',', '.', '"', ':', ';', '+', '-', '`', '~', '=', '[', ']', '{', '}', "'"];
+        let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        if (que == '') {
+            err2.innerHTML = 'plz provide total question!';
+            document.getElementById('button1').disabled = true;
+            document.getElementById('button1').style.opacity = 0.3;
+            return false;
+        }
+        else {
+            for (i = 0; i < symbol.length; i++) {
+                if (que.includes(symbol[i])) {
+                    err2.innerHTML = '*you cannot enter special character!';
+                    document.getElementById('button1').disabled = true;
+                    return false;
+                }
+            }
+            if (isNaN(que)) {
+                err2.innerHTML = '*plz write a number value in total question';
+                document.getElementById('button1').disabled = true;
+                document.getElementById('button1').style.opacity = 0.3;
+                return false;
+            }
+            else if (que.startsWith('_') || que.endsWith('_')) {
+                err2.innerHTML = '*cannot give _ at first or last character in exam name';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else if (que <= 5) {
+                err2.innerHTML = '*length is too short!';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else if (que > 100) {
+                err2.innerHTML = '*cannot enter grether than 100 questions!';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else {
+                err2.innerHTML = '';
+                document.getElementById('button1').disabled = false;
+                document.getElementById('button1').style.opacity = null;
+                return true;
+            }
+        }
+    }
+
+    function valtidateDuration() {
+        var duration = document.getElementById('duration').value;
+        let err3 = document.getElementById('err3');
+        // console.log(duration)
+
+        let symbol = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '?', '/', ',', '.', '"', ':', ';', '+', '-', '`', '~', '=', '[', ']', '{', '}', "'"];
+
+        if (duration == '') {
+            err3.innerHTML = 'plz provide total question!';
+            document.getElementById('button1').disabled = true;
+            document.getElementById('button1').style.opacity = 0.3;
+            return false;
+        }
+        else {
+            for (i = 0; i < symbol.length; i++) {
+                if (duration.includes(symbol[i])) {
+                    err3.innerHTML = '*you cannot enter special character!';
+                    document.getElementById('button1').disabled = true;
+                    return false;
+                }
+            }
+            if (isNaN(duration)) {
+                err3.innerHTML = '*plz write a number value in total question';
+                document.getElementById('button1').disabled = true;
+                document.getElementById('button1').style.opacity = 0.3;
+                return false;
+            }
+            else if (duration.startsWith('_') || duration.endsWith('_')) {
+                err3.innerHTML = '*cannot give _ at first or last character in exam name';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else if (duration <= 10) {
+                err3.innerHTML = '*length is too short!';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else if (duration > 100) {
+                err3.innerHTML = '*cannot enter grether than 100 questions!';
+                document.getElementById('button1').disabled = true;
+                return false;
+            }
+            else {
+                err3.innerHTML = '';
+                document.getElementById('button1').disabled = false;
+                document.getElementById('button1').style.opacity = null;
+                return true;
+            }
+        }
+    }
     function validateAll() {
         let x = document.getElementById('examname').value;
         let y = document.getElementById('examcode').value;
         let z = document.getElementById('totalque').value;
         let w = document.getElementById('duration').value;
 
-        console.log(x, y, z, w);
-        let err1 = document.getElementById('err');
-        let err2 = document.getElementById('err1');
-        let err3 = document.getElementById('err2');
+        let err4 = document.getElementById('err4');
 
-        let symbol = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '?', '/', ',', '.', '"', ':', ';', '+', '-', '`', '~', '=', '[', ']', '{', '}'];
-
-        let symbol1 = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', '?', '/', ',', '.', '"', ':', ';', '+', '-', '`', '~', '=', '[', ']', '{', '}', '_'];
-
-        let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-
-        if (x == '' && y == '' && z == '' && w == '') {
-            err3.innerHTML = '*plz enter all fields!';
+        if ((x == '' && y == '' && z == '' && w == '')) {
+            err4.innerHTML = '*plz enter all fields!';
             document.getElementById('button1').style.opacity = 0.3;
             document.getElementById('button1').disabled = true;
             return false;
         }
-
         else {
-
-            if (x == '' || y == '' || z == '' || w == '') {
-                err3.innerHTML = '*plz enter all the fields'
+            if (z == '' || w == '' || x == '' || y == '') {
+                err4.innerHTML = '*plz fill all details!';
+                document.getElementById('button1').style.opacity = 0.3;
                 document.getElementById('button1').disabled = true;
                 return false;
             }
-            else {
-
-                if (x.length > 20) {
-                    err1.innerHTML = '*your exam name is too long! try short name instead';
-                    return false;
-                }
-                if (!isNaN(x)) {
-                    err1.innerHTML = '*you cannot enter a number value in exam name';
-                    return false;
-                }
-
-                if (x.endsWith('_') || x.startsWith('_')) {
-                    err1.innerHTML = '*cannot give _ at first or last character in exam name';
-                    return false;
-                }
-                for (i = 0; i < numbers.length; i++) {
-                    if (x.startsWith(numbers[i])) {
-                        err1.innerHTML = '*examname cannot starts with number';
-                        return false;
-                    }
-                }
-                for (i = 0; i < symbol.length; i++) {
-                    if (x.includes(symbol[i])) {
-                        err1.innerHTML = '*you cannot enter special character!';
-                        document.getElementById('button1').disabled = true;
-                        return false;
-                    }
-                    else{
-                        err1.innerHTML = '';
-                        document.getElementById('button1').disabled = true;
-                        return true;
-                    }
-                }
-
-                if (y.length > 6 || y.length < 6) {
-                    err2.innerHTML = '*you cannot enter a more or less than 6 digitcode';
-                    // document.getElementById('button1').disabled = true;
-                    return false;
-                }
-                else{
-                    err2.innerHTML = ''
-                }
-
-                for (i = 0; i < symbol1.length; i++) {
-                    if (y.includes(symbol1[i])) {
-                        err2.innerHTML = '*No special character would allowed in exam code';
-                        // document.getElementById('button1').disabled = true;
-                        return false;
-                    }
-                }
-                err3.innerHTML = null;
-                document.getElementById('button1').style.opacity = null;
-                // document.getElementById('button1').disabled = false;
-                return true;
-
+            else{
+            err4.innerHTML = '';
+            document.getElementById('button1').style.opacity = null;
+            document.getElementById('button1').disabled = false;
+            return true;
             }
-
+            err4.innerHTML = '';
+            document.getElementById('button1').style.opacity = null;
+            document.getElementById('button1').disabled = false;
+            return true;
         }
-
-    }
-
-
-    function validateExamName() {
-        let name = document.getElementById('examname').value;
-        let name1 = name.toUpperCase();
-
-        fetch(`/create_exam/validatename?name=${name1}`).then((res) => {
-            return res.json();
-        }).then((data) => {
-            console.log(data);
-            for (i = 0; i < data.length; i++) {
-                if (data[i].exam_name == name1) {
-                    document.getElementById('err').innerHTML = '*examname already exits! try another';
-                    document.getElementById('button1').style.opacity = 0.3;
-                    document.getElementById('button1').disabled = true;
-                    break;
-                }
-                else {
-                    document.getElementById('err').innerHTML = null;
-                    document.getElementById('button1').style.opacity = null;
-                    document.getElementById('button1').disabled = false;
-                }
-            }
-        })
     }
 </script>
 
