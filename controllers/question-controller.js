@@ -8,7 +8,7 @@ class QuestionController {
         if (questionId) {
             const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
             `);
-
+            res.json({msg:"Deleted successfully"});
         }
 
     }
