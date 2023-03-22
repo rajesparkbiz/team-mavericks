@@ -35,7 +35,7 @@
 
       <div class="user-table warpper m-2">
 
-        <table class="table table-hover " id="studenttable" border="1">
+        <table class="table " id="studenttable" border="1">
           <thead>
             <tr>
               <th>No</th>
@@ -111,21 +111,20 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
 
+
+
   </script>
-  
 <script>
 
   async function Search(str) {
 
     const flag = document.getElementById("filter-box").value;
-
-    console.log(str);
-    console.log(flag);
+    
 
     var searching = document.getElementById("search").value;
-    var res = await fetch(`/student/?search=${str}&flag=${flag}`);
+    var res = await fetch(`/students/student-filter/?search=${str}&flag=${flag}`);
     var data = await res.json();
-    var value = data.searchfname;
+    var value = data.searchStudent;
     var tbody = document.getElementById("table");
 
     var content = ``;
@@ -155,13 +154,7 @@
     tbody.innerHTML = content;
 
   }
-
-  async function filter(value) {
-
-    console.log(value);
-
-    console.log(value.value)
-  }
+  
 </script>
 
 </html>

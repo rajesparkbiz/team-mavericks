@@ -65,7 +65,7 @@
                 <td>
                   <%= data[i].createdDate %>
                 </td>
-
+                
                 <td>
                   <div class="form-check form-switch">
                     <input class="form-check-input switch" type="checkbox" role="switch"
@@ -74,7 +74,9 @@
                     <%}%>
                   </div>
                 </td>
-                <td> <a href="#">View Result</a></td>
+                <td>
+                 <a href="/result/student/?exam_id=<%=data[i].exam_id%>"> View Result</a>
+                </td>
               </tr>
               <% }%>
           </tbody>
@@ -98,7 +100,7 @@
 
   async function toggleSwitch(exam_id) {
 
-    const toggleRequest = await fetch(`/exam/update/?id=${exam_id}`)
+    const toggleRequest = await fetch(`/exams/status/?id=${exam_id}`)
   }
 
   async function Search(str) {
@@ -108,7 +110,7 @@
 
     var searching = document.getElementById("search").value;
 
-    var res = await fetch(`/searchexam/?search=${str}&flag=${flag}`);
+    var res = await fetch(`/exams/filter-exam/?search=${str}&flag=${flag}`);
     var data = await res.json();
     var value = data.exam;
 
@@ -152,7 +154,9 @@
     tbody.innerHTML = content;
 
   }
-
+  async function result(exam_name){
+    var res = await fetch(`/result/results/student/?exam_name=${exam_name}`);
+  }
 
 
 
