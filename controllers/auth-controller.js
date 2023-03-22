@@ -1,7 +1,7 @@
 const queryExecurter = require('../database/dbHelper.js');
 
 class UserAuth {
-    static userLogin = async (req, res, next) => {
+    static userLogin = async (req, res) => {
         let session = req.session;
         if (session.username) {
             res.redirect('/dashboard/');
@@ -9,9 +9,10 @@ class UserAuth {
             res.render('login', { status: "" });
         }
     }
+
     static userLoginchk = async (req, res) => {
         let { Username, Password } = req.body;
-        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${Username}'`);
+        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master`);
         if (userchk.length == 1 && userchk[0]['role'] == "admin") {
             if (Password === userchk[0]['password']) {
                 req.session.regenerate(function (err) {
@@ -38,10 +39,23 @@ class UserAuth {
         }
 
     }
+
+    static alreadyLogin = async (req, res, next) => {
+        let session = req.session;
+        if (session.username) {
+            res.redirect('/dashboard');
+        }
+        else {
+            next();
+        }
+    }
+
     static userLogout = async (req, res) => {
+
         req.session.destroy(null);
         res.clearCookie('connect.sid');
         return res.redirect('/auth/login');
+
     }
 
 }

@@ -21,26 +21,25 @@
 
           <div class="d-flex question-category-card my-3">
 
-            <% for(let k=0;k<categories.length;k++){%>
-              <div class="question-title">
-                <button type="button" class="btn btn-primary">
-                  <%= categories[k].category_name.toString().toUpperCase()%>
-                </button>
-              </div>
-              <%}%>
+            <ul class="nav nav-tabs">
+
+              <% for(let k=0;k<categories.length;k++){%>
+                <li class="nav-item">
+                  <p onclick="toogle(this)" class="nav-link <%if(k==0){%>active<%}%>"
+                    id="<%= categories[k].category_id %>">
+                    <%= categories[k].category_name.toString().toUpperCase()%>
+                  </p>
+                </li>
+                <%}%>
+            </ul>
 
           </div>
 
+
+
           <div class="d-flex">
 
-            <div class="question-title">
-              <button type="button" class="btn btn-primary">
-                Questions <span class="badge text-bg-secondary">
-                  <%=questions.length%>
-                </span>
-              </button>
-            </div>
-
+           
             <div class="question-add-btn">
               <button type="button" class="btn btn-primary" onclick="showAddQuestionModal()">
                 Add Question
@@ -49,7 +48,7 @@
 
           </div>
 
-          <div class="col">
+          <div class="col" id="question-container">
 
             <!-- all questions -->
             <% for(let i=0;i<questions.length;i++){%>
@@ -67,11 +66,11 @@
                       <!-- check true question answer -->
                       <% if(questions[i].correct_ans[j]){ %>
                         <p class="true-answer">
-                          <%= optionTitle[j].toUpperCase() %> )<%= questions[i].option[j] %>
+                          <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
                         </p>
                         <%}else{%>
                           <p class="false-answer">
-                            <%= optionTitle[j].toUpperCase() %> )<%= questions[i].option[j] %>
+                            <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
                           </p>
                           <%}%>
                             <%}%>
@@ -89,10 +88,10 @@
               <%}%>
           </div>
 
-
         </div>
 
       </section>
+
     </div>
   </div>
 
@@ -113,7 +112,7 @@
                 <label class="form-label" for="question">Question</label>
                 <textarea id="question" rows="4" class="form-control" name="question"
                   onkeyup="questionchk()"></textarea>
-                <small class="warn" id="addquestionwarn"></small>
+                <small class="warn" id="questionwarn"></small>
               </div>
             </div>
 
@@ -147,8 +146,7 @@
                 <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
               </div>
             </div>
-            <small class="warn" id="optionquestionwarn"></small>
-            <small class="warn" id="rightoptionwarn"></small>
+
             <p><strong>Select Question Category</strong></p>
 
 
@@ -191,30 +189,23 @@
             <div class="form-outline mb-4">
               <div class="form-outline mb-4">
                 <label class="form-label" for="question">Question</label>
-                <textarea id="question-add-input" rows="4" class="form-control" name="question"
-                  onkeyup="editquestionchk()"></textarea>
-                  <small class="warn" id="editquestionwarn"></small>
+                <textarea id="question-add-input" rows="4" class="form-control" name="question"></textarea>
               </div>
 
 
               <div class="question-option" id="question-option">
+                
+              </div>
 
-              </div>
-              <div id="editbtndiv">
-                <input type="button" class="editQuestion-btn btn btn-primary btn-block"
-                  onclick="editQuestionBtn(this.id)" value="Save" name="editbtn">
-              </div>
+              <input type="button" class="editQuestion-btn btn btn-primary btn-block" onclick="editQuestionBtn(this.id)"
+                value="Save">
+
           </form>
 
         </div>
       </div>
     </div>
   </div>
-
-
-
-
-
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"

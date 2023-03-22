@@ -122,9 +122,9 @@
     
 
     var searching = document.getElementById("search").value;
-    var res = await fetch(`/students/filter/?search=${str}&flag=${flag}`);
+    var res = await fetch(`/students/student-filter/?search=${str}&flag=${flag}`);
     var data = await res.json();
-    var value = data.searchfname;
+    var value = data.searchStudent;
     var tbody = document.getElementById("table");
 
     var content = ``;

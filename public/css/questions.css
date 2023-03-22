@@ -28,6 +28,9 @@
     margin-left: 15px;
 }
 
+.nav-item{
+    width: 100px;
+}
 
 
 .true-answer{
@@ -42,6 +45,10 @@
     width: 100%;
     background-color: #ffffff;
     border-radius: 10px;
+}
+
+.data-eror{
+    text-align: center;
 }
 
 .options {
@@ -103,7 +110,4 @@
         width: 100%;
         word-spacing: 2px;
     }
-}
-.warn{
-    color: red;
 }
