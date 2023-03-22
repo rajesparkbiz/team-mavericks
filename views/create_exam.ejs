@@ -92,7 +92,7 @@
         if (x == '' && y == '' && z == '' && w == '') {
             err3.innerHTML = '*plz enter all fields!';
             document.getElementById('button1').style.opacity = 0.3;
-            //document.getElementById('button1').disabled = true;
+            document.getElementById('button1').disabled = true;
             return false;
         }
 
@@ -100,7 +100,7 @@
 
             if (x == '' || y == '' || z == '' || w == '') {
                 err3.innerHTML = '*plz enter all the fields'
-                //document.getElementById('button1').disabled = true;
+                document.getElementById('button1').disabled = true;
                 return false;
             }
             else {
@@ -127,12 +127,19 @@
                 for (i = 0; i < symbol.length; i++) {
                     if (x.includes(symbol[i])) {
                         err1.innerHTML = '*you cannot enter special character!';
+                        document.getElementById('button1').disabled = true;
                         return false;
+                    }
+                    else{
+                        err1.innerHTML = '';
+                        document.getElementById('button1').disabled = true;
+                        return true;
                     }
                 }
 
                 if (y.length > 6 || y.length < 6) {
                     err2.innerHTML = '*you cannot enter a more or less than 6 digitcode';
+                    // document.getElementById('button1').disabled = true;
                     return false;
                 }
                 else{
@@ -142,6 +149,7 @@
                 for (i = 0; i < symbol1.length; i++) {
                     if (y.includes(symbol1[i])) {
                         err2.innerHTML = '*No special character would allowed in exam code';
+                        // document.getElementById('button1').disabled = true;
                         return false;
                     }
                 }
