@@ -117,9 +117,10 @@ class QuestionController {
                 "option": options,
                 "correct_ans": trueOption
             }
-            res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
 
         }
+        res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
+
     }
     
     static displayCategoryQuestion = async (req, res) => {
@@ -184,8 +185,11 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
+    static displayChooseQuestion= async(req,res)=>{
+        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
 
-
+        res.render('select-question',{categories:question_category});
+    }
 
 
 }

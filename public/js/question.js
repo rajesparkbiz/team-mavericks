@@ -332,18 +332,7 @@ async function toogle(value) {
 
                     `;
     }
-
-
-    
     question_container.innerHTML=content;
     }
-
-
-    //this code use for chnage the content based on tab clicked.
-    // const content = document.querySelectorAll('.content');
-    // content.forEach((con) => {
-    //     con.classList.remove('active-content');
-    //     con.classList.add('disable-content');
-    // })
-
 }
+
