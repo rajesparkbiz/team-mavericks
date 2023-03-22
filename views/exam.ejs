@@ -17,24 +17,25 @@
 <body>
   <section>
 
-
     <div class="contaner-fluid">
 
       <div class="action-btn">
         <div class="search-input d-flex justify-content-center">
           <label for="exam-search-label">Search</label>
-          <input type="text" class="form-control" id="search" oninput="search(this.value)">
+          <input type="text" id="search" class="form-control" oninput="Search(this.value)">
+          <select id="filter-box" class="form-select form-select-sm" aria-label=".form-select-sm example">
+            <option id="exam_name" value="exam_name" selected>title</option>
+            <option id="exam_isActive" value="exam_isActive">status</option>
+
+          </select>
+
         </div>
       </div>
 
       <div class="user-table warpper m-2">
 
 
-<<<<<<< HEAD
-        <table  id = "myTable" class="table table-bordered" border="1">
-=======
-        <table class="table table-bordered" border="1">
->>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
+        <table class="table table-bordered table-hover" border="1">
           <thead>
             <tr>
               <th>No</th>
@@ -45,148 +46,114 @@
               <th scope="col">Status</th>
             </tr>
           </thead>
-
-          <% for(i=0; i<data.length; i++) {%>
-            <tr>
-              <td> <%= (i+1)%></td>
-              <td>
-<<<<<<< HEAD
-                <%=data[i].exam_name%>
-=======
-                <%= (i+1)%>
-              </td>
-              <td>
-                <%= data[i].exam_name %>
->>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
-              </td>
-              <td>
-                <%= data[i].exam_access_code %>
-              </td>
-              <td>
-                <%= data[i].exam_total_question %>
-              </td>
-              <td>
-<<<<<<< HEAD
-                <%= data[i].creadtedDate%>
+          <tbody id="table">
+            <% for(i=0; i<data.length; i++) {%>
+              <tr>
+                <td>
+                  <%= (i+1)%>
+                </td>
+                <td>
                   <%= data[i].exam_name %>
-              </td>
-              <td>
-                <%= data[i].exam_access_code %>
-              </td>
-              <td>
-                <%= data[i].exam_total_question %>
-              </td>
-              <td>
-=======
->>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
-                <%= data[i].createdDate %>
-              </td>
+                </td>
+                <td>
+                  <%= data[i].exam_access_code %>
+                </td>
+                <td>
+                  <%= data[i].exam_total_question %>
+                </td>
+                <td>
+                  <%= data[i].createdDate %>
+                </td>
 
-              <td>
-                <div class="form-check form-switch">
-                  <input class="form-check-input switch" type="checkbox" role="switch"
-<<<<<<< HEAD
-                    onchange="toogleSwitch('<%=data[i].exam_id%>')"
-                    <% if(data[i].exam_isActive=='yes' ) {%>
-                  checked id="flexSwitchCheckDefault">
-                  <%}%>
-=======
-                    onchange="toggleSwitch('<%=data[i].exam_id%>')" 
-                    <% if(data[i].exam_isActive=='yes' ) {%> 
-                      checked id="flexSwitchCheckDefault">
-                      <%}%>
->>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
-                </div>
-              </td>
-            </tr>
-            <% }%>
-
+                <td>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input switch" type="checkbox" role="switch"
+                      onchange="toggleSwitch('<%=data[i].exam_id%>')" <% if(data[i].exam_isActive=='yes' ) {%>
+                    checked id="flexSwitchCheckDefault">
+                    <%}%>
+                  </div>
+                </td>
+              </tr>
+              <% }%>
+          </tbody>
         </table>
-
       </div>
       <%- include('pagination-tab.ejs') %>
     </div>
-    <%- include('footer.ejs') %>
   </section>
+  <%- include('footer.ejs') %>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
 
   </script>
 
+
+
 <script>
 
-  async function toogleSwitch(exam_id) {
 
-    const toogleRequest = await fetch(`/exam/update/?id=${exam_id}`)
 
-<<<<<<< HEAD
-  } 
-
-=======
   async function toggleSwitch(exam_id) {
 
-    const toggleRequest =await fetch(`/exam/update/?id=${exam_id}`)
+    const toggleRequest = await fetch(`/exams/status/?id=${exam_id}`)
   }
->>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
+
+  async function Search(str) {
 
 
-  async function search(tag){
+    const flag = document.getElementById("filter-box").value;
+
     var searching = document.getElementById("search").value;
-    var res = await fetch(`/student/?search=${searching}`);
+
+    var res = await fetch(`/exams/filter-exam/?search=${str}&flag=${flag}`);
     var data = await res.json();
-    var table = document.getElementById("myTable");
-    table.innerHTML= "";
-    var html = `<thead>
-            <tr>
-              <th>No</th>
-              <th scope="col">Exam Title</th>
-              <th scope="col">Access Code</th>
-              <th scope="col">Total Question</th>
-              <th scope="col">CreateDate</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>`;
+    var value = data.exam;
 
-<<<<<<< HEAD
-          data.searchfname.forEach(e => {
-            html += `<tr>
-            
-              <td>
-                ${e.exam_name}
-              </td>
-              <td>
-                ${e.exam_access_code}
-              </td>
-              <td>
-                ${e.exam_total_question}
-              </td>
-              <td>
-                ${e.creadtedDate}
-                  ${e.exam_name}
-              </td>
-              <td>
-                ${e.exam_access_code}
-              </td>
-              <td>
-                ${e.exam_total_question}
-              </td>
-              <td>
-                ${ e.createdDate }
-              </td>
+    var tbody = document.getElementById("table");
 
-              <td>
-                
-              </td>
-            </tr>  `;
-            
-          });
-          table.innerHTML = html;
+    var content = ``;
+
+    let count = 1;
+    var switch_content = ``;
+    value.forEach(element => {
+      var status = element.exam_isActive;
+      var exam_id = element.exam_id;
+      var status_content=``;
+
+      if (status == 'yes') {
+            status_content+='checked';
+      }else{
+        status_content+='';
+      }
+
+      content += '<tr>'
+      content += `
+            <td> ${count}</td>
+            <td> ${element.exam_name} </td>
+            <td> ${element.exam_access_code} </td>
+            <td> ${element.exam_total_question} </td>
+            <td> ${element.createdDate} </td>
+            <td>
+             <div class="form-check form-switch">
+                    <input class="form-check-input switch" type="checkbox" role="switch"
+                      onchange="toggleSwitch('${exam_id}')" ${status_content}>
+              </div>
+            </td>`
+
+
+      content += '</tr>'
+      count++;
+    });
+
+
+    tbody.innerHTML = content;
 
   }
 
-=======
->>>>>>> e26a1ce2da2563eadb481d6463ba548758874fa4
+
+
+
 </script>
 
 
