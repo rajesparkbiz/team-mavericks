@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Option 2: Import via CSS */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+
+.body {
+    max-height: 100vh;
+    background-color: rgb(255, 255, 255);
+}
+
+/* .card-1 {
+    height: max-content;
+    border: 1px solid white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    background-color: rgb(232, 232, 232);
+    border-radius: 20px;
+    justify-content: center;
+    width: max-content;
+    padding: 2rem 1rem;
+}
+
+.category_btn {
+    padding: 1rem;
+    width: 150px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    margin: 10px 10px;
+    font-size: 2rem;
+}
+
+
+
+.card-1-title {
+    padding: 5rem 5rem;
+
+}
+
+ .card-1-title h1 {
+    font-size: 5rem;
+    font-weight: 549;
+} 
+
+.card-2 {
+    border: 1px solid white;
+    justify-content: center;
+    background-color: rgb(232, 232, 232);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    border-radius: 15px;
+
+}
+
+.card-2-btn {
+    padding: 1rem 0;
+}
+
+.card-2-container {
+    padding: 4rem 1rem;
+}
+
+ .card-2-title h4 {
+    font-size: 4rem;
+    font-weight: 549;
+}
+
+.card-body {
+    padding: 5rem 1rem;
+}
+
+
+.section1{
+   max-width: 100%;
+}
+.card-container {
+    margin: 6rem 5rem;
+    display: flex;
+    flex-wrap: wrap;
+   
+}
+
+.card-col{
+   
+   width: calc(97%/2);
+}
+.category_list {
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(290%/3);
+    justify-content: center;
+    padding: 5rem 1rem;
+    height: 285px;
+    overflow-y: scroll;
+    scrollbar-color: #6969dd #e0e0e0;
+    scrollbar-width: thin;
+
+}
+
+.erro_mssg {
+    font-size: 1.5rem;
+    color: red;
+}
+
+*/
+#style-1::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar-thumb {
+    background-color: #24a0ed;
+    border-radius: 50px;
+
+} 
+
+.container{
+   width: 1170px;
+   margin: 0 auto;
+   padding: 0 16px;
+}
+
+.row{
+   margin: 0 -16px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   
+}
+
+.section1
+{
+   min-height: 100vh;
+   display: flex;
+   align-items: center;
+}
+.category_list {
+   display: flex;
+   flex-wrap: wrap;
+   
+   padding: 1rem 4rem;
+   /* padding: 5rem 1rem; */
+   height: 285px;
+   overflow-y: scroll;
+   scrollbar-color: #6969dd #e0e0e0;
+   scrollbar-width: thin;
+}
+
+.card-col{
+   width: 100%;
+   padding: 1rem 1rem;
+   display: flex;
+   height: 480px;
+   justify-content: center;
+}
+
+.card2-content{
+   width: 40%;
+   max-height: 150px;
+   margin-top: 1rem;
+   padding: 10px 1rem;
+}
+
+.category_div
+{
+   display: flex;
+   flex-wrap: wrap;    
+   width: calc(100%/3);
+}
+
+.addinput{
+   padding-left: 5px;
+   border-radius: 5px;
+   border-color: #adbfca;
+   height: 35px;
+   
+}
+.category_btn {
+   padding: 1rem;
+   width: 250px;
+   border-radius: 15px;
+   display: flex;
+   font-weight: 900;
+   justify-content: center;
+   margin: 10px 10px;
+   font-size: 1rem;
+   background-color: #24a0ed;
+   color: aliceblue;
+ 
+}
+
+.category_btn:hover > .edit  {
+   background-color:aliceblue;
+
+}
+
+.edit{
+   /* display: none; */
+   top: 5;
+   right: inherit;
+}
+
+.delete{
+   /* display: none; */
+   position: relative;
+   align-items: center;
+}
+
+.add-btn{
+   background-color: #24a0ed;
+}
+.card-1 {
+   border: 1px solid white;
+   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+   
+   border-radius: 20px;
+  justify-content: center;
+   padding: 2rem 1rem;
+}
+.card-2 {
+   border: 1px solid white;
+   justify-content: center;
+   border-radius: 15px;   
+   background-color: whitesmoke;
+}
+
+.card-2-title h4 {
+   font-size: 2rem;
+   font-weight: 549;
+}
+
+
+.card-1-title h1 {
+   font-size: 3rem;
+   font-weight: 549;
+} 
+
+.card-2-content{
+   padding: 1rem 1rem;
+   display: flex;
+   justify-content: space-between;
+}
+
+h4{
+   text-align: center;
+   font-weight:500 ;
+}
+

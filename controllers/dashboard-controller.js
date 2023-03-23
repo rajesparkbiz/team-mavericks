@@ -51,6 +51,7 @@ class StdentQuestion {
         var exam_master = await queryExecurter(`SELECT * FROM exam_master`);
         res.render('exam.ejs', { data: exam_master });
     }
+    
 }
 
 
