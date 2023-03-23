@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    background-color: whitesmoke;
+}
+
+
+.container{
+    width: 1170px;
+   margin: 0 auto;
+   padding: 0 16px;
+}
+
+
+.row{
+    margin: 0 -16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+ }
+
+ .category{
+    display: flex;
+    background-color: aqua;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    gap:50px;
+    cursor: pointer;
+ }

@@ -11,9 +11,10 @@ const studentRoute = require('./routes/students-route.js');
 const resultRoute = require('./routes/result-route.js');
 const categoryRoute = require('./routes/category-route.js');
 
+
 const auth = require('./middleware/auth-middlware.js');
 
-const queryExecurter = require('./database/dbHelper.js')
+const queryExecurter = require('./database/dbHelper.js');
 const session = require('express-session');
 const { alreadyLogin } = require('./controllers/auth-controller.js');
 const oneDay = 1000 * 60 * 60 * 24;
@@ -41,6 +42,7 @@ app.use('/exams',auth.userAuth,examRoute);
 app.use('/students',auth.userAuth,studentRoute);
 app.use('/result',auth.userAuth,resultRoute);
 app.use('/category',auth.userAuth,categoryRoute);
+
 
 app.use('/user',authRoute);
 app.use(express.static(__dirname + "/public"))
