@@ -44,6 +44,7 @@
               <th scope="col">Total Question</th>
               <th scope="col">CreateDate</th>
               <th scope="col">Status</th>
+              <th scope="col">Result</th>
             </tr>
           </thead>
           <tbody id="table">
@@ -64,7 +65,7 @@
                 <td>
                   <%= data[i].createdDate %>
                 </td>
-
+                
                 <td>
                   <div class="form-check form-switch">
                     <input class="form-check-input switch" type="checkbox" role="switch"
@@ -72,6 +73,9 @@
                     checked id="flexSwitchCheckDefault">
                     <%}%>
                   </div>
+                </td>
+                <td>
+                 <a href="/result/student/?exam_id=<%=data[i].exam_id%>"> View Result</a>
                 </td>
               </tr>
               <% }%>
@@ -150,7 +154,9 @@
     tbody.innerHTML = content;
 
   }
-
+  async function result(exam_name){
+    var res = await fetch(`/result/results/student/?exam_name=${exam_name}`);
+  }
 
 
 

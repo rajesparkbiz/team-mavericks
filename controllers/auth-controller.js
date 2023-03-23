@@ -1,6 +1,7 @@
 const queryExecurter = require('../database/dbHelper.js');
 
 class UserAuth {
+    
     static userLogin = async (req, res) => {
         let session = req.session;
         if (session.username) {
