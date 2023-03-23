@@ -6,7 +6,7 @@ const authRoute=require('./routes/auth-route.js');
 const dashboardRoute=require('./routes/dashboard-route.js');
 const examRoute = require('./routes/exam-route.js');
 const addCategory = require('./routes/add-category.js')
-const port=3000;
+const port=process.env.PORT;
 // process.env.PORT  you have ti reset this at office in port varaible
 const app=express();
 
