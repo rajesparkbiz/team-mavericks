@@ -5,18 +5,18 @@ questions = async () => {
 
 
     //get all question category 
-    let questionCategories = await queryExecurter(`SELECT * FROM exam_admin.question_category;`);
+    let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
 
 
-    const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
+    const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
 
-    const questionQuery = `SELECT * FROM exam_admin.question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+    const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
     const allQuestions = await queryExecurter(questionQuery);
     const questions = [];
 
     for (let i = 0; i < allQuestions.length; i++) {
 
-        const question_options = await queryExecurter(`SELECT * FROM exam_admin.option_master where question_id=${allQuestions[i].question_id}`);
+        const question_options = await queryExecurter(`SELECT * FROM option_master where question_id=${allQuestions[i].question_id}`);
 
 
         var options = [];

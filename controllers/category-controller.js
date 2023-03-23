@@ -8,17 +8,17 @@ class CategoryController {
         var category_name = req.query.category;
 
 
-        const categoryQuery = await queryExecurter(`INSERT INTO exam_admin.question_category (category_name) VALUES ('${category_name.toUpperCase()}');
+        const categoryQuery = await queryExecurter(`INSERT INTO question_category (category_name) VALUES ('${category_name.toUpperCase()}');
         `);
 
-        const categoryAllQuery = await queryExecurter(`SELECT category_name FROM exam_admin.question_category;`);
+        const categoryAllQuery = await queryExecurter(`SELECT category_name FROM question_category;`);
 
         res.redirect('/category/showCategory');
     };
 
     static verifyCategory = async (req, res) => {
 
-        const verifyCat = await queryExecurter(`SELECT count(*) as status FROM exam_admin.question_category where question_category.category_name='${req.query.category}'`);
+        const verifyCat = await queryExecurter(`SELECT count(*) as status FROM question_category where question_category.category_name='${req.query.category}'`);
         const status = verifyCat[0].status;
 
         res.json({ status: status });
@@ -27,7 +27,7 @@ class CategoryController {
 
     static showCategory = async (req, res) => {
 
-        const ans = await queryExecurter(`SELECT * FROM exam_admin.question_category ;`);
+        const ans = await queryExecurter(`SELECT * FROM question_category ;`);
         res.render("category-question", { category_list: ans, actionState: 'add' });
     };
 

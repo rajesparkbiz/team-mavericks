@@ -1,10 +1,10 @@
 const queryExecurter = require('../database/dbHelper.js');
 class ExamController {
     static toogleSwitch = async (req, res) => {
-        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);
+        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_master where exam_master.exam_id=${req.query.id}`);
         const isActive = currentStatus[0].status;
 
-        var query= `update exam_admin.exam_master set exam_isActive = '${isActive=='yes' ? 'no':'yes'}' where exam_id=${req.query.id}`;
+        var query= `update exam_master set exam_isActive = '${isActive=='yes' ? 'no':'yes'}' where exam_id=${req.query.id}`;
         
         const toggleSwitchQuery = await queryExecurter(query);
 

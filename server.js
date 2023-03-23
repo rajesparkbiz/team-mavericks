@@ -45,7 +45,7 @@ app.use('/category',auth.userAuth,categoryRoute);
 app.use('/user',authRoute);
 app.use(express.static(__dirname + "/public"))
 
-app.listen(port, () => {
-    console.log(`Server is Running on ${port}`);
+app.listen(3000, () => {
+    console.log(`Server is Running on port`);
 })
 

@@ -13,10 +13,10 @@ class StudentController {
         let exam;
         exam = await queryExecurter(`select * from exam_master where ${flag} like '%${search}%'`);
         if (!exam) {
-            exam = await queryExecurter(`select * from exam_admin.exam_master where exam_master.${flag} = '%${search}%'`);
+            exam = await queryExecurter(`select * from exam_master where exam_master.${flag} = '%${search}%'`);
         }
         if (search.length == "") {
-            exam = await queryExecurter(`select * from exam_admin.exam_master;`);
+            exam = await queryExecurter(`select * from exam_master;`);
         }
 
         res.json({ exam });
@@ -30,10 +30,10 @@ class StudentController {
         searchStudent = await queryExecurter(`select * from student_master where ${flag} like '%${search}%'`);
         
         if (!searchStudent) {
-            searchStudent = await queryExecurter(`SELECT * FROM exam_admin.student_master where student_master.${flag}='${search}'`);
+            searchStudent = await queryExecurter(`SELECT * FROM student_master where student_master.${flag}='${search}'`);
         }
         if(search.length=="") {
-            searchStudent = await queryExecurter(`SELECT * FROM exam_admin.student_master;`);
+            searchStudent = await queryExecurter(`SELECT * FROM student_master;`);
         }
         res.json({ searchStudent });
     }
