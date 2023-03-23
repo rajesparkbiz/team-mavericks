@@ -44,7 +44,6 @@
           <tbody id="table">
            
             <% for(i=0; i<data.length; i++) {%>
-            
               <tr>
                 <td>
                   <%= (i+1)%>
@@ -61,21 +60,15 @@
                 <td>
                   <%= data[i].exam_result%>
                 </td>
-                <td>
-                    
+                <td>  
                    <%= status[i] %>
-
                 </td>
               </tr>
               <% }%>
           </tbody>
-
-
-
         </table>
       </div>
       <%- include('pagination-tab.ejs') %>
-
     </div>
   </section>
   <%- include('footer.ejs') %>

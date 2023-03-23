@@ -129,7 +129,6 @@ class QuestionController {
         //get all question category 
         let questionCategories = await queryExecurter(`SELECT * FROM exam_admin.question_category;`);
 
-
         const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
 
         const questionQuery = `SELECT * FROM exam_admin.question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
@@ -137,7 +136,6 @@ class QuestionController {
         const questions = [];
 
         for (let i = 0; i < allQuestions.length; i++) {
-
             const question_options = await queryExecurter(`SELECT * FROM exam_admin.option_master where question_id=${allQuestions[i].question_id}`);
 
 
@@ -155,10 +153,7 @@ class QuestionController {
                 optionMapping.option_id = question_options[j].option_id;
                 optionMapping.option = question_options[j].option_value;
                 options[j] = question_options[j].option_value;
-
             }
-
-
 
             questions[i] = {
                 "question_id": allQuestions[i].question_id,
@@ -179,13 +174,11 @@ class QuestionController {
         const questionData = await queryExecurter(`SELECT * FROM exam_admin.question_master where question_master.question_id=${parseInt(id)}`);
 
         const questionoption = await queryExecurter(`SELECT option_master.option_id,option_master.option_value FROM exam_admin.option_master where option_master.question_id=${parseInt(id)}`);
-
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
     static displayChooseQuestion= async(req,res)=>{
         const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
-        
         res.render('select-question',{categories:question_category});
     }
 }
