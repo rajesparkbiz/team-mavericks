@@ -11,9 +11,30 @@ class ExamController {
         res.redirect('/dashboard/exams');
     }
 
-    static createExam = async (req, res) => {
+    static showExamForm = async (req, res) => {
         res.render('create-exam' );
     }
+
+    static createExam = async(req,res) => {
+
+        var allCategories = await queryExecurter('SELECT * FROM question_category');
+
+        //console.log("your all categories",allCategories);
+         res.render('choose-question',{allCategories});
+        
+    }
+
+    static showCategoryQuestion = async(req,res) =>{
+        var id = req.query.questionCategoryId ;
+        console.log('your category id:',id);
+
+        const specificCategoryQuestion = await queryExecurter(`SELECT * FROM question_master WHERE category_id = ${id};`);
+        console.log('harshil',specificCategoryQuestion);
+        res.json(specificCategoryQuestion);
+    
+    }
+
+
 }
 
 module.exports = ExamController;
