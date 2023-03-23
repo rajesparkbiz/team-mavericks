@@ -1,23 +1,19 @@
-const con = require("../src/config");
-const queryExecuter=require('../database/dbHelper')
-class createExams {
-  static createExam = async (req, res) => {};
+const queryExecurter = require('../database/dbHelper.js');
+class ExamController {
+    static toogleSwitch = async (req, res) => {
+        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);
+        const isActive = currentStatus[0].status;
 
-  // function for showinf caategoires from the database
-  static showCategory = async (req, res) => {
-  
-    const ans=await queryExecuter("SELECT category_name from question_category where isdel = '0' ");
-    res.render("question-category", { category_list :ans});
+        var query= `update exam_admin.exam_master set exam_isActive = '${isActive=='yes' ? 'no':'yes'}' where exam_id=${req.query.id}`;
+        
+        const toggleSwitchQuery = await queryExecurter(query);
 
+        res.redirect('/dashboard/exams');
+    }
 
-    // con.query(
-    //   "SELECT category_name from question_category",
-    //   (err, category_list) => {
-    //     if (err) throw err;
-    //     res.render("question-category", { category_list });
-    //   }
-    // );
-  };
+    static createExam = async (req, res) => {
+        res.render('create-exam' );
+    }
 }
 
-module.exports = createExams;
+module.exports = ExamController;
