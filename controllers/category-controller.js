@@ -32,11 +32,10 @@ class CategoryController {
     };
 
     static editCategory = async (req, res) => {
-
-
-        //console.log("your edit category",req.body.editCategory);
+        console.log("call edit api");
         var editCategoryName = req.body.edit_category_name;
         var id = req.body.id;
+        console.log(id);
         console.log("your category id", id, "and your category name", editCategoryName);
 
 

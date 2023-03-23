@@ -19,132 +19,130 @@
 
 <body>
 
-  
-  
-   
+
+
+
   <section class="section1">
-      <div class="container">
-        <div class="row">
-          <div class="card2-content">
+    <div class="container">
+      <div class="row">
+        <div class="card2-content">
 
-            <div class="card2-body"></div>
-            <h4>Add any category you want</h4>
+          <div class="card2-body"></div>
+          <h4>Add any category you want</h4>
 
-            <form method="">
-              <div class="card-2-content">
+          <form method="">
+            <div class="card-2-content">
 
-                <div class="form-outline">
-                  <input type="text" class="addinput form-control" id="category_name" class="form-control"
-                    placeholder="Category name" oninput="checkCategory()" />
-                  <label id="error_message" class="erro_mssg"></label>
-                </div>
-
-                <div class=" card-2-btn text-center">
-                  <input class=" add-btn btn btn-primary btn-block fa-lg gradient-custom-2" type="submit"
-                    id="add_category_btn" onclick="addCategory()" value="Add Category">
-                </div>
-
-
+              <div class="form-outline">
+                <input type="text" class="addinput form-control" id="category_name" class="form-control"
+                  placeholder="Category name" oninput="checkCategory()" />
+                <label id="error_message" class="erro_mssg"></label>
               </div>
 
-            </form>
-
-
-          </div>
-
-
-          <div class="card-col">
-            <div class="card-1">
-
-              <div class="card-1-title">
-                <h1>Your Categories</h1>
-              </div>
-
-              <div class="card-body">
-
-                <form>
-                  <div class="category_list" id="style-1">
-
-                    <% for(var i=0;i<category_list.length;i++) {%>
-                      <div class="category_div">
-
-
-                        <input type="button" id="<%= category_list[i].category_id %>" onclick="btnStatus(this)"
-                          class="category_btn btn-primary" value="<%= category_list[i].category_name %>">
-
-                       
-
-                          <i class=" edit bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal"
-                            id="<%= category_list[i].category_id %>"
-                            onclick="saveChanges('<%= category_list[i].category_id %>')"></i>
-
-                          <i class="delete bi bi-trash" data-bs-toggle="modal" data-bs-target="#delModal"
-                            id="<%= category_list[i].category_id %>"
-                            onclick="deleteCategory('<%= category_list[i].category_id %>')"
-                            ></i>
-                      
-                      </div>
-
-
-                      <!-- edit modal -->
-
-                      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="exampleModalLabel">Do You Want to Edit ?</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <input type="text" class="addinput form-control" id="modal_category_name" class="form-control"
-                                placeholder="Category name" oninput="checkCategory()" />
-
-                              <label id="error_message2" class="erro_mssg2"></label>
-                            </div>
-                            <div class="modal-footer">
-                              <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Cancel">
-                              <input type="submit" class="btn btn-primary" id="saveChanges" value="Save Changes">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Delete Modal -->
-                      <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete category ?</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            </div>
-                            
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="submit" class="btn btn-danger" id="deleteCategory">Delete Category</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <% } %>
-
-                  </div>
-                </form>
-
-
+              <div class=" card-2-btn text-center">
+                <input class=" add-btn btn btn-primary btn-block fa-lg gradient-custom-2" type="submit"
+                  id="add_category_btn" onclick="addCategory()" value="Add Category">
               </div>
 
 
             </div>
 
+          </form>
+
+
+        </div>
+
+
+        <div class="card-col">
+          <div class="card-1">
+
+            <div class="card-1-title">
+              <h1>Your Categories</h1>
+            </div>
+
+            <div class="card-body">
+
+              <form>
+                <div class="category_list" id="style-1">
+
+                  <% for(var i=0;i<category_list.length;i++) {%>
+                    <div class="category_div">
+
+
+                      <input type="button" id="<%= category_list[i].category_id %>" onclick="btnStatus(this)"
+                        class="category_btn btn-primary" value="<%= category_list[i].category_name %>">
+
+
+
+                      <i class=" edit bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal"
+                        id="<%= category_list[i].category_id %>"
+                        onclick="saveChanges('<%= category_list[i].category_id %>')"></i>
+
+                      <i class="delete bi bi-trash" data-bs-toggle="modal" data-bs-target="#delModal"
+                        id="<%= category_list[i].category_id %>"
+                        onclick="deleteCategory('<%= category_list[i].category_id %>')"></i>
+
+                    </div>
+
+
+                    <!-- edit modal -->
+
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Do You Want to Edit ?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <input type="text" class="addinput form-control" id="modal_category_name"
+                              class="form-control" placeholder="Category name" oninput="checkCategory()" />
+
+                            <label id="error_message2" class="erro_mssg2"></label>
+                          </div>
+                          <div class="modal-footer">
+                            <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Cancel">
+                            <input type="submit" class="btn btn-primary" id="saveChanges" value="Save Changes">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete category
+                              ?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger" id="deleteCategory">Delete Category</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <% } %>
+
+                </div>
+              </form>
+
+
+            </div>
+
+
           </div>
+
         </div>
       </div>
-  </div>
+    </div>
+    </div>
   </section>
 
 </body>
@@ -219,27 +217,12 @@
 
   async function saveChanges(id) {
 
-    const categoryInput = document.getElementById("category_name");
-
-    categoryInput.value = tag.value;
-    
-
     var edit_id = id;
     var saveChanges = document.getElementById('saveChanges').addEventListener("click", edit);
 
     async function edit() {
       var modal_category_name = document.getElementById("modal_category_name").value;
-      console.log("this is your edit id inside the edit function", edit_id, modal_category_name);
-
-      // using fetch api ti update the data
-
-      // const url = `/category/editCategory/?editCategory=${modal_category_name.toUpperCase()}`;
-
-      // const editCategoryRequest = await fetch(url);
-
-
-      const data = { username: "example" };
-
+      
       fetch("/category/editCategory", {
         method: "POST",
         headers: {
@@ -262,24 +245,22 @@
 
   }
 
-  async function deleteCategory(id)
-  {
-       var id = id;
-      var deleteCategory = document.getElementById("deleteCategory").addEventListener("click",deleteCategory);
+  async function deleteCategory(id) {
+    var id = id;
+    var deleteCategory = document.getElementById("deleteCategory").addEventListener("click", deleteCategory);
 
-      async function deleteCategory()
-      {
-        console.log("inside delete")
-       
-        console.log("your delete id:",id)
+    async function deleteCategory() {
+      console.log("inside delete")
 
-        fetch("/category/deleteCategory", {
+      console.log("your delete id:", id)
+
+      fetch("/category/deleteCategory", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          
+
           "id": id,
         }),
       })
@@ -290,7 +271,7 @@
         .catch((error) => {
           console.error("Error:", error);
         })
-      }
+    }
   }
 
 </script>
