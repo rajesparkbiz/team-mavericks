@@ -12,7 +12,19 @@ class ExamController {
     }
 
     static createExam = async (req, res) => {
-        res.render('create-exam' );
+        res.render('create-exam');
+    }
+    static addExam = async (req,res) =>{
+        let {examname,examcode,totalque,duration}=req.body;
+        let query= `INSERT INTO exam_master (exam_name, exam_access_code, exam_total_question, exam_isActive) VALUES ('${examname}', '${examcode}', '${totalque}', '${duration}');`;
+        const addExam = await queryExecurter(query);
+        res.redirect('/dashboard/exams');
+    }
+    static checkname = async (req,res) =>{
+        let examname=req.query.examname;
+        let query= `SELECT exam_name FROM exam_master WHERE exam_name = '${examname}';`;
+        const examnamechk = await queryExecurter(query);
+        res.json({"no_of_exam":examnamechk.length});
     }
 }
 
