@@ -1,6 +1,7 @@
 const queryExecurter = require('../database/dbHelper.js');
 
 class UserAuth {
+    
     static userLogin = async (req, res) => {
         let session = req.session;
         if (session.username) {
@@ -57,6 +58,7 @@ class UserAuth {
         return res.redirect('/auth/login');
 
     }
+
 }
 
 module.exports = UserAuth;

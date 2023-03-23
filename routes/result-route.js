@@ -5,5 +5,6 @@ const routers=express.Router();
 
 
 routers.get('/results',resultController.displayExams);
+routers.get('/student',resultController.displayStudentResult);
 
 module.exports=routers;

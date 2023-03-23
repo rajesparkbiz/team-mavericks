@@ -8,7 +8,7 @@ class QuestionController {
         if (questionId) {
             const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
             `);
-
+            res.json({msg:"Deleted successfully"});
         }
 
     }
@@ -22,7 +22,7 @@ class QuestionController {
         for (let i = 0; i < questionOptions.length; i++) {
             const updateOptionQuery = await queryExecurter(`UPDATE exam_admin.option_master SET option_value = '${questionOptions[i]}' WHERE option_id = ${optionsId[i]}`);
         }
-        res.redirect('/question/questions')
+        res.redirect('/question/questions');
     }
 
     static addQuestion = async (req, res) => {
@@ -117,10 +117,8 @@ class QuestionController {
                 "option": options,
                 "correct_ans": trueOption
             }
-            
         }
         res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
-
     }
     
     static displayCategoryQuestion = async (req, res) => {
@@ -185,6 +183,11 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
+    static displayChooseQuestion= async(req,res)=>{
+        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
+        
+        res.render('select-question',{categories:question_category});
+    }
 }
 
 module.exports = QuestionController;

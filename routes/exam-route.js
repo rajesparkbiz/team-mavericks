@@ -7,6 +7,6 @@ const routers=express.Router();
 
 routers.get('/status',examController.toogleSwitch);
 routers.get('/filter-exam',filterController.filterExams);
-routers.get('/create-exam',examController.displayCreateExam);
+routers.get('/createExam',examController.createExam);
 
 module.exports=routers;
