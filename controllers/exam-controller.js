@@ -14,6 +14,11 @@ class ExamController {
     static createExam = async (req, res) => {
         res.render('create-exam' );
     }
+    static choosedQuestions = async (req, res) => {
+        res.render('choosed-question' );
+    }
+
+
 }
 
 module.exports = ExamController;
