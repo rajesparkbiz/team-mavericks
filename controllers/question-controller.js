@@ -8,7 +8,7 @@ class QuestionController {
         if (questionId) {
             const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
             `);
- 
+            res.json({msg:"Deleted successfully"});
         }
 
     }
@@ -22,10 +22,11 @@ class QuestionController {
         for (let i = 0; i < questionOptions.length; i++) {
             const updateOptionQuery = await queryExecurter(`UPDATE exam_admin.option_master SET option_value = '${questionOptions[i]}' WHERE option_id = ${optionsId[i]}`);
         }
-        res.redirect('/question/questions')
+        res.redirect('/question/questions');
     }
 
     static addQuestion = async (req, res) => {
+        
 
         let total_option = 0;
         let { question, coding_question, optionid, option, categories_id, coding_question_chkbox } = req.body;
@@ -35,6 +36,7 @@ class QuestionController {
                 total_option++;
             }
         }
+
         if (question.trim() != '' && question != undefined) {
             if (total_option >= 4) {
                 if (optionid != undefined) {
@@ -47,7 +49,6 @@ class QuestionController {
                     else {
                         que_adder = await queryExecurter(`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '0');`);
                         que_id = que_adder.insertId;
-
                     }
                     for (let index = 0; index < option.length; index++) {
                         if (option[index] != undefined && option[index] != null && option[index].trim() != '') {
@@ -117,10 +118,8 @@ class QuestionController {
                 "option": options,
                 "correct_ans": trueOption
             }
-
         }
         res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
-
     }
     
     static displayCategoryQuestion = async (req, res) => {
@@ -185,6 +184,11 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
+    static displayChooseQuestion= async(req,res)=>{
+        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
+        
+        res.render('select-question',{categories:question_category});
+    }
 }
 
 

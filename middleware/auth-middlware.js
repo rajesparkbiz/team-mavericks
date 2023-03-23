@@ -1,3 +1,4 @@
+
 class auth{
     static userAuth = async (req, res, next) => {
         let session=req.session;
