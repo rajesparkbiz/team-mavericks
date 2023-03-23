@@ -16,10 +16,10 @@ class ExamController {
         res.redirect('/dashboard/exams');
     }
 
-    static displayCreateExam= async(req,res)=>{
+    static displayCreateExam = async (req, res) => {
         res.render('create_exam');
     }
-    
+
 }
 
 module.exports = ExamController;

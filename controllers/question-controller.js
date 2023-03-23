@@ -185,10 +185,6 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
-
-
-
-
 }
 
 module.exports = QuestionController;
