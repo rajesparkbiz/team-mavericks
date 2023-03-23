@@ -17,11 +17,9 @@ class ResultController {
             else {
                 status.push('fail');
             }
-
         }
         res.render('result.ejs', { data: data, status });
     }
-
     static displayStudentResult =async(req,res)=>{
         var status = [];
         var exam_id = req.query.exam_id;
@@ -39,13 +37,8 @@ class ResultController {
             else {
                 status.push('fail');
             }
-
         }
-      res.render('studentresult', { data: data,status});
-        console.log(exam_id)
+      res.render('studentresult', { data: data,status});     
     }
-
-
 }
-
 module.exports = ResultController;
