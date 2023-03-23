@@ -12,7 +12,28 @@
 <body>
    <section class="main-warepper">
     <div class="container-fluid main-container">
-        
+      <div class="d-flex question-category-card my-3">
+
+        <ul class="nav nav-tabs">
+
+          <% for(let k=0;k<categories.length;k++){%>
+            <li class="nav-item">
+              <p onclick="toogle(this,'<%= exam_id %>')" class="nav-link <%if(k==0){%>active<%}%>" id="<%= categories[k].category_id%>">
+                <%= categories[k].category.toString().toUpperCase()%>
+              </p>
+            </li>
+            <%}%>
+        </ul>
+      </div>
+      <div class="choosed-question-container">
+          <%for(let i=0;i<categoryQuestions.length;i++){%>
+            <div class="question m-3">
+              <p>
+                <%= categoryQuestions[i] %>
+              </p>
+            </div>
+          <%}%>
+      </div>
     </div>
    </section>
 </body>
@@ -20,4 +41,5 @@
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
 
   </script>
+  <script src="/js/choosed-question.js"></script>
 </html>

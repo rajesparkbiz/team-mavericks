@@ -9,5 +9,6 @@ routers.get('/status',examController.toogleSwitch);
 routers.get('/filter-exam',filterController.filterExams);
 routers.get('/createExam',examController.createExam);
 routers.get('/choosedQuestion',examController.choosedQuestions);
+routers.get('/choosed/questions',examController.displaychoosedQuestion);
 
 module.exports=routers;

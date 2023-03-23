@@ -15,8 +15,64 @@ class ExamController {
         res.render('create-exam' );
     }
     static choosedQuestions = async (req, res) => {
-        res.render('choosed-question' );
+
+        const examId=req.query.exam_id;
+        var choosedCategory=[];
+        
+        const examResult=await queryExecurter(`select exam_category.category_id from exam_category where exam_category.exam_id=${examId}`);
+
+        for(let i=0;i<examResult.length;i++){
+            var categoryMap=[];
+            const categoryName=await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category where question_category.category_id=${examResult[i].category_id}`);
+        
+            choosedCategory[i]={
+                "category":categoryName[0].category_name,
+                "category_id":categoryName[0].category_id
+            }
+        }
+
+
+        //for default first category questions
+        const categoryId=choosedCategory[0].category_id;
+
+        var categoryQuestions=[];
+        
+        const questionsResult=await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+
+        const questionsId=questionsResult[0].question_id.split(",");
+        
+        for(let i=0;i<questionsId.length;i++){
+            const query=`SELECT question_master.question FROM question_master where question_master.question_id=${questionsId[i]}`;
+
+           
+            const question=await queryExecurter(query);
+            categoryQuestions[i]=question[0].question;
+        }
+
+        res.render('choosed-question',{categories:choosedCategory,exam_id:examId,categoryQuestions:categoryQuestions});
     }
+
+    static displaychoosedQuestion =async(req,res)=>{
+        const examId=req.query.examId;
+        const categoryId=req.query.categoryId;
+
+        var categoryQuestions=[];
+        
+        const questionsResult=await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+
+        const questionsId=questionsResult[0].question_id.split(",");
+
+        for(let i=0;i<questionsId.length;i++){
+            const query=`SELECT question_master.question FROM question_master where question_master.question_id=${questionsId[i]}`;
+
+           
+            const question=await queryExecurter(query);
+            categoryQuestions[i]=question[0].question;
+        }
+        res.json(categoryQuestions);
+    }
+
+    
 
 
 }
