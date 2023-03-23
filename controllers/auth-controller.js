@@ -57,6 +57,7 @@ class UserAuth {
         return res.redirect('/auth/login');
 
     }
+
 }
 
 module.exports = UserAuth;
