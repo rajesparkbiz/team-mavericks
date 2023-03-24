@@ -660,8 +660,8 @@ class UserAuth {
                 `,
                 text: 'This is text version!',
                 replyTo: 'receiverXXX@gmail.com',
-                // onError: (e) => console.log(e),
-                // onSuccess: (i) => console.log(i)
+                onError: (e) => console.log(e),
+                onSuccess: (i) => console.log(i)
             }
 
 
