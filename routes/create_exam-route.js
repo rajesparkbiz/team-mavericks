@@ -1,12 +1,11 @@
-const express=require('express');
-// const ExamController = require('../controllers/exam-controller');
-const examController=require('../controllers/exam-controller');
+// const express=require('express');
+// // const ExamController = require('../controllers/exam-controller');
+// const examController=require('../controllers/exam-controller');
 
-const routers=express.Router();
+// const routers=express.Router();
 
-routers.get('/create_exam',examController.ExamController.create_exam);
-routers.post('/exam_data',examController.ExamController.data);
-routers.get('/validatename',examController.ExamController.validatename);
+// routers.get('/create_exam',examController.ExamController.create_exam);
+// routers.post('/exam_data',examController.ExamController.data);
+// routers.get('/validatename',examController.ExamController.validatename);
 
-
-module.exports=routers;
+// module.exports=routers;

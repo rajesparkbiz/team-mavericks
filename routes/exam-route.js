@@ -5,7 +5,6 @@ const filterController=require('../controllers/student-controller.js');
 
 const routers=express.Router();
 
-
 routers.get('/status',examController.toogleSwitch);
 routers.get('/filter-exam',filterController.filterExams);
 routers.get('/showExamForm',examController.showExamForm);
