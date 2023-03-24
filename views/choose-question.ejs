@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/choose-questions.css">
     </link>
     <title>Choose Question</title>
@@ -15,72 +17,175 @@
     <div class="sitewrapper">
         <section class="category_section">
             <div class="container">
-                <h1>Your Questions</h1>
-                <div class="row">
 
-                    <div class="category">
-                        <% for(let i=0;i<allCategories.length;i++){%>
-                            <p onclick="showCategoryQuestion('<%= allCategories[i].category_id %>')"
-                                id="<%= allCategories[i].category_id %>">
-                                <%= allCategories[i].category_name.toString().toUpperCase()%>
-                            </p>
-                            <% } %>
-                    </div>
+                <form action="/exams/CreateQuestionPaper" method="post">
+                    <div class="choose-nav-content">
 
-                   
-                </div>
 
-                <div class="showCatecoryQuestions">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body" id="questionData">
-                            
+                        <h1>Your Questions</h1>
+
+                        <div class="question-counter">
+                            <p class="total-question btn btn-primary"> Total Questions : <span>
+                                    <%= questionCounter[0].exam_total_question %>
+                                </span> </p>
+
+                            <p class="selected-question btn btn-dark"> Selected Questions</p>
                         </div>
                     </div>
-                </div>
+
+
+                    <div class="row">
+
+                        <div class="category">
+                            <% for(let i=0;i<allCategories.length;i++){%>
+                                <p onclick="showCategoryQuestion('<%= allCategories[i].category_id %>')"
+                                    id="<%= allCategories[i].category_id %>">
+                                    <%= allCategories[i].category_name.toString().toUpperCase()%>
+                                </p>
+                                <% } %>
+                        </div>
+
+
+                    </div>
+
+                    <div class="showCatecoryQuestions">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-content" id="questionData">
+                                <h1 id="loadcontent"></h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="choose-ques-buttons-div">
+                        <div class="choose-ques-buttons">
+
+                            <button type="button" class="btn btn-primary" onclick="saveQuestions()">Save
+                                Questions</button>
+                            <button type="button" onclick="createQuestionPaper()" class="btn btn-success">Create
+                                Question Paper</button>
+
+                        </div>
+                    </div>
+                </form>
+
+
             </div>
         </section>
     </div>
 
 
 </body>
-<script>
-    async function showCategoryQuestion(id) {
-        console.log(id);
-        var qid = document.getElementById('questionData');
-        qid.innerHTML=""
 
-        const url = `/exams/chooseCategoryQuestion/?questionCategoryId=${id}`;
+<script>
+
+
+    // function for onload display default category
+    window.addEventListener("load", loadcontent);
+
+    async function loadcontent() {
+
+        var qid = document.getElementById('questionData');
+        qid.innerHTML = ""
+
+        const url = `/exams/chooseCategoryQuestion/?questionCategoryId=2`;
         console.log(url);
         const questionCategoryId = await fetch(url).then((res) => {
             return res.json()
         }
         ).then((data) => {
             console.log(data[0]);
-            for(var i=0;i<data.length;i++){
+            for (var i = 0; i < data.length; i++) {
 
-                    qid.innerHTML += `<p id='${data[i].question_id}'>${data[i].question}</p>`                    
+                qid.innerHTML += `
+                    
+                    <div class="card-body">
+                        <p id='${data[i].question_id}'>${data[i].question}</p>                        
+                        <input type="checkbox" id='${data[i].question_id}' >
+                    </div>`;
+
             }
-            console.log('your data',qid);
+            console.log('your data', qid);
         });
-        console.log(questionCategoryId)
-        //     fetch("/exams/chooseCategoryQuestion", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //       "id": id,
-        //     }),
-        //   })
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //       console.log("Success:", data);
-        //     })
-        //     .catch((error) => {
-        //       console.error("Error:", error);
-        //     })
+
+        var checkedQuestion = document.querySelectorAll('input[type="checkbox"]:checked');
+
 
     }
+
+    // function for display category wise question
+
+    async function showCategoryQuestion(id) {
+        var qid = document.getElementById('questionData');
+        qid.innerHTML = ""
+
+        const url = `/exams/chooseCategoryQuestion/?questionCategoryId=${id}`;
+        const questionCategoryId = await fetch(url).then((res) => {
+            return res.json()
+        }
+        ).then((data) => {
+            console.log(data[0]);
+            for (var i = 0; i < data.length; i++) {
+
+                qid.innerHTML += `
+                    
+                    <div class="card-body">
+                        <p id='${data[i].question_id}'>${data[i].question}</p>                        
+                        <input type="checkbox"  class="checkQuestion" id='${data[i].category_id}-${data[i].question_id}' value= 'ABC'">
+                    </div>`;
+
+            }
+        });
+
+    }
+
+    //global quesArr
+    var questionsArr = [];
+
+    function saveQuestions(id) {
+        var questions = [];
+        var checkedQuestion = document.getElementsByClassName('checkQuestion');
+        var count = 0;
+        for (let i = 0; i < checkedQuestion.length; i++) {
+            if (checkedQuestion[i].checked) {
+
+                var id = checkedQuestion[i].id.split('-');
+                questions[count] = id;
+                count++;
+
+
+            }
+        }
+
+        questionsArr.push(questions);
+        console.log("Your questions ", questions);
+        console.log("your questionsArr", questionsArr);
+    }
+
+    // fetch to array to end point
+    async function createQuestionPaper() {
+
+        fetch('/exams/CreateQuestionPaper', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify(questionsArr)
+        }).then((Response) => {
+            Response.json();
+        }).then((data) => {
+            console.log(data);
+        })
+            .catch((error) => {
+                console.error("Error:", error);
+            })
+
+    }
+
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 
 </html>

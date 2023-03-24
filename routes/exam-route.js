@@ -11,5 +11,6 @@ routers.get('/filter-exam',filterController.filterExams);
 routers.get('/showExamForm',examController.showExamForm);
 routers.post('/chooseQuestions',examController.createExam);
 routers.get('/chooseCategoryQuestion',examController.showCategoryQuestion);
+routers.post('/CreateQuestionPaper',examController.CreateQuestionPaper);
 
 module.exports=routers;

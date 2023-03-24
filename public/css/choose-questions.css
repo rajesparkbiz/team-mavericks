@@ -25,11 +25,59 @@ body{
     
  }
 
+ .choose-nav-content{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    width: 100%;   
+ }
+
+ .question-counter{
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+ }
+
+ .total-question {
+    background-color: #24a0ed;
+    padding: 10px 10px;
+ }
+
+ 
+ .selected-question{
+    padding: 10px 10px;
+ }
+
  .category{
     display: flex;
     background-color: aqua;
     justify-content: space-between;
     padding: 1rem 1rem;
+    text-align: center;
     gap:50px;
     cursor: pointer;
+ }
+
+ .card-body{
+    border: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    padding: 1rem 1rem;
+ }
+
+
+ .choose-ques-buttons-div{
+
+        /* text-align: center; */
+        display: flex;
+        justify-content: center;
+ 
+}
+ .choose-ques-buttons{
+    display: flex;
+    align-items: center;
+    width: 35%;
+    justify-content: space-between;
+    
  }
