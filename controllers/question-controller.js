@@ -1,5 +1,6 @@
 const queryExecurter = require('../database/dbHelper.js');
 const question_config = require('../public/js/question-config.js');
+const dbTransaction = require('../database/dbTransaction.js');
 
 class QuestionController {
 
@@ -8,8 +9,9 @@ class QuestionController {
         if (questionId) {
             const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
             `);
-            res.json({msg:"Deleted successfully"});
+            res.json({ msg: "Deleted successfully" });
         }
+
     }
 
     static updateQuestion = async (req, res) => {
@@ -23,9 +25,20 @@ class QuestionController {
         }
         res.redirect('/question/questions');
     }
+    static updateQuestionTransaction = async (req, res) => {
+        let queries =[];
+        const { questionId, question, questionAnswer, questionOptions, optionsId } = req.body;
+
+        queries[0]= `UPDATE exam_admin.question_master SET question = '${question}', question_answer = '${questionAnswer}' WHERE question_id = '${questionId}'`;
+
+        for (let i = 0; i < questionOptions.length; i++) {
+            queries[i+1] = `UPDATE exam_admin.option_master SET option_value = '${questionOptions[i]}' WHERE option_id = ${optionsId[i]}`;
+        }
+        await dbTransaction.queryExec(0,queries,'update');
+        res.redirect('/question/questions');
+    }
 
     static addQuestion = async (req, res) => {
-        
 
         let total_option = 0;
         let { question, coding_question, optionid, option, categories_id, coding_question_chkbox } = req.body;
@@ -35,7 +48,6 @@ class QuestionController {
                 total_option++;
             }
         }
-
         if (question.trim() != '' && question != undefined) {
             if (total_option >= 4) {
                 if (optionid != undefined) {
@@ -48,12 +60,57 @@ class QuestionController {
                     else {
                         que_adder = await queryExecurter(`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '0');`);
                         que_id = que_adder.insertId;
+
                     }
                     for (let index = 0; index < option.length; index++) {
                         if (option[index] != undefined && option[index] != null && option[index].trim() != '') {
                             await queryExecurter(`INSERT INTO option_master (question_id, option_value) VALUES ('${que_id}', '${option[index]}');`);
                         }
                     }
+                }
+                else {
+                    res.end("select right answer");
+                }
+            }
+            else {
+                res.end("less than 4 options selected");
+            }
+        }
+        else {
+            res.end("else part");
+        }
+        res.redirect('/question/questions')
+    }
+    static addQuestionTransaction = async (req, res) => {
+        let total_option = 0;
+        let queries =[];
+        let { question, coding_question, optionid, option, categories_id, coding_question_chkbox } = req.body;
+
+        for (let option_chk = 0; option_chk < option.length; option_chk++) {
+            if (option[option_chk] != undefined && option[option_chk].trim() != '') {
+                total_option++;
+            }
+        }
+        if (question.trim() != '' && question != undefined) {
+            if (total_option >= 4) {
+                if (optionid != undefined) {
+                    let que_adder, que_id;
+                    if (coding_question_chkbox != undefined && coding_question != undefined && coding_question.trim() != '') {
+                        queries[0] =`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '1');`;
+                        queries[1] =`INSERT INTO question_coding (question_id, coding_question) VALUES ('lastQuestionId', '${coding_question}');`;
+                    }
+                    else {
+                        queries[0] = `INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '0');`;
+                    }
+                    let optionCounter=(queries.length);
+                    for (let index = 0; index < option.length; index++) {
+                        if (option[index] != undefined && option[index] != null && option[index].trim() != '') {
+                            queries[optionCounter] =`INSERT INTO option_master (question_id, option_value) VALUES ('lastQuestionId', '${option[index]}');`;
+                            optionCounter++;
+                        }
+                    }
+                    console.log(queries);
+                   await dbTransaction.queryExec(0,queries,'insert');
                 }
                 else {
                     res.end("select right answer");
@@ -120,7 +177,7 @@ class QuestionController {
         }
         res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
     }
-    
+
     static displayCategoryQuestion = async (req, res) => {
 
         const categoryId = req.query.category || 1;
@@ -183,12 +240,11 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
-    static displayChooseQuestion= async(req,res)=>{
+    static displayChooseQuestion = async (req, res) => {
         const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
-        
-        res.render('select-question',{categories:question_category});
+
+        res.render('select-question', { categories: question_category });
     }
 }
 
-
-  module.exports = QuestionController;
+module.exports = QuestionController;

@@ -7,5 +7,6 @@ const routers=express.Router();
 routers.get('/login',authController.userLogin);
 routers.post('/login',authController.userLoginchk);
 routers.get('/logout',authController.userLogout);
+routers.get('/forgot',authController.forgotPass);
 
 module.exports=routers;
