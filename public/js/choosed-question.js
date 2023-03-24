@@ -26,8 +26,8 @@ async function toogle(value, eaxmId) {
         content += `
         <div class="question-bar">
         <div class="question m-3">
-          <p>
-            ${data[i]}
+          <p id="${data[i].question_id}">
+            ${data[i].question}
           </p>
         </div>
         <div class="question-action-btn">

@@ -10,5 +10,8 @@ routers.get('/filter-exam',filterController.filterExams);
 routers.get('/createExam',examController.createExam);
 routers.get('/choosedQuestion',examController.choosedQuestions);
 routers.get('/choosed/questions',examController.displaychoosedQuestion);
+routers.post('/createExam',examController.addExam);
+routers.get('/checkexamname',examController.checkname);
+routers.get('/selectQuestions',examController.selectQuestions);
 
 module.exports=routers;

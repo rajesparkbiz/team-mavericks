@@ -44,7 +44,6 @@ function showAddQuestionModal() {
     questionModal.classList.add("show");
     questionModal.style.display = "block";
     questionModal.classList.add("modal-open");
-
     questionPage.classList.add('blur-card');
 }
 
@@ -339,7 +338,6 @@ function editoptionschk() {
 }
 function addquebtn() {
     let addque = document.getElementById("addque-btn");
-    console.log(questionchk_flag,optionschk_flag,optionsradiochk_flag,coding_question_flag);
     if (questionchk_flag == 1 && optionschk_flag == 1 && optionsradiochk_flag == 1 && coding_question_flag == 1) {
         addque.disabled = false;
     }

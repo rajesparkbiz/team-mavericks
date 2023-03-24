@@ -1,7 +1,9 @@
+const { assign } = require('nodemailer/lib/shared/index.js');
 const queryExecurter = require('../database/dbHelper.js');
-
+const nodemailer = require('nodemailer');
+const nodeoutlook = require('nodejs-nodemailer-outlook')
 class UserAuth {
-    
+
     static userLogin = async (req, res) => {
         let session = req.session;
         if (session.username) {
@@ -13,7 +15,7 @@ class UserAuth {
 
     static userLoginchk = async (req, res) => {
         let { Username, Password } = req.body;
-        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master where user_master.username='${Username}'`);
+        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${Username}'`);
         if (userchk.length == 1 && userchk[0]['role'] == "admin") {
             if (Password === userchk[0]['password']) {
                 req.session.regenerate(function (err) {
@@ -58,7 +60,37 @@ class UserAuth {
         return res.redirect('/auth/login');
 
     }
+    static forgotPass = async (req, res) => {
+        let email = req.query.email;
+        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${email}'`);
 
+        if (userchk.length == 1) {
+            nodeoutlook.sendEmail({
+                auth: {
+                    user: "examportal-autogen@outlook.com",
+                    pass: "Exam@12345"
+                },
+                from: 'examportal-autogen@outlook.com',
+                to: `${email}`,
+                subject: 'Forgot password!',
+                html:`<h1>Welcome to online exam portal</h1>
+                  <p>your username is ${email}</p1>
+                  <p>your password is ${password}</p1>
+                `,
+                text: 'This is text version!',
+                replyTo: 'receiverXXX@gmail.com',
+                onError: (e) => console.log(e),
+                onSuccess: (i) => console.log(i)
+            }
+
+
+            );
+            res.redirect('/auth/login');
+        }
+        else{
+            res.redirect('/auth/login');
+        }
+    }
 }
 
 module.exports = UserAuth;
