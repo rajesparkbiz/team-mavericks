@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config();
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
-
 const authRoute = require('./routes/auth-route.js');
 const dashboardRoute = require('./routes/dashboard-route.js');
 const questionRoute = require('./routes/question-route.js');

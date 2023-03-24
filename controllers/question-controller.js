@@ -10,7 +10,6 @@ class QuestionController {
             `);
             res.json({msg:"Deleted successfully"});
         }
-
     }
 
     static updateQuestion = async (req, res) => {
