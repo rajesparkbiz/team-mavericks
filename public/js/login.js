@@ -14,6 +14,7 @@ function validateEmail(){
         emailflaglog = 1;
     }
     loginbtn();
+    forgotpass();
 }
 function validatePassword(){
     let pass = document.getElementById('pass').value;
@@ -36,4 +37,58 @@ function loginbtn(){
     else{
         document.getElementById('loginbtn').disabled = true;
     }
+}
+
+let passflag =0;
+function passchk() {
+    let pass = document.getElementById('pass').value;
+    let cpass = document.getElementById('conpass').value;
+    const passRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+    // above password regular expression copied from stackoverflow.
+    if (!passRegex.test(pass)) {
+        document.getElementById('passchk').innerHTML = 'password format is invalid.';
+        passflag = 0;
+        // return false;
+    }
+    else {
+        document.getElementById('passchk').innerHTML = '';
+        if (pass == cpass) {
+            passflag = 1;
+            console.log('matched pass');
+            document.getElementById('passchk').innerHTML = '';
+            // return true;
+        }
+        else {
+            document.getElementById('passchk').innerHTML = 'Passwords do not match';
+            passflag = 0;
+            // return false;
+        }
+    }
+    changePassBtn();
+}
+function changePassBtn() {
+    if (passflag == 1) {
+        document.getElementById('changePassBtn').disabled = false;
+    }
+    else{
+        document.getElementById('changePassBtn').disabled = true;
+    }
+}
+function forgotpass(){
+    if (emailflaglog == 1) {
+        let email = document.getElementById('email').value;
+        // document.getElementById("forgotpass").onclick = `forgotRedirector(${email})`;
+        document.getElementById( "forgotpass" ).setAttribute( "onClick", `forgotRedirector("${email}");` );
+    }
+    else{
+        // document.getElementById("forgotpass").onclick = '';
+        document.getElementById( "forgotpass" ).setAttribute( "onClick", "" );
+    }
+}
+function forgotRedirector(email){
+   let host = location.host;
+   let protocol = location.protocol;
+   location.replace(protocol+"//"+host+"/user/forgot?email="+email)
 }
