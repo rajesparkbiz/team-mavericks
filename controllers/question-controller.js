@@ -1,5 +1,6 @@
 const queryExecurter = require('../database/dbHelper.js');
 const question_config = require('../public/js/question-config.js');
+const dbTransaction = require('../database/dbTransaction.js');
 
 class QuestionController {
 
@@ -8,7 +9,7 @@ class QuestionController {
         if (questionId) {
             const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
             `);
-            res.json({msg:"Deleted successfully"});
+            res.json({ msg: "Deleted successfully" });
         }
 
     }
@@ -120,7 +121,7 @@ class QuestionController {
         }
         res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
     }
-    
+
     static displayCategoryQuestion = async (req, res) => {
 
         const categoryId = req.query.category || 1;
@@ -183,10 +184,10 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
-    static displayChooseQuestion= async(req,res)=>{
+    static displayChooseQuestion = async (req, res) => {
         const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
-        
-        res.render('select-question',{categories:question_category});
+
+        res.render('select-question', { categories: question_category });
     }
 }
 
