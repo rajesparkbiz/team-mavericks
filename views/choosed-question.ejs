@@ -19,7 +19,7 @@
           <% for(let k=0;k<categories.length;k++){%>
             <li class="nav-item">
               <p onclick="toogle(this,'<%= exam_id %>')" class="nav-link <%if(k==0){%>active<%}%>" id="<%= categories[k].category_id%>">
-                <%= categories[k].category.toString().toUpperCase()%>
+                <%= categories[k].category.toString().toUpperCase()%> 
               </p>
             </li>
             <%}%>
@@ -27,11 +27,16 @@
       </div>
       <div class="choosed-question-container">
           <%for(let i=0;i<categoryQuestions.length;i++){%>
+           <div class="question-bar">
             <div class="question m-3">
               <p>
                 <%= categoryQuestions[i] %>
               </p>
             </div>
+            <div class="question-action-btn">
+              <input type="button" value="Discard" class="btn btn-primary">
+            </div>
+           </div>
           <%}%>
       </div>
     </div>

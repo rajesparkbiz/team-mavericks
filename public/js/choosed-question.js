@@ -15,7 +15,8 @@ async function toogle(value, eaxmId) {
 
 
     const questions = await fetch(`/exams/choosed/questions/?examId=${eaxmId}&categoryId=${categoryId}`);
-    const data = await questions.json();
+    const questionData = await questions.json();
+    const data=questionData.categoryQuestions;
     
     const questionContainer = document.getElementsByClassName("choosed-question-container")[0];
 
@@ -23,9 +24,16 @@ async function toogle(value, eaxmId) {
     for (let i = 0; i < data.length; i++) {
         const div = document.createElement('div');
         content += `
-            <div class="question m-4">
-                <p>${data[i]}</p>
-            </div>`;
+        <div class="question-bar">
+        <div class="question m-3">
+          <p>
+            ${data[i]}
+          </p>
+        </div>
+        <div class="question-action-btn">
+          <input type="button" value="Discard" class="btn btn-primary">
+        </div>
+       </div>`;
     }
     questionContainer.innerHTML=content;
 

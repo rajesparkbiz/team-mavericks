@@ -41,6 +41,8 @@ class ExamController {
 
         const questionsId=questionsResult[0].question_id.split(",");
         
+
+
         for(let i=0;i<questionsId.length;i++){
             const query=`SELECT question_master.question FROM question_master where question_master.question_id=${questionsId[i]}`;
 
@@ -49,7 +51,7 @@ class ExamController {
             categoryQuestions[i]=question[0].question;
         }
 
-        res.render('choosed-question',{categories:choosedCategory,exam_id:examId,categoryQuestions:categoryQuestions});
+        res.render('choosed-question',{categories:choosedCategory,exam_id:examId,categoryQuestions:categoryQuestions,questionCount:questionsId.length});
     }
 
     static displaychoosedQuestion =async(req,res)=>{
@@ -69,10 +71,8 @@ class ExamController {
             const question=await queryExecurter(query);
             categoryQuestions[i]=question[0].question;
         }
-        res.json(categoryQuestions);
+        res.json({categoryQuestions,questionCount:questionsId.length});
     }
-
-    
 
 
 }
