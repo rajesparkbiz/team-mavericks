@@ -49,7 +49,8 @@
               <th scope="col">City</th>
               <th scope="col">Collage</th>
               <th scope="col">BirthDate</th>
-              <th scope="col">CreateDate</th>
+           
+              <th id="date" scope="col">CreateDate</th>
             </tr>
           </thead>
 
@@ -90,8 +91,9 @@
                 <td>
                   <%= data[i].birthdate%>
                 </td>
-                <td>
-                  <%= data[i].createdate%>
+                
+                <td id="date">
+                  <%= date[i]%>
                 </td>
               </tr>
               <% }%>
@@ -142,8 +144,9 @@
             <td> ${element.city} </td>
             <td> ${element.college} </td>
             <td> ${element.birthdate} </td>
+          
             <td> ${element.createdate} </td>`;
-
+       
       content += '</tr>'
       count++;
     });
@@ -152,6 +155,7 @@
     tbody.innerHTML = content;
 
   }
+
   
 </script>
 
