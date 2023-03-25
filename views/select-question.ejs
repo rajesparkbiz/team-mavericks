@@ -11,6 +11,9 @@
 </head>
 <body>
     <section class="chhose-question-section">
+      <div id="page-alert">
+
+      </div>
       <div class="container-fluid">
         <div class="d-flex question-category-card my-3">
 
@@ -18,7 +21,7 @@
             
             <% for(let k=0;k<categories.length;k++){%>
               <li class="nav-item">
-                <p onclick="toogle(this)" class="nav-link <%if(k==0){%>active<%}%>"
+                <p onclick="toogle(this,'<%=examId%>')" class="nav-link <%if(k==0){%>active<%}%>"
                   id="<%= categories[k].category_id %>">
                   <%= categories[k].category_name.toString().toUpperCase()%>
                 </p>
@@ -30,6 +33,9 @@
 
          <div class="col" id="question-container">
 
+          <div id="saveSelectQuestion">
+            <input type="button" class="btn btn-primary" value="Save" onclick='saveSelectedQuestion("<%=categoryId%>","<%=examId%>")'>
+            </div>
           <!-- all questions -->
           <% for(let i=0;i<questions.length;i++){%>
 
@@ -38,10 +44,10 @@
               <div class="py-2 d-flex">
                   
                   <div class='question-checkbox mx-3'>
-                      <input type='checkbox'/>
+                      <input class="<%=categoryId%>-<%=examId%>" id="<%=questions[i].question_id%>" type='checkbox'/>
                   </div>
                   <div class='question-input'>
-                  <%=questions[i].question%>
+                    <p><%=questions[i].question%></p>
                   </div>
 
               </div>

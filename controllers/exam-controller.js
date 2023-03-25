@@ -19,6 +19,7 @@ class ExamController {
     }
 
     static addExam = async (req, res) => {
+
         let { examname, examcode, totalque, duration } = req.body;
 
         let query = `INSERT INTO exam_master (exam_name, exam_access_code, exam_total_question, exam_isActive) VALUES ('${examname}', '${examcode}', '${totalque}', '${duration}');`;
@@ -30,9 +31,43 @@ class ExamController {
 
         const questions = await queryExecurter(`SELECT * FROM question_master where question_master.category_id=${categoryId}`);
 
+        var allQuestionIds = [];
+        for (let i = 0; i < questions.length; i++) {
+            allQuestionIds[i] = questions[i].question_id;
+        }
+
         const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
 
-        res.render('select-question', { questions: questions, categories: question_category });
+        const defaultQuestion = await queryExecurter(`SELECT exam_category.question_id FROM exam_category where exam_category.exam_id=${addExam.insertId} and exam_category.category_id=${categoryId}`);
+
+        var defaultQuestionIds = [];
+
+
+        defaultQuestion.forEach(element => {
+            defaultQuestionIds[j] = element.question_id;
+        });
+
+        let result = [];
+        for (let i = 0; i < allQuestionIds.length; i++) {
+            const id = defaultQuestionIds.find(item => item === allQuestionIds[i] && item.size === allQuestionIds.size);
+            result.push(id);
+        }
+        console.log(result);
+
+
+        console.log(allQuestionIds);
+        console.log(defaultQuestionIds);
+
+        res.render('select-question', { questions: questions, categories: question_category, categoryId: categoryId, examId: addExam.insertId,});
+    }
+
+    static getProductStock = (productList, shoppingCart) => {
+        const result = [];
+        for (let i = 0; i < shoppingCart.length; i++) {
+            const product = productList.find(item => item.color_code === shoppingCart[i].color && item.size === shoppingCart[i].size);
+            result.push(product);
+        }
+        return result;
     }
 
     static checkname = async (req, res) => {
@@ -80,7 +115,7 @@ class ExamController {
                 categoryQuestions[i] = question[0].question;
             }
 
-            res.render('choosed-question', { categories: choosedCategory, exam_id: examId, categoryQuestions: categoryQuestions, questionCount: questionsId.length, status: true});
+            res.render('choosed-question', { categories: choosedCategory, exam_id: examId, categoryQuestions: categoryQuestions, questionCount: questionsId.length, status: true });
         } else {
             res.render('choosed-question', { status: false });
         }
@@ -90,7 +125,7 @@ class ExamController {
     static displaychoosedQuestion = async (req, res) => {
         const examId = req.query.examId;
         const categoryId = req.query.categoryId;
-        
+
         var categoryQuestions = [];
 
         const questionsResult = await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
@@ -106,11 +141,25 @@ class ExamController {
         }
         res.json({ categoryQuestions, questionCount: questionsId.length });
     }
-    
+
     static selectQuestions = async (req, res) => {
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
+        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
 
         res.render('select-question', { categories: question_category });
+    }
+
+    static insertSelectQuestions = async (req, res) => {
+        const { examid, categoryid, questions } = req.query;
+        const question = questions.split(",");
+        const questionCount = question.length;
+
+        const insertQuery = `INSERT INTO exam_category (exam_id, category_count, question_id, category_id) VALUES ('${examid}', '${questionCount}', '${questions}', '${categoryid}');
+        `;
+
+        const result = await queryExecurter(insertQuery);
+
+        res.json();
+
     }
 
 

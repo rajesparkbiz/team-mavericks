@@ -10,5 +10,6 @@ routers.get('/questions',questionController.displayQuestion);
 routers.get('/questions/category',questionController.displayCategoryQuestion);
 routers.get('/questions/data/one',questionController.question);
 routers.get('/chooseQuestion',questionController.displayChooseQuestion);
+routers.get('/question/selected',questionController.displaySelectedQuestion);
 
 module.exports=routers;

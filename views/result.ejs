@@ -28,6 +28,10 @@
 
       <div class="user-table warpper m-2">
 
+        <% if(data.length==0 || data==undefined){%>
+          <p>Students Not Submit Exam</p>
+        <%}else{%>
+
         <table class="table table-hover " id="studenttable" border="1">
           <thead>
             <tr>
@@ -73,6 +77,8 @@
 
 
         </table>
+        <%}%>
+
       </div>
       <%- include('pagination-tab.ejs') %>
 
