@@ -13,8 +13,15 @@ class UserAuth {
 
     static userLoginchk = async (req, res) => {
         let { Username, Password } = req.body;
-        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master`);
-        if (userchk.length == 1 && userchk[0]['role'] == "admin") {
+        console.log(Password);
+        
+        var sql =`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master`
+        console.log(sql);
+        let userchk = await queryExecurter(sql);
+        var a =userchk[0]['password'];
+        console.log(a);
+        if (userchk[0]['role'] == "admin") {
+            console.log("1");
             if (Password === userchk[0]['password']) {
                 req.session.regenerate(function (err) {
                     if (err) next(err)

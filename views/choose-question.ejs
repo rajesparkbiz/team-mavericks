@@ -61,9 +61,7 @@
 
                             <button type="button" class="btn btn-primary" onclick="saveQuestions()">Save
                                 Questions</button>
-                            <button type="button" onclick="createQuestionPaper()" class="btn btn-success">Create
-                                Question Paper</button>
-
+                    
                         </div>
                     </div>
                 </form>
@@ -80,14 +78,17 @@
 
 
     // function for onload display default category
+    
+    var questionsArr = [];
     window.addEventListener("load", loadcontent);
+
 
     async function loadcontent() {
 
         var qid = document.getElementById('questionData');
         qid.innerHTML = ""
 
-        const url = `/exams/chooseCategoryQuestion/?questionCategoryId=2`;
+        const url = `/exams/chooseCategoryQuestion/?questionCategoryId=1`;
         console.log(url);
         const questionCategoryId = await fetch(url).then((res) => {
             return res.json()
@@ -100,14 +101,14 @@
                     
                     <div class="card-body">
                         <p id='${data[i].question_id}'>${data[i].question}</p>                        
-                        <input type="checkbox" id='${data[i].question_id}' >
-                    </div>`;
+                        <input type="checkbox" class="checkQuestion" id='${data[i].question_id}' >
+                    </div>`;    
 
             }
             console.log('your data', qid);
         });
 
-        var checkedQuestion = document.querySelectorAll('input[type="checkbox"]:checked');
+        
 
 
     }
@@ -139,7 +140,7 @@
     }
 
     //global quesArr
-    var questionsArr = [];
+    
 
     function saveQuestions(id) {
         var questions = [];
@@ -159,10 +160,6 @@
         questionsArr.push(questions);
         console.log("Your questions ", questions);
         console.log("your questionsArr", questionsArr);
-    }
-
-    // fetch to array to end point
-    async function createQuestionPaper() {
 
         fetch('/exams/CreateQuestionPaper', {
             method: 'POST',
@@ -182,6 +179,9 @@
             })
 
     }
+
+    // fetch to array to end point
+    
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
