@@ -20,6 +20,7 @@ class ResultController {
         }
         res.render('result.ejs', { data: data, status });
     }
+    
     static displayStudentResult =async(req,res)=>{
         var status = [];
         var exam_id = req.query.exam_id;

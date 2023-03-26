@@ -76,6 +76,7 @@ class ExamController {
         const examnamechk = await queryExecurter(query);
         res.json({ "no_of_exam": examnamechk.length });
     }
+    
     static choosedQuestions = async (req, res) => {
 
         const examId = req.query.exam_id;

@@ -28,25 +28,25 @@ async function toogle(value, examId) {
 
     const questions = data.questions;
 
-    var allQuestionIds = [];
-    for (let i = 0; i < questions.length; i++) {
-        allQuestionIds[i] = questions[i].question_id;
-    }
+    // var allQuestionIds = [];
+    // for (let i = 0; i < questions.length; i++) {
+    //     allQuestionIds[i] = questions[i].question_id;
+    // }
 
-    var test=[];
-    for(let i=0;i<questions.length;i++){
+    // var test=[];
+    // for(let i=0;i<questions.length;i++){
         
-        for(let j=0;j<allQuestionIds.length;j++){
-            if(questions[i].question_id==allQuestionIds[j]){
-                test[i]=true
-                break;
-            }else{
-                test[i]=false
-                break;
-            }
-        }
-    }
-    console.log(test);
+    //     for(let j=0;j<allQuestionIds.length;j++){
+    //         if(questions[i].question_id==allQuestionIds[j]){
+    //             test[i]=true
+    //             break;
+    //         }else{
+    //             test[i]=false
+    //             break;
+    //         }
+    //     }
+    // }
+    // console.log(test);
 
     var content = ``;
     const question_container = document.getElementById("question-container");
