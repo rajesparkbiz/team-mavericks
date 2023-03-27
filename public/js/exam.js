@@ -64,3 +64,18 @@ async function Search(str) {
 async function result(exam_name) {
   var res = await fetch(`/result/results/student/?exam_name=${exam_name}`);
 }
+function showAddExamModal() {
+  var questionModal = document.getElementById("question-edit-modal");
+  questionModal.classList.add("show");
+  questionModal.style.display = "block";
+  questionModal.classList.add("modal-open");
+}
+
+
+function disableAddExamModal() {
+  var questionModal = document.getElementById("question-edit-modal");
+
+  questionModal.classList.remove("show");
+  questionModal.style.display = "none";
+  questionModal.classList.remove("modal-open");
+}

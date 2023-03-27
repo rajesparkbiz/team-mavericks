@@ -1,6 +1,7 @@
 const e = require('express');
 const queryExecurter = require('../database/dbHelper.js');
 const question_config = require('../public/js/question-config.js');
+const dbTransaction = require('../database/dbTransaction.js');
 
 class QuestionController {
 
@@ -9,6 +10,7 @@ class QuestionController {
         if (questionId) {
             const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
             `);
+
             res.json({ msg: "Deleted successfully" });
         }
 

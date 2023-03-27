@@ -9,17 +9,18 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/exam.css">
+  <link id="theme-style" rel="stylesheet" href="/css/navbar.css">
 
 </head>
 
-<body>
-  <section>
-
+<body onload="navbar_changer('Exams');">
+  <%- include('navbar.ejs') %>
+  <section class="app-wrapper">
     <div class="contaner-fluid">
-      
+
       <div class="action-btn">
         <div class="create-exam-button">
-          <a type="button" class="btn btn-success" href="/exams/createExam">Create Exam</a>
+          <a type="button" class="btn btn-success" onclick="showAddExamModal()">Create Exam</a>
         </div>
         <div class="search-input d-flex justify-content-center">
           <label for="exam-search-label">Search</label>
@@ -31,7 +32,54 @@
 
         </div>
       </div>
-
+      <div class="modal fade" id="question-edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog mx-0 mx-sm-auto">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h5 class="modal-title text-white" id="exampleModalLabel">Add New Exam</h5>
+              <button type="button" class="btn-close text-white" data-mdb-dismiss="modal" aria-label="Close"
+                onclick="disableAddExamModal()"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="/exams/createExam">
+                <div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="examname">Exam Name:</label>
+                    <div class="form-text mb-2">
+                      <input class="form-control form-control-sm" type="text" name="examname" id="examname" autocomplete="off" onkeyup="validateExamTitle()">
+                    </div>
+                    <small class="warn" id="examname-err"></small>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="examcode">Exam Access Code:</label>
+                    <div class="form-text mb-2">
+                      <input class="form-control form-control-sm" type="text" name="examcode" id="examcode" autocomplete="off" onkeyup="validateExamAccessCode()">
+                    </div>
+                    <small class="warn" id="examcode-err"></small>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="totalque">Total Questions:</label>
+                    <div class="form-text mb-2">
+                      <input class="form-control form-control-sm" type="number" min="1" name="totalque" id="totalque" autocomplete="off" onkeyup="validateExamQuestion()">
+                    </div>
+                    <small class="warn" id="totalque-err"></small>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="duration">Duration Of Exam:</label>
+                    <div class="form-text mb-2">
+                      <input class="form-control form-control-sm" type="number" min="10" name="duration" id="duration" autocomplete="off" onkeyup="validateExamDuration()">
+                    </div>
+                    <small class="warn" id="duration-err"></small>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" id="create-exam-btn" disabled>Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="user-table warpper m-2">
 
 
@@ -66,7 +114,6 @@
                 <td>
                   <%= data[i].createdDate %>
                 </td>
-
                 <td>
                   <div class="form-check form-switch">
                     <input class="form-check-input switch" type="checkbox" role="switch"
@@ -79,7 +126,7 @@
                   <a href="/result/student/?exam_id=<%=data[i].exam_id%>"> View Result</a>
                 </td>
                 <td>
-                  <a href="/exams/displaySelectQuestion/?exam_id=<%=data[i].exam_id%>" id="<%=data[i].exam_id%>" class="<% 
+                  <a href="/exams/choosedQuestion/?exam_id=<%=data[i].exam_id%>" id="<%=data[i].exam_id%>" class="<% 
                   if(questionStatus[i]>0){%>
                     text-success
                   <%}else{%>
@@ -95,8 +142,9 @@
       </div>
       <%- include('pagination-tab.ejs') %>
     </div>
+    <%- include('footer.ejs') %>
   </section>
-  <%- include('footer.ejs') %>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">

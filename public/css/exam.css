@@ -5,7 +5,6 @@
 .question-disable{
     color: red;
 }
-
 .search-input{
     padding: 10px;
 }
@@ -36,4 +35,7 @@
 
 .create-exam-button{
     margin-left: 10px;
+}
+.blur-card{
+    opacity: 0.5;
 }
