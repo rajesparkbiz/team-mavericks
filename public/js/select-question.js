@@ -37,9 +37,8 @@ async function toogle(value, examId) {
     for(let i=0;i<questions.length;i++){
         
         for(let j=0;j<allQuestionIds.length;j++){
-            if(questions[i].question_id==allQuestionIds[j]){
+            if(questions[i].question_id==defaultQuestionIds[j]){
                 test[i]=true
-                break;
             }else{
                 test[i]=false
                 break;
