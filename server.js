@@ -33,6 +33,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs')
 app.use(express.json());
 
+
+
 app.use('/auth', auth.alreadyLogin, authRoute);
 app.use('/dashboard', auth.userAuth, dashboardRoute);
 app.use('/question', auth.userAuth, questionRoute);
@@ -44,7 +46,7 @@ app.use('/category', auth.userAuth, categoryRoute);
 app.use('/user', authRoute);
 app.use(express.static(__dirname + "/public"))
 
-app.listen(port, () => {
-    console.log(`Server is Running on ${port}`);
+app.listen(3000, () => {
+    console.log(`Server is Running on port`);
 })
 

@@ -134,7 +134,6 @@ class UserAuth {
   static changePassword = async (req, res) => {
     let ftoken = req.params['ftoken'];
     let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
-    console.log(userTokenChk.length);
     if (userTokenChk.length == 1) {
       res.render('forgotpassword', { ftoken });
     }
@@ -146,7 +145,6 @@ class UserAuth {
     let saltround = 10;
     let { ftoken, Password } = req.body;
     let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
-    console.log(userTokenChk.length);
     if (userTokenChk.length == 1) {
       bcrypt.genSalt(saltround, function (err, salt) {
         bcrypt.hash(Password, salt, async function (err, hash) {

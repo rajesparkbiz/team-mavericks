@@ -12,7 +12,7 @@ const connection = mysql.createPool(
 
 
 class dbTransaction {
-    static async queryExec(id, args, querytype) {
+    static async queryExec(id,args, querytype) {
         let con = await connection.getConnection();
         let result = [];
         let updatedQuery;
@@ -41,7 +41,7 @@ class dbTransaction {
                         }
                     }
                 }
-            } else if (querytype == 'update') {
+            } else if (querytype == 'update' || querytype == 'delete') {
                 for (let k = 0; k < args.length; k++) {
                     await con.execute(args[k]);
                 }
