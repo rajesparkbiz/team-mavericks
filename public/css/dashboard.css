@@ -23,6 +23,11 @@ hr {
     opacity: .25
 }
 
+#category-info{
+    width: 624px;
+    height: 329px;
+}
+
 
 @media(min-width: 1200px) {
 
