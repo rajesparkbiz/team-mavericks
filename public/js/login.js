@@ -56,7 +56,6 @@ function passchk() {
         document.getElementById('passchk').innerHTML = '';
         if (pass == cpass) {
             passflag = 1;
-            console.log('matched pass');
             document.getElementById('passchk').innerHTML = '';
             // return true;
         }
@@ -76,6 +75,7 @@ function changePassBtn() {
         document.getElementById('changePassBtn').disabled = true;
     }
 }
+
 function forgotpass(){
     if (emailflaglog == 1) {
         let email = document.getElementById('email').value;
@@ -84,7 +84,7 @@ function forgotpass(){
     }
     else{
         // document.getElementById("forgotpass").onclick = '';
-        document.getElementById( "forgotpass" ).setAttribute( "onClick", "" );
+        document.getElementById( "forgotpass" ).setAttribute( "onClick", "forgot()" );
     }
 }
 function forgotRedirector(email){

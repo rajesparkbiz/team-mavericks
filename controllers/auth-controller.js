@@ -4,6 +4,10 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const nodeoutlook = require('nodejs-nodemailer-outlook');
 var handlebars = require('handlebars');
+const google = require('googleapis');
+const OAuth2 = google.Auth.OAuth2Client;
+const OAuth2_client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
+OAuth2_client.setCredentials({refresh_token : process.env.REFRESH_TOKEN});
 var fs = require('fs');
 var readHTMLFile = function (path, callback) {
   fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
@@ -74,6 +78,7 @@ class UserAuth {
   }
   static forgotPass = async (req, res) => {
     let email = (req.query.email).toLowerCase();
+    const accessToken = OAuth2_client.getAccessToken();
     let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${email}'`);
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -82,9 +87,7 @@ class UserAuth {
       for (let i = 0; i < 30; i++) {
         ftoken += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
-      await queryExecurter(`UPDATE user_master SET forgot_token = '${ftoken}' WHERE (username = '${email}');`)
-      // res.redirect('/login');
-      // res.redirect('/verify');
+      await queryExecurter(`UPDATE user_master SET forgot_token = '${ftoken}' WHERE (username = '${email}');`);
       var fullUrl = req.protocol + '://' + req.get('host')+`/user/changePassword/${ftoken}`;
       readHTMLFile(__dirname + '/emailTemplet.html', function (err, html) {
         if (err) {
@@ -96,23 +99,33 @@ class UserAuth {
           forgoturl: fullUrl
         };
         var htmlToSend = template(replacements);
-        nodeoutlook.sendEmail({
+        const transport = nodemailer.createTransport({
+          service: 'gmail',
           auth: {
-            user: "examportal-autogen@hotmail.com",
-            pass: "Exam@12345"
-          },
-          from: 'examportal-autogen@hotmail.com',
-          to: `${email}`,
+            type : 'OAuth2',
+            user: process.env.MAIL_USER,
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            refreshToken : process.env.REFRESH_TOKEN,
+            accessToken : accessToken
+          }
+        });
+        const mail_option = {
+          from: process.env.MAIL_USER,
+          to: email,
           subject: 'Forgot password!',
-          html: htmlToSend,
-          text: 'This is text version!',
-          replyTo: 'receiverXXX@gmail.com',
-          onError: (e) => console.log(e),
-          onSuccess: (i) => console.log(i)
+          html: htmlToSend
         }
-        )
+        transport.sendMail(mail_option,function (err,result){
+          if (err) {
+            res.render('login', { status: "Some Error Occured Contact To admin!" });
+          }
+          else{
+            res.render('login', { status: "Email Sended Successfully." });
+          }
+          transport.close();
+        });
       });
-      res.render('login', { status: "Email Sended Successfully." });
     }
     else {
       res.render('login', { status: "Email Not Found." });
@@ -136,9 +149,11 @@ class UserAuth {
     console.log(userTokenChk.length);
     if (userTokenChk.length == 1) {
       bcrypt.genSalt(saltround, function (err, salt) {
-        bcrypt.hash(pass, salt, async function (err, hash) {
-          hashpass = hash;
-          await queryExecurter(`UPDATE user_master SET password = '${hashpass}', forgot_token = null WHERE (forgot_token = '${ftoken}');`);
+        bcrypt.hash(Password, salt, async function (err, hash) {
+          await queryExecurter(`UPDATE user_master SET password = '${hash}', forgot_token = null WHERE (forgot_token = '${ftoken}');`);
+          if (err) {
+            res.render('login', { status: "Some Error Occured Contact To admin!" });
+          }
         });
       });
       res.render('login', { status: "Password Changed Successfully :)" });
