@@ -12,7 +12,8 @@ class addCategory {
 
     const categoryAllQuery=await queryExecuter(`SELECT category_name FROM exam_admin.question_category;`);
 
-    res.redirect('/category/showCategory');
+    // res.render('category-question.ejs');
+    res.json(); 
   };
 
   static verifyCategory = async (req, res) => {

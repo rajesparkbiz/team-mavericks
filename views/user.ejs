@@ -21,6 +21,8 @@
           <label for="exam-search-label">Search</label>
           <input type="text" id="search" class="form-control" oninput="Search(this.value)">
           <select id="filter-box" class="form-select form-select-sm" aria-label=".form-select-sm example">
+
+            <option value="" disabled selected hidden >Search by field</option>
             <option id="fname" value="fname" selected>name</option>
             <option id="lname" value="lname">surname</option>
             <option id="email" value="email">email</option>
@@ -30,6 +32,18 @@
             <option id="college" value="college">college</option>
           </select>
 
+          <!-- // sort functionality -->
+
+          <label for="exam-search-label"> Sort </label>
+          <select id="filter-box" class="form-select form-select-sm" aria-label=".form-select-sm example" onchange=" location = this.value">
+
+            <option value="" disabled selected hidden >Sort</option>
+            <option id="student_id" value="/students/data?page=1&column_name=student_id&order=<%= order %>" >No</option>
+            <option id="fname" value="/students/data?page=1&column_name=fname&order=<%= order %>" id="dynamicId">Name</option> 
+            <option id="lname" value="/students/data?page=1&column_name=lname&order=<%= order %>">Last Name</option>
+            <option id="email" value="/students/data?page=1&column_name=email&order=<%= order %>">email</option>
+          
+          </select>
         </div>
       </div>
 
@@ -57,8 +71,9 @@
 
             <% for(i=0; i<data.length; i++) {%>
               <tr>
+                <% if(data[i]) { %>
                 <td>
-                  <%= (i+1)%>
+                  <%= data[i].student_id %>
                 </td>
                 <td>
                   <%= data[i].fname%>
@@ -93,6 +108,7 @@
                 <td>
                   <%= data[i].createdate%>
                 </td>
+                 <% } %>
               </tr>
               <% }%>
           </tbody>
