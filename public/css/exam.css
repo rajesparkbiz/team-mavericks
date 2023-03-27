@@ -1,0 +1,14 @@
+.maindiv{
+	display: flex;
+	flex-wrap: wrap;
+	/* width: 100%; */
+}
+
+.left{
+	width: 17%;
+}
+.right{
+	width: 83%;
+    margin-left: 250px;
+    padding: 10px;
+}

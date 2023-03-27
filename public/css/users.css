@@ -18,10 +18,10 @@
     padding: 10px;
 }
 
-.search-input input {
+/* .search-input input {
     width:100%;
     margin-left: 10px;
-}
+} */
 
 .action-btn{
     float:right;
@@ -30,7 +30,7 @@
 
 .search-input label {
     font-size: 20px;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: system-ui;
 }
 
 .exam-search-label{

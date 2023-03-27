@@ -13,6 +13,19 @@ body {
 	/* background: #383a4f; */
 }
 
+.main{
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.left{
+	width: 17%;
+}
+.right{
+	width: 83%;
+}
+
 .wizard-v5-content {
 	width: 70%;
 	box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);

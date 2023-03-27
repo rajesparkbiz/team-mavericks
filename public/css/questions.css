@@ -1,3 +1,18 @@
+.maindiv{
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.left{
+	width: 20%;
+}
+.right{
+	width: 80%;
+    padding: 10px;
+}
+
+
 .question-page-container {
     min-height: 100vh;
     background-color: var(--bg-clr);
@@ -28,10 +43,9 @@
     margin-left: 15px;
 }
 
-.nav-item{
+/* .nav-item{
     width: 100px;
-}
-
+} */
 
 .true-answer{
     font-weight: 600;

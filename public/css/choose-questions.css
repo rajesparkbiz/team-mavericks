@@ -8,15 +8,11 @@
 body{
     background-color: whitesmoke;
 }
-
-
 .container{
     width: 1170px;
    margin: 0 auto;
    padding: 0 16px;
 }
-
-
 .row{
     margin: 0 -16px;
     display: flex;
@@ -63,13 +59,11 @@ body{
     background-color: whitesmoke;
 }
 
-
 .container{
     width: 1170px;
    margin: 0 auto;
    padding: 0 16px;
 }
-
 
 .row{
     margin: 0 -16px;
@@ -85,6 +79,12 @@ body{
     padding: 1rem 1rem;
     width: 100%;   
  }
+ .card-body{
+    padding-top: 100px;
+    width: 1200px;
+    margin: auto;
+    text-align: center;
+    line-height: 20px}
 
  .question-counter{
     display: flex;
@@ -102,7 +102,7 @@ body{
     padding: 10px 10px;
  }
 
- .category{
+ /* .category{
     display: flex;
     background-color: aqua;
     justify-content: space-between;
@@ -110,7 +110,7 @@ body{
     text-align: center;
     gap:50px;
     cursor: pointer;
- }
+ } */
 
  .card-body{
     border: 1px solid;
@@ -119,6 +119,23 @@ body{
     width: 400px;
     padding: 1rem 1rem;
  }
+
+ .category{
+   display: flex;
+   justify-content: space-between;
+   padding: 1rem 1rem;
+   gap:50px;
+   cursor: pointer;
+}
+.category p {
+   width: 100px;
+   text-align: center;
+   background-color:rgb(55, 175, 245);
+   color: white;
+   font-weight: bold;
+   border-radius: 20px;
+   padding: 10px;
+}
 
  .choose-ques-buttons-div{
         display: flex;
@@ -129,5 +146,4 @@ body{
     align-items: center;
     width: 30%;
     justify-content: space-around;
-    
  }

@@ -39,11 +39,6 @@ class StdentQuestion {
         var s_id = req.body.student_id;
     
         var student_name = await queryExecurter(`select student_master.fname from student_master inner join  exam_attempt_master on exam_attempt_master.student_id=student_master.student_id `);
-
-
-       
-
-
         res.render('dashboard', { data: data, questionsRatio: questionsRatio, exam_attempt: exam_attempt, student_name});
     }
 
