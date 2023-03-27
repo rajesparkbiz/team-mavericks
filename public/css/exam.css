@@ -5,3 +5,35 @@
 .question-disable{
     color: red;
 }
+
+.search-input{
+    padding: 10px;
+}
+
+.search-input input {
+    width:100%;
+    margin-left: 10px;
+}
+
+.action-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-input label {
+    font-size: 20px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.exam-search-label{
+    font-size:30px;
+}
+
+.user-exam-status-card{
+    font-size:17px;
+}
+
+.create-exam-button{
+    margin-left: 10px;
+}

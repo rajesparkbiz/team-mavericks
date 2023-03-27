@@ -15,9 +15,9 @@ class UserAuth {
 
     static userLoginchk = async (req, res) => {
         let { Username, Password } = req.body;
-        let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${Username}'`);
-        if (userchk.length == 1 && userchk[0]['role'] == "admin") {
-            if (Password === userchk[0]['password']) {
+        let userchk = await queryExecurter(`SELECT * FROM user_master where user_master.role='admin' and user_master.username='${Username}'`);
+       
+            if (userchk.length!=0) {
                 req.session.regenerate(function (err) {
                     if (err) next(err)
 
@@ -35,12 +35,6 @@ class UserAuth {
 
                 res.render('login', { status: "username or password incorrect" });
             }
-
-        }
-        else {
-            res.render('login', { status: "username or password incorrect" });
-        }
-
     }
 
     static alreadyLogin = async (req, res, next) => {

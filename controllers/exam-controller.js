@@ -52,13 +52,9 @@ class ExamController {
             const id = defaultQuestionIds.find(item => item === allQuestionIds[i] && item.size === allQuestionIds.size);
             result.push(id);
         }
-        console.log(result);
+        
 
-
-        console.log(allQuestionIds);
-        console.log(defaultQuestionIds);
-
-        res.render('select-question', { questions: questions, categories: question_category, categoryId: categoryId, examId: addExam.insertId,});
+        res.render('select-question', { questions: questions, categories: question_category, categoryId: categoryId, examId: addExam.insertId, });
     }
 
     static getProductStock = (productList, shoppingCart) => {
@@ -76,6 +72,7 @@ class ExamController {
         const examnamechk = await queryExecurter(query);
         res.json({ "no_of_exam": examnamechk.length });
     }
+
     static choosedQuestions = async (req, res) => {
 
         const examId = req.query.exam_id;
@@ -153,11 +150,29 @@ class ExamController {
         const question = questions.split(",");
         const questionCount = question.length;
 
-        const insertQuery = `INSERT INTO exam_category (exam_id, category_count, question_id, category_id) VALUES ('${examid}', '${questionCount}', '${questions}', '${categoryid}');
-        `;
 
-        const result = await queryExecurter(insertQuery);
+        //check avialable inserted question 
+        const isAvialbale = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_admin.exam_category where exam_category.exam_id=${examid} and exam_category.category_id=${categoryid}`);
 
+
+        // make update query
+        if (isAvialbale.length != 0) {
+            const isAvialbales = isAvialbale[0].id;
+
+            const ids = isAvialbales.split(",");
+            for (let i = 0; i < question.length; i++) {
+                ids.push(question[i]);
+            }
+            const isAvialbaleUpdate = await queryExecurter(`update exam_category set exam_category.question_id='${ids}' where exam_category.exam_id=${examid} and exam_category.category_id=${categoryid}`);
+
+
+        } else {
+            //insert query
+            const insertQuery = `INSERT INTO exam_category (exam_id, category_count, question_id, category_id) VALUES ('${examid}', '${questionCount}', '${questions}', '${categoryid}');
+            `;
+
+            const result = await queryExecurter(insertQuery);
+        }
         res.json();
 
     }
