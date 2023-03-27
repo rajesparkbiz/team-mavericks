@@ -20,50 +20,127 @@ class ExamController {
 
     static addExam = async (req, res) => {
 
+        var addExam
+
         let { examname, examcode, totalque, duration } = req.body;
 
         let query = `INSERT INTO exam_master (exam_name, exam_access_code, exam_total_question, exam_isActive) VALUES ('${examname}', '${examcode}', '${totalque}', '${duration}');`;
-        const addExam = await queryExecurter(query);
+        addExam = await queryExecurter(query);
 
-        const defaultCategory = await queryExecurter(`SELECT question_category.category_id as id FROM question_category order by question_category.category_id ASC limit 1`);
-
-        const categoryId = defaultCategory[0].id;
-
-        const questions = await queryExecurter(`SELECT * FROM question_master where question_master.category_id=${categoryId}`);
-
-        var allQuestionIds = [];
-        for (let i = 0; i < questions.length; i++) {
-            allQuestionIds[i] = questions[i].question_id;
-        }
-
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
-
-        const defaultQuestion = await queryExecurter(`SELECT exam_category.question_id FROM exam_category where exam_category.exam_id=${addExam.insertId} and exam_category.category_id=${categoryId}`);
-
-        var defaultQuestionIds = [];
-
-
-        defaultQuestion.forEach(element => {
-            defaultQuestionIds[j] = element.question_id;
-        });
-
-        let result = [];
-        for (let i = 0; i < allQuestionIds.length; i++) {
-            const id = defaultQuestionIds.find(item => item === allQuestionIds[i] && item.size === allQuestionIds.size);
-            result.push(id);
-        }
-        
-
-        res.render('select-question', { questions: questions, categories: question_category, categoryId: categoryId, examId: addExam.insertId, });
+        res.redirect('/dashboard/exams');
     }
 
-    static getProductStock = (productList, shoppingCart) => {
-        const result = [];
-        for (let i = 0; i < shoppingCart.length; i++) {
-            const product = productList.find(item => item.color_code === shoppingCart[i].color && item.size === shoppingCart[i].size);
-            result.push(product);
+    //SAMPLE
+    static displaySelectQuestion = async (req, res) => {
+        // const exam_id=req.query.exam_id;
+        // console.log(exam_id);
+        // const defaultCategory = await queryExecurter(`SELECT question_category.category_id as id FROM question_category order by question_category.category_id ASC limit 1`);
+
+        // const categoryId = defaultCategory[0].id;
+
+        // const questions = await queryExecurter(`SELECT * FROM question_master where question_master.category_id=${categoryId}`);
+
+
+        // const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
+
+        const categoryId = req.query.category || 1;
+        const examId = req.query.exam_id;
+
+        //get all question category 
+        let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
+
+        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+
+
+        //case 1
+
+        //get all questions for specific category
+        const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+
+        const allQuestions = await queryExecurter(questionQuery);
+
+        var questions = [];
+
+
+        for (let i = 0; i < allQuestions.length; i++) {
+            questions[i] = {
+                "question_id": allQuestions[i].question_id,
+                "question": allQuestions[i].question,
+            }
         }
-        return result;
+
+
+
+        //get all questions ids for filter selected questions
+        var allQuestionIds = [];
+        for (let i = 0; i < allQuestions.length; i++) {
+            allQuestionIds[i] = allQuestions[i].question_id;
+        }
+
+        //get selected ids for filter
+        const defaultQuestionIds = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+
+
+        var defaultQuestionId = [];
+
+
+        //case 2
+
+        //any selected data are inserted or not
+        if (defaultQuestionIds[0] != undefined) {
+
+            questions = [];
+
+            //split question id array
+            defaultQuestionId = (defaultQuestionIds[0].id).split(",");
+
+            //convert string array into number
+            for (let i = 0; i < defaultQuestionId.length; i++) {
+                defaultQuestionId[i] = parseInt(defaultQuestionId[i]);
+            }
+
+
+            //exclude selected question for exam
+            var filteredArr = allQuestionIds.filter((num) => {
+                return !defaultQuestionId.includes(num);
+            });
+
+
+            
+            var count = 0;
+
+
+            for (let i = 0; i < filteredArr.length; i++) {
+
+                const query = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId} and question_master.question_id=${filteredArr[i]}`
+
+                const allQuestions = await queryExecurter(query);
+                questions[count] = {
+                    "question_id": allQuestions[0].question_id,
+                    "question": allQuestions[0].question,
+                }
+                count++;
+            }
+
+            //case 3
+        } else {
+
+            questions = [];
+
+
+            const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+
+            const allQuestions = await queryExecurter(questionQuery);
+
+            for (let i = 0; i < allQuestions.length; i++) {
+                questions[i] = {
+                    "question_id": allQuestions[i].question_id,
+                    "question": allQuestions[i].question,
+                }
+            }
+        }
+        
+        res.render('select-question', { questions: questions, categories: question_category, categoryId: categoryId, examId: examId, });
     }
 
     static checkname = async (req, res) => {
@@ -74,7 +151,7 @@ class ExamController {
     }
 
     static choosedQuestions = async (req, res) => {
-
+        
         const examId = req.query.exam_id;
         var choosedCategory = [];
 
@@ -94,22 +171,25 @@ class ExamController {
 
 
             //for default first category questions
-            const categoryId = choosedCategory[0].category_id;
+            const categoryId = req.query.categoryId || choosedCategory[0].category_id;
 
             var categoryQuestions = [];
 
-            const questionsResult = await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+            const questionsResult = await queryExecurter(`select exam_category.question_id,exam_category.category_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
 
             const questionsId = questionsResult[0].question_id.split(",");
 
 
 
             for (let i = 0; i < questionsId.length; i++) {
-                const query = `SELECT question_master.question FROM question_master where question_master.question_id=${questionsId[i]}`;
-
-
+                const query = `SELECT question_master.question,question_master.category_id FROM question_master where question_master.question_id=${questionsId[i]}`;
+                
                 const question = await queryExecurter(query);
-                categoryQuestions[i] = question[0].question;
+                categoryQuestions[i] = {
+                    "question": question[0].question,
+                    "id": questionsId[i],
+                    "category": question[0].category_id
+                };
             }
 
             res.render('choosed-question', { categories: choosedCategory, exam_id: examId, categoryQuestions: categoryQuestions, questionCount: questionsId.length, status: true });

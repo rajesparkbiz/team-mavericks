@@ -33,9 +33,16 @@
 
          <div class="col" id="question-container">
 
-          <div id="saveSelectQuestion">
-            <input type="button" class="btn btn-primary" value="Save" onclick='saveSelectedQuestion("<%=categoryId%>","<%=examId%>")'>
+          <div id="select-action-btn">
+           
+            <div id="saveSelectQuestion">
+              <input type="button" class="btn btn-primary" value="Save" onclick='saveSelectedQuestion("<%=categoryId%>","<%=examId%>")'>
             </div>
+            <div id="saveSelectQuestion">
+              <a href="/exams/choosedQuestion/?exam_id=<%=examId%>" class="btn btn-primary">Next</a>
+            </div>
+          </div>
+          
           <!-- all questions -->
           <% for(let i=0;i<questions.length;i++){%>
 
@@ -56,6 +63,7 @@
 
             <%}%>
         </div>
+      
       </div>
     </section>
 </body>

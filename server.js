@@ -10,6 +10,7 @@ const examRoute = require('./routes/exam-route.js');
 const studentRoute = require('./routes/students-route.js');
 const resultRoute = require('./routes/result-route.js');
 const categoryRoute = require('./routes/category-route.js');
+const chartRoute = require('./routes/chart-route.js');
 var nodeoutlook = require('nodejs-nodemailer-outlook')
 
 const auth = require('./middleware/auth-middlware.js');
@@ -44,6 +45,7 @@ app.use('/exams', auth.userAuth, examRoute);
 app.use('/students', auth.userAuth, studentRoute);
 app.use('/result', auth.userAuth, resultRoute);
 app.use('/category', auth.userAuth, categoryRoute);
+app.use('/chart', auth.userAuth, chartRoute);
 
 app.use('/user', authRoute);
 app.use(express.static(__dirname + "/public"))

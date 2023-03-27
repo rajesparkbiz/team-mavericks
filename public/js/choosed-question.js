@@ -31,10 +31,17 @@ async function toogle(value, eaxmId) {
           </p>
         </div>
         <div class="question-action-btn">
-          <input type="button" value="Discard" class="btn btn-primary">
+          <input type="button" value="Discard" class="btn btn-primary" onclick="discardQuestion('${eaxmId}','${data[i].question_id}','${categoryId}')">
         </div>
        </div>`;
     }
     questionContainer.innerHTML=content;
 
+}
+
+async function discardQuestion(examId,questionId,categoryId){
+  console.log(examId,questionId,categoryId);
+  const discardReq=await fetch(`/question/question/discard/?examId=${examId}&questionId=${questionId}&categoryId=${categoryId}`);
+
+  location.reload();
 }

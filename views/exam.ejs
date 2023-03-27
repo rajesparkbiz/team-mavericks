@@ -16,7 +16,7 @@
   <section>
 
     <div class="contaner-fluid">
-
+      
       <div class="action-btn">
         <div class="create-exam-button">
           <a type="button" class="btn btn-success" href="/exams/createExam">Create Exam</a>
@@ -66,7 +66,7 @@
                 <td>
                   <%= data[i].createdDate %>
                 </td>
-                
+
                 <td>
                   <div class="form-check form-switch">
                     <input class="form-check-input switch" type="checkbox" role="switch"
@@ -76,18 +76,17 @@
                   </div>
                 </td>
                 <td>
-                 <a href="/result/student/?exam_id=<%=data[i].exam_id%>"> View Result</a>
+                  <a href="/result/student/?exam_id=<%=data[i].exam_id%>"> View Result</a>
                 </td>
                 <td>
-                 <a href="/exams/choosedQuestion/?exam_id=<%=data[i].exam_id%>" id="<%=data[i].exam_id%>" class="<% 
+                  <a href="/exams/displaySelectQuestion/?exam_id=<%=data[i].exam_id%>" id="<%=data[i].exam_id%>" class="<% 
                   if(questionStatus[i]>0){%>
                     text-success
                   <%}else{%>
                     text-danger
-                  <%}%>"
-                  >
-                  View Question
-                </a>
+                  <%}%>">
+                    View Question
+                  </a>
                 </td>
               </tr>
               <% }%>

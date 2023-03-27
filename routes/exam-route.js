@@ -14,5 +14,6 @@ routers.post('/createExam',examController.addExam);
 routers.get('/checkexamname',examController.checkname);
 routers.get('/selectQuestions',examController.selectQuestions);
 routers.get('/insert/Question',examController.insertSelectQuestions);
+routers.get('/displaySelectQuestion',examController.displaySelectQuestion);
 
 module.exports=routers;

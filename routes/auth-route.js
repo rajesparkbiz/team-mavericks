@@ -10,3 +10,4 @@ routers.get('/logout',authController.userLogout);
 routers.get('/forgot',authController.forgotPass);
 
 module.exports=routers;
+

@@ -10,5 +10,9 @@
 
 #saveSelectQuestion{
     margin: 20px;
-    float: right;
+}
+
+#select-action-btn{
+    display: flex;
+    justify-content: end
 }

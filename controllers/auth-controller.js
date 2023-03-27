@@ -54,6 +54,7 @@ class UserAuth {
         return res.redirect('/auth/login');
 
     }
+    
     static forgotPass = async (req, res) => {
         let email = req.query.email;
         let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${email}'`);

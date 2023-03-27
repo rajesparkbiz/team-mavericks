@@ -173,11 +173,11 @@ class QuestionController {
         res.json({ questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories, examId: examId });
 
     }
-
+    
     //use for default selected question
     static displaySelectedQuestion = async (req, res) => {
-
-        const categoryId = req.query.category;
+        
+        const categoryId = req.query.category || 1;
         const examId = req.query.examId;
 
         //get all question category 
@@ -285,11 +285,22 @@ class QuestionController {
 
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
+    
+    static discardChoosedQuestion =async(req,res)=>{
+        const {examId,questionId,categoryId}=req.query;
         
-    static displayChooseQuestion = async (req, res) => {
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+        const choosedQuestionResult=await queryExecurter(`SELECT exam_category.question_id FROM exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
 
-        res.render('select-question', { categories: question_category });
+        const questionIds=(choosedQuestionResult[0].question_id).split(",");
+
+        let filterIds=questionIds.filter((id)=>{
+            return ![questionId].includes(id);
+        })
+
+        
+        const updateQuestion=await queryExecurter(`update exam_category set exam_category.question_id='${filterIds}' where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+
+        res.json();
     }
 }
 

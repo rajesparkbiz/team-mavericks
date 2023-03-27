@@ -1,16 +1,3 @@
-// function enableText(tag) {
-//   const tagClass = tag.classList[0];
-//   const id = tag.id;
-//   if (tagClass == 'text-danger') {
-//     const viewLink = document.getElementById(id);
-//     viewLink.innerHTML = 'Choose Question'
-//   }
-// }
-
-// function disableText(tag) {
-//   const viewLink = document.getElementById(tag.id);
-//   viewLink.innerHTML = "View Question";
-// }
 
 async function toggleSwitch(exam_id) {
 
@@ -57,7 +44,12 @@ async function Search(str) {
                     <input class="form-check-input switch" type="checkbox" role="switch"
                       onchange="toggleSwitch('${exam_id}')" ${status_content}>
               </div>
-            </td>`
+            </td>
+            <td>
+                 <a href="/result/student/?exam_id=${exam_id}">View Result</a>
+            </td>
+              
+            `
 
 
     content += '</tr>'
