@@ -126,7 +126,7 @@
                   <a href="/result/student/?exam_id=<%=data[i].exam_id%>"> View Result</a>
                 </td>
                 <td>
-                  <a href="/exams/choosedQuestion/?exam_id=<%=data[i].exam_id%>" id="<%=data[i].exam_id%>" class="<% 
+                  <a href="/exams/displaySelectQuestion/?exam_id=<%=data[i].exam_id%>" id="<%=data[i].exam_id%>" class="<% 
                   if(questionStatus[i]>0){%>
                     text-success
                   <%}else{%>
@@ -153,6 +153,7 @@
 
 
 <script src="/js/exam.js"></script>
+<script src="/js/create-exam.js"></script>
 
 
 </html>

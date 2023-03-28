@@ -1,20 +1,21 @@
-.question-active{
+.question-active {
     color: green;
 }
 
-.question-disable{
+.question-disable {
     color: red;
 }
-.search-input{
+
+.search-input {
     padding: 10px;
 }
 
 .search-input input {
-    width:100%;
+    width: 100%;
     margin-left: 10px;
 }
 
-.action-btn{
+.action-btn {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,17 +26,18 @@
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.exam-search-label{
-    font-size:30px;
+.exam-search-label {
+    font-size: 30px;
 }
 
-.user-exam-status-card{
-    font-size:17px;
+.user-exam-status-card {
+    font-size: 17px;
 }
 
-.create-exam-button{
+.create-exam-button {
     margin-left: 10px;
 }
-.blur-card{
+
+.blur-card {
     opacity: 0.5;
 }
