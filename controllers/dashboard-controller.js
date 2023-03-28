@@ -40,7 +40,7 @@ class StdentQuestion {
     
         var student_name = await queryExecurter(`select student_master.fname from student_master inner join  exam_attempt_master on exam_attempt_master.student_id=student_master.student_id `);
 
-
+  
        
 
 

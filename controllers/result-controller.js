@@ -24,9 +24,9 @@ class ResultController {
         var status = [];
         var exam_id = req.query.exam_id;
         var data = await queryExecurter(`select exam_attempt_master.exam_id as id,fname,exam_total_question,exam_result  
-        from exam_attempt_master inner join exam_master as exam on exam.exam_id = exam_attempt_master.exam_id
+         from exam_attempt_master inner join exam_master as exam on exam.exam_id = exam_attempt_master.exam_id
          inner join student_master as s on s.student_id=
-        exam_attempt_master.student_id where exam_attempt_master.exam_id = '${exam_id}'`);
+         exam_attempt_master.student_id where exam_attempt_master.exam_id = '${exam_id}'`);
         for (var i = 0; i < data.length; i++) {
             var total = data[i].exam_total_question;
             var obtained = data[i].exam_result;
@@ -38,7 +38,14 @@ class ResultController {
                 status.push('fail');
             }
         }
+
       res.render('studentresult', { data: data,status});     
     }
-}
+
+    // static async function (Deleted) {
+    //     var status =[];
+    //     var exam_
+        
+    }
+
 module.exports = ResultController;

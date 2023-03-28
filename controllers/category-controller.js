@@ -2,17 +2,12 @@ const queryExecurter = require('../database/dbHelper.js');
 
 class CategoryController {
 
-
-
     static addCategory = async (req, res) => {
         var category_name = req.query.category;
 
 
-        const categoryQuery = await queryExecurter(`INSERT INTO exam_admin.question_category (category_name) VALUES ('${category_name.toUpperCase()}');
-        `);
-
+        const categoryQuery = await queryExecurter(`INSERT INTO exam_admin.question_category (category_name) VALUES ('${category_name.toUpperCase()}');`);
         const categoryAllQuery = await queryExecurter(`SELECT category_name FROM exam_admin.question_category;`);
-
         res.redirect('/category/showCategory');
     };
 
@@ -20,16 +15,15 @@ class CategoryController {
 
         const verifyCat = await queryExecurter(`SELECT count(*) as status FROM exam_admin.question_category where question_category.category_name='${req.query.category}'`);
         const status = verifyCat[0].status;
-
         res.json({ status: status });
     };
 
 
     static showCategory = async (req, res) => {
-
         const ans = await queryExecurter(`SELECT * FROM exam_admin.question_category ;`);
         res.render("category-question", { category_list: ans, actionState: 'add' });
     };
+
 
     static editCategory = async (req, res) => {
         console.log("call edit api");
@@ -38,7 +32,7 @@ class CategoryController {
         console.log(id);
         console.log("your category id", id, "and your category name", editCategoryName);
 
-
+   
         const editCategory = await queryExecurter(`UPDATE question_category SET category_name = '${editCategoryName}' WHERE category_id = ${id};
         `);
 

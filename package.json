@@ -24,6 +24,7 @@
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.7",
+    "install": "^0.13.0",
     "mysql2": "^3.2.0",
     "nodejs-nodemailer-outlook": "^1.2.4",
     "nodemailer": "^6.9.1"

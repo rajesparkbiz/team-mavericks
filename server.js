@@ -30,6 +30,15 @@ app.use(session({
 
 
 
+//404 page found 
+
+
+app.get("*", (req, res) => {
+    res.render('404.ejs')
+    })
+
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs')
 app.use(express.json());
@@ -43,10 +52,11 @@ app.use('/result', auth.userAuth, resultRoute);
 app.use('/category', auth.userAuth, categoryRoute);
 
 
+
 app.use('/user', authRoute);
 app.use(express.static(__dirname + "/public"))
 
 app.listen(port, () => {
-    console.log(`Server is Running on ${port}`);
+    console.log(`Server is connected  on ${port}`);
 })
 

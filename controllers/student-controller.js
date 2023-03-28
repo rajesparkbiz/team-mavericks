@@ -17,12 +17,12 @@ class StudentController {
         }
         if (search.length == "") {
             exam = await queryExecurter(`select * from exam_admin.exam_master;`);
-        }        
+        }
         res.json({ exam });
     }
 
     static filterStudent = async (req, res) => {
-        const {search} = req.query;
+        const { search } = req.query;
 
         let searchStudent;
 
@@ -34,7 +34,13 @@ class StudentController {
         // if(search.length=="") {
         //     searchStudent = await queryExecurter(`SELECT * FROM exam_admin.student_master;`);
         // }
-        searchStudent = await queryExecurter(`select * from student_master where fname like '%${search}%' OR lname like '%${search}%' OR email like '%${search}%' OR mobile like '%${search}%' OR enrollment like '%${search}%' OR qualification like '%${search}%' OR city like '%${search}%' OR college like '%${search}%'`);
+
+        
+        searchStudent = await queryExecurter(`select * from student_master where fname like '%${search}%' 
+        OR lname like '%${search}%'OR Gender like'%${search}%' OR email like '%${search}%'
+        OR mobile like '%${search}%' OR enrollment like '%${search}%'
+        OR qualification like '%${search}%' OR city like '%${search}%' 
+        OR college like '%${search}%'`);
         res.json({ searchStudent });
     }
 }

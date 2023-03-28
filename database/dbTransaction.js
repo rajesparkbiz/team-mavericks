@@ -10,7 +10,6 @@ const connection = mysql.createPool(
     }
 )
 
-
 class dbTransaction {
     static async queryExec(id, args, querytype) {
         let con = await connection.getConnection();
@@ -24,7 +23,6 @@ class dbTransaction {
                     if (index == 0) {
                         result[index] = await con.execute(args[index]);
                         insertedId = result[index][id]['insertId'];
-                        console.log("hello: " + insertedId);
                     }
                     else {
                         let updatedQuery1 = args[index].split("lastQuestionId");
@@ -41,7 +39,8 @@ class dbTransaction {
                         }
                     }
                 }
-            } else if (querytype == 'update') {
+            } 
+                else if (querytype == 'update') {
                 for (let k = 0; k < args.length; k++) {
                     await con.execute(args[k]);
                 }
@@ -56,7 +55,7 @@ class dbTransaction {
             if (con) {
                 con.release();
             }
-        }
+        } 
     }
 }
 

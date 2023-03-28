@@ -20,12 +20,14 @@ class ExamController {
         const addExam = await queryExecurter(query);
         res.redirect('/dashboard/exams');
     }
+    
     static checkname = async (req,res) =>{
         let examname=req.query.examname;
         let query= `SELECT exam_name FROM exam_master WHERE exam_name = '${examname}';`;
         const examnamechk = await queryExecurter(query);
         res.json({"no_of_exam":examnamechk.length});
     }
+    
 }
 
 module.exports = ExamController;

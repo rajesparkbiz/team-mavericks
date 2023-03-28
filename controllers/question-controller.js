@@ -66,6 +66,7 @@ class QuestionController {
                         if (option[index] != undefined && option[index] != null && option[index].trim() != '') {
                             await queryExecurter(`INSERT INTO option_master (question_id, option_value) VALUES ('${que_id}', '${option[index]}');`);
                         }
+                        
                     }
                 }
                 else {
