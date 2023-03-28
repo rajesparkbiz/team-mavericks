@@ -10,7 +10,7 @@ class StudentController {
         //console.log(query_selector);
 
         
-        var limit = 3;
+        var limit = 2;
         var page = req.query.page || 1;
         var column_name = req.query.column_name || 'student_id';
         var order = req.query.order || 'ASC';
@@ -23,7 +23,7 @@ class StudentController {
                 console.log(result[0].count);
                 var count = Math.ceil(result[0].count/limit);
                 console.log(count);
-                res.render('user.ejs', { data: student_master,order,count,column_name });
+                res.render('user.ejs', { data: student_master, order, count ,column_name });
                 
             })
 
