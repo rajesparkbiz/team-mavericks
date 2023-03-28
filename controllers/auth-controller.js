@@ -30,6 +30,10 @@ class UserAuth {
     }
   }
 
+  static login =async(req,res)=>{
+    res.redirect('/auth/login');
+  }
+
   static userLoginchk = async (req, res) => {
     let { Username, Password } = req.body;
     let userchk = await queryExecurter(`select user_master.username,user_master.password,user_master.role FROM user_master where user_master.username='${Username}'`);
@@ -80,7 +84,7 @@ class UserAuth {
   static forgotPass = async (req, res) => {
     let email = (req.query.email).toLowerCase();
     const accessToken = OAuth2_client.getAccessToken();
-    let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${email}'`);
+    let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM user_master WHERE username = '${email}'`);
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     let ftoken = '';
@@ -92,7 +96,6 @@ class UserAuth {
       var fullUrl = req.protocol + '://' + req.get('host') + `/user/changePassword/${ftoken}`;
       readHTMLFile(__dirname + '/emailTemplet.html', function (err, html) {
         if (err) {
-          console.log('error reading file', err);
           return;
         }
         var template = handlebars.compile(html);
@@ -134,7 +137,7 @@ class UserAuth {
   }
   static changePassword = async (req, res) => {
     let ftoken = req.params['ftoken'];
-    let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
+    let userTokenChk = await queryExecurter(`SELECT * FROM user_master WHERE forgot_token = '${ftoken}';`);
     if (userTokenChk.length == 1) {
       res.render('forgotpassword', { ftoken });
     }
@@ -145,7 +148,7 @@ class UserAuth {
   static changePasswordChk = async (req, res) => {
     let saltround = 10;
     let { ftoken, Password } = req.body;
-    let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
+    let userTokenChk = await queryExecurter(`SELECT * FROM user_master WHERE forgot_token = '${ftoken}';`);
     if (userTokenChk.length == 1) {
       bcrypt.genSalt(saltround, function (err, salt) {
         bcrypt.hash(Password, salt, async function (err, hash) {

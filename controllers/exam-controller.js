@@ -4,10 +4,10 @@ class ExamController {
 
     static toogleSwitch = async (req, res) => {
 
-        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);
+        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_master where exam_master.exam_id=${req.query.id}`);
         const isActive = currentStatus[0].status;
 
-        var query = `update exam_admin.exam_master set exam_isActive = '${isActive == 'yes' ? 'no' : 'yes'}' where exam_id=${req.query.id}`;
+        var query = `update exam_master set exam_isActive = '${isActive == 'yes' ? 'no' : 'yes'}' where exam_id=${req.query.id}`;
 
         const toggleSwitchQuery = await queryExecurter(query);
 
@@ -30,19 +30,8 @@ class ExamController {
         res.redirect('/dashboard/exams');
     }
 
-    //SAMPLE
     static displaySelectQuestion = async (req, res) => {
-        // const exam_id=req.query.exam_id;
-        // console.log(exam_id);
-        // const defaultCategory = await queryExecurter(`SELECT question_category.category_id as id FROM question_category order by question_category.category_id ASC limit 1`);
-
-        // const categoryId = defaultCategory[0].id;
-
-        // const questions = await queryExecurter(`SELECT * FROM question_master where question_master.category_id=${categoryId}`);
-
-
-        // const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
-
+      
         const categoryId = req.query.category || 1;
         const examId = req.query.exam_id;
 
@@ -155,47 +144,54 @@ class ExamController {
         const examId = req.query.exam_id;
         var choosedCategory = [];
 
-        const examResult = await queryExecurter(`select exam_category.category_id from exam_category where exam_category.exam_id=${examId}`);
+        try{
+            const examResult = await queryExecurter(`select exam_category.category_id from exam_category where exam_category.exam_id=${examId}`);
 
-        if (examResult.length != 0) {
-
-            for (let i = 0; i < examResult.length; i++) {
-                var categoryMap = [];
-                const categoryName = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category where question_category.category_id=${examResult[i].category_id}`);
-
-                choosedCategory[i] = {
-                    "category": categoryName[0].category_name,
-                    "category_id": categoryName[0].category_id
+            if (examResult.length != 0) {
+    
+                for (let i = 0; i < examResult.length; i++) {
+                    var categoryMap = [];
+                    const categoryName = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category where question_category.category_id=${examResult[i].category_id}`);
+    
+                    choosedCategory[i] = {
+                        "category": categoryName[0].category_name,
+                        "category_id": categoryName[0].category_id
+                    }
                 }
-            }
-
-
-            //for default first category questions
-            const categoryId = req.query.categoryId || choosedCategory[0].category_id;
-
-            var categoryQuestions = [];
-
-            const questionsResult = await queryExecurter(`select exam_category.question_id,exam_category.category_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
-
-            const questionsId = questionsResult[0].question_id.split(",");
-
-
-
-            for (let i = 0; i < questionsId.length; i++) {
-                const query = `SELECT question_master.question,question_master.category_id FROM question_master where question_master.question_id=${questionsId[i]}`;
+    
+    
+                //for default first category questions
+                const categoryId = req.query.categoryId || choosedCategory[0].category_id;
+    
+                var categoryQuestions = [];
+    
+                const questionsResult = await queryExecurter(`select exam_category.question_id,exam_category.category_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
                 
-                const question = await queryExecurter(query);
-                categoryQuestions[i] = {
-                    "question": question[0].question,
-                    "id": questionsId[i],
-                    "category": question[0].category_id
-                };
+                const questionsId = questionsResult[0].question_id.split(",");
+                if(questionsId.length!=0 && questionsId[0]!=''){
+                    for (let i = 0; i < questionsId.length; i++) {
+                        const query = `SELECT question_master.question,question_master.category_id FROM question_master where question_master.question_id=${questionsId[i]}`;
+                        
+                        const question = await queryExecurter(query);
+                        categoryQuestions[i] = {
+                            "question": question[0].question,
+                            "id": questionsId[i],
+                            "category": question[0].category_id
+                        };
+                    }
+        
+                    res.render('choosed-question', { categories: choosedCategory, exam_id: examId, categoryQuestions: categoryQuestions, questionCount: questionsId.length, status: true });
+                }else{
+                    res.render('choosed-question', { status: false });
+                }
+    
+                
+            } else {
+                res.render('choosed-question', { status: false });
             }
-
-            res.render('choosed-question', { categories: choosedCategory, exam_id: examId, categoryQuestions: categoryQuestions, questionCount: questionsId.length, status: true });
-        } else {
-            res.render('choosed-question', { status: false });
+        }catch(err){
         }
+      
 
     }
 
@@ -232,7 +228,7 @@ class ExamController {
 
 
         //check avialable inserted question 
-        const isAvialbale = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_admin.exam_category where exam_category.exam_id=${examid} and exam_category.category_id=${categoryid}`);
+        const isAvialbale = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_category where exam_category.exam_id=${examid} and exam_category.category_id=${categoryid}`);
 
 
         // make update query
@@ -240,6 +236,7 @@ class ExamController {
             const isAvialbales = isAvialbale[0].id;
 
             const ids = isAvialbales.split(",");
+            ids.shift()
             for (let i = 0; i < question.length; i++) {
                 ids.push(question[i]);
             }

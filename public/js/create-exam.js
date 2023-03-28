@@ -9,7 +9,6 @@ async function validateExamTitle(){
     const examname=document.getElementById("examname").value.trim();
     let res = await fetch(`/exams/checkexamname?examname=${examname}`);
     let examnamechk = await res.json();
-    console.log(examnamechk['no_of_exam']);
     if(examname==''){
         examnameErr.innerHTML='Please enter exam title';
         validateExamTitle_flag =0;

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/search-bar.css">
+  <link id="theme-style" rel="stylesheet" href="/css/navbar.css">
+  <style>
+    .true-answer{
+      color: green;
+    }
+    .false-answer{
+      color: red;
+    }
+
+    .answer{
+      font-size: 20px;
+      font-weight: 400;
+    }
+    td,th{
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body onload="navbar_changer('Results');">
+  <%- include('navbar.ejs') %>
+  <section class="app-wrapper">
+
+    <div class="contaner-fluid">
+   
+
+      <div class="user-table warpper m-2">
+
+        <% if(data.length==0 || data==undefined){%>
+          <p>Students Not Submit Exam</p>
+        <%}else{%>
+        <table class="table table-hover " id="studenttable" border="1">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th scope="col">Question</th>
+              <th scope="col">Submited Answer</th>
+              <th scope="col">Actual Asnwer</th>
+             
+            </tr>
+          </thead>
+
+          <tbody id="table">
+           
+            <% for(i=0; i<data.length; i++) {%>
+            
+              <tr>
+                <td>
+                  <%= (i+1)%>
+                </td>
+                <td>
+                  <%= data[i].question%>
+                </td>
+                <td class=
+                  "
+                    <%if(data[i].status=='true'){%>
+                      true-answer
+                    <%}else{%>
+                      false-answer  
+                    <%}%>
+                  "
+                  >
+                  <%= data[i].s_answer%>
+                </td>
+                <td>
+                  <%= data[i].answer%>
+                </td>
+              </tr>
+              
+              <% }%>
+              <tr>
+                <td colspan="2" class="answer">
+                  Result
+                </td>
+                <td class="answer">
+                  Marks: <%= result.obtain_mark %>
+                </td>
+                <td class="answer">
+                  Total Marks: <%= result.total_mark %>
+                </td>
+              </tr>
+          </tbody>
+
+
+
+        </table>
+        <%}%>
+
+      </div>
+
+    </div>
+    <%- include('footer.ejs') %>
+  </section>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+
+  </script>
+   
+   <script src="/js/navbar.js"></script>
+
+</html>

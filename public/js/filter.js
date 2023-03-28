@@ -7,15 +7,13 @@ async function Search(str){
  {
 
   const flag = document.getElementById("filter-box").value;
-  console.log(str);
-    console.log(flag);
+
 
  var searching = document.getElementById("search").value;
 
  var res = await fetch(`/searchexam/?search=${str}&flag=${flag}`);
  var data = await res.json();
 var value = data.exam;
-console.log("value"+value);
 
  var tbody = document.getElementById("table");
 
@@ -49,8 +47,6 @@ console.log("value"+value);
 else{
     const flag = document.getElementById("filter-box").value;
 
-    console.log(str);
-    console.log(flag);
 
     var searching = document.getElementById("search").value;
     var res = await fetch(`/student/?search=${str}&flag=${flag}`);

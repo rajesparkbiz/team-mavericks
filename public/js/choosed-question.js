@@ -40,7 +40,6 @@ async function toogle(value, eaxmId) {
 }
 
 async function discardQuestion(examId,questionId,categoryId){
-  console.log(examId,questionId,categoryId);
   const discardReq=await fetch(`/question/question/discard/?examId=${examId}&questionId=${questionId}&categoryId=${categoryId}`);
 
   location.reload();

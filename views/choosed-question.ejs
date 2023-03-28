@@ -33,6 +33,9 @@
               <%}%>
           </ul>
         </div>
+
+      
+        
         <div class="choosed-question-container">
           <%for(let i=0;i<categoryQuestions.length;i++){%>
             <div class="question-bar">
@@ -48,10 +51,12 @@
             </div>
             <%}%>
         </div>
+        
         <div id="exam-btn">
           <a href="/exams/displaySelectQuestion/?exam_id=<%= exam_id %>" class="btn btn-primary">Prev</a>
           <a href="/dashboard/exams" class="btn btn-primary">Save</a>
         </div>
+      
       </div>
 
       <%}else{%>
