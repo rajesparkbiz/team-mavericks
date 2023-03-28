@@ -9,7 +9,6 @@ validateExamTitle();
 
 validateExamAccessCode();
 
-
 function moveQuestionListPage() {
 
 }
@@ -47,6 +46,10 @@ function validateExamTitle() {
         return false;
     } else if (examname.length < 4) {
         examnameErr.innerHTML = 'Please enter exam title greater than 3 character';
+        return false;
+    }
+    else if (examname.length >20) {
+        examnameErr.innerHTML = 'Please enter exam title less than 20 character';
         return false;
     }
     else if(!isNaN(examname)) {

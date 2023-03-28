@@ -13,7 +13,6 @@ const categoryRoute = require('./routes/category-route.js');
 
 
 const auth = require('./middleware/auth-middlware.js');
-
 const queryExecurter = require('./database/dbHelper.js');
 const session = require('express-session');
 const { alreadyLogin } = require('./controllers/auth-controller.js');

@@ -52,11 +52,9 @@ class UserAuth {
     }
 
     static userLogout = async (req, res) => {
-
         req.session.destroy(null);
         res.clearCookie('connect.sid');
         return res.redirect('/auth/login');
-
     }
 
 }
