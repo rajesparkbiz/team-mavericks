@@ -45,11 +45,13 @@ class StdentQuestion {
     static displayExams=async(req,res)=>{
         var exam_master = await queryExecurter(`SELECT * FROM exam_master`);
         var questionStatus=[];
+        // console.log(exam_master);
         for(let i=0;i<exam_master.length;i++){
-            const isAddedQuestions=await queryExecurter(`SELECT count(*) as status FROM exam_admin.exam_category where exam_category.exam_id=${exam_master[i].exam_id}`);
+            const isAddedQuestions=await queryExecurter(`SELECT count(*) as status FROM exam_admin.exam_category where exam_category.exam_id=${exam_master[i].exam_id};`);
             questionStatus[i]=isAddedQuestions[0].status;
+            console.log("is add question",isAddedQuestions);
         }
-
+        
         res.render('exam.ejs', { data: exam_master,questionStatus:questionStatus });
     }
     
