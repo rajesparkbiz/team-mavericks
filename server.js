@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const ejs = require('ejs');
+const url = require('url');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const authRoute = require('./routes/auth-route.js');
