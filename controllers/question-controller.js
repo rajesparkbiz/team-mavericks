@@ -2,15 +2,13 @@ const e = require('express');
 const queryExecurter = require('../database/dbHelper.js');
 const question_config = require('../public/js/question-config.js');
 const dbTransaction = require('../database/dbTransaction.js');
-
+const QueryHelper = require('../services/databaseQuery');
 class QuestionController {
 
     static deleteQuestion = async (req, res) => {
         const questionId = req.query.id;
         if (questionId) {
-            const deleteQuery = await queryExecurter(`UPDATE exam_admin.question_master SET isDeleted = '0' WHERE question_id = '${questionId}';
-            `);
-
+            const deleteQuery = await QueryHelper.updateQuery('question_master','isDeleted','0','question_id',questionId,'=');
             res.json({ msg: "Deleted successfully" });
         }
 
@@ -78,22 +76,18 @@ class QuestionController {
 
         const optionTitle = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-        //get all question category 
-        let questionCategories = await queryExecurter(`SELECT * FROM exam_admin.question_category;`);
 
+        let questionCategories = await QueryHelper.selectQuery('question_category','*',false);
 
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM exam_admin.question_category;`);
+        let cols = ['category_name','category_id'];
+        const question_category = await QueryHelper.selectQuery('question_category',cols,false);
+        const allQuestions = await QueryHelper.selectQuery('question_master','*',true,['isDeleted','category_id'],['1',categoryId],'=','AND');
 
-        const questionQuery = `SELECT * FROM exam_admin.question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
-
-        const allQuestions = await queryExecurter(questionQuery);
         const questions = [];
 
         for (let i = 0; i < allQuestions.length; i++) {
 
-            const question_options = await queryExecurter(`SELECT * FROM exam_admin.option_master where question_id=${allQuestions[i].question_id}`);
-
-
+            const question_options = await QueryHelper.selectQuery('option_master','*',true,'question_id',`${allQuestions[i].question_id}`,'=');
             var options = [];
 
             var trueOption = [];
@@ -290,7 +284,8 @@ class QuestionController {
         
     static displayChooseQuestion = async (req, res) => {
         const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
-
+        // let cols = ['category_name','category_id'];
+        // const question_category = await QueryHelper.selectQuery('question_category',cols,false);
         res.render('select-question', { categories: question_category });
     }
 }

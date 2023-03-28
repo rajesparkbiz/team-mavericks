@@ -16,10 +16,8 @@ const queryExecurter = require('./database/dbHelper.js');
 const session = require('express-session');
 const { alreadyLogin } = require('./controllers/auth-controller.js');
 const oneDay = 1000 * 60 * 60 * 24;
-
 const port = process.env.PORT;
 const app = express();
-
 //session middleware
 app.use(session({
     secret: "rjcoding",
@@ -46,7 +44,7 @@ app.use('/category', auth.userAuth, categoryRoute);
 app.use('/user', authRoute);
 app.use(express.static(__dirname + "/public"))
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log(`Server is Running on port`);
 })
 
