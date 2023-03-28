@@ -7,6 +7,6 @@ routers.get('/addCategory',categoryController.addCategory);
 routers.get('/verifyCategory',categoryController.verifyCategory);
 routers.post('/editCategory',categoryController.editCategory);
 routers.get('/showCategory', categoryController.showCategory);
-routers.post('/deleteCategory', categoryController.deleteCategory);
+routers.get('/deleteCategory', categoryController.deleteCategory);
 
 module.exports=routers;

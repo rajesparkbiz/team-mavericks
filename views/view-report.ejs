@@ -10,6 +10,22 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/search-bar.css">
   <link id="theme-style" rel="stylesheet" href="/css/navbar.css">
+  <style>
+    .true-answer{
+      color: green;
+    }
+    .false-answer{
+      color: red;
+    }
+
+    .answer{
+      font-size: 20px;
+      font-weight: 400;
+    }
+    td,th{
+      border: 1px solid black;
+    }
+  </style>
 </head>
 
 <body onload="navbar_changer('Results');">
@@ -17,29 +33,20 @@
   <section class="app-wrapper">
 
     <div class="contaner-fluid">
-      <div class="action-btn">
-        <div class="search-input d-flex justify-content-center">
-          <label for="exam-search-label">Search</label>
-          <input type="text" id="search" class="form-control" oninput="Search(this.value)">
-         
-        </div>
-      </div>
+   
 
       <div class="user-table warpper m-2">
 
         <% if(data.length==0 || data==undefined){%>
           <p>Students Not Submit Exam</p>
         <%}else{%>
-
         <table class="table table-hover " id="studenttable" border="1">
           <thead>
             <tr>
               <th>No</th>
-              <th scope="col">Student Name</th>
-              <th scope="col">Exam Name</th>
-              <th scope="col">Total Marks</th>
-              <th scope="col">Marks</th>
-              <th scope="col">status</th>
+              <th scope="col">Question</th>
+              <th scope="col">Submited Answer</th>
+              <th scope="col">Actual Asnwer</th>
              
             </tr>
           </thead>
@@ -53,24 +60,36 @@
                   <%= (i+1)%>
                 </td>
                 <td>
-                  <%= data[i].fname%>
+                  <%= data[i].question%>
+                </td>
+                <td class=
+                  "
+                    <%if(data[i].status=='true'){%>
+                      true-answer
+                    <%}else{%>
+                      false-answer  
+                    <%}%>
+                  "
+                  >
+                  <%= data[i].s_answer%>
                 </td>
                 <td>
-                  <%= data[i].exam_name%>
-                </td>
-                <td>
-                  <%= data[i].exam_total_question%>
-                </td>
-                <td>
-                  <%= data[i].exam_result%>
-                </td>
-                <td>
-                    
-                   <%= status[i] %>
-
+                  <%= data[i].answer%>
                 </td>
               </tr>
+              
               <% }%>
+              <tr>
+                <td colspan="2" class="answer">
+                  Result
+                </td>
+                <td class="answer">
+                  Marks: <%= result.obtain_mark %>
+                </td>
+                <td class="answer">
+                  Total Marks: <%= result.total_mark %>
+                </td>
+              </tr>
           </tbody>
 
 
@@ -79,7 +98,6 @@
         <%}%>
 
       </div>
-      <%- include('pagination-tab.ejs') %>
 
     </div>
     <%- include('footer.ejs') %>
