@@ -1,25 +1,53 @@
 const queryExecurter = require('../database/dbHelper.js');
+const con = require('../src/config.js');
 
 class ResultController {
 
     static displayExams = async (req, res) => {
+        var limit =3;
+        var page = req.query.page || 1;
+
+        console.log("fetch page is",page);
+
+        var offset = (page -1 )* limit;
+
+        var result_data = [];
+
         var status = [];
-        var data = await queryExecurter(`select fname, exam_name,exam_total_question,exam_result 
+        con.query(`select fname, exam_name,exam_total_question,exam_result ,id
         from exam_attempt_master  exam inner join exam_master e on exam.exam_id = e.exam_id inner join
-         student_master s on s.student_id = exam.student_id;`);
-        for (var i = 0; i < data.length; i++) {
-            var total = data[i].exam_total_question;
-            var obtained = data[i].exam_result;
-            var marks = parseInt((total * 33) / 100);
-            if (obtained >= marks) {
-                status.push('pass');
+         student_master s on s.student_id = exam.student_id LIMIT ${offset},${limit};`,(err,data)=>{
+            //console.log(data);
+
+            con.query(`SELECT count(*) as count FROM exam_attempt_master;`,(err,exam_data)=>{
+
+              //  console.log("result data",data.length);
+                for (var i = 0; i < data.length; i++) {
+                var total = data[i].exam_total_question;
+                var obtained = data[i].exam_result;
+                var marks = parseInt((total * 33) / 100);
+                var count = Math.floor(exam_data[0].count/limit);
+               // console.log("result count",count);
+    
+                if (obtained >= marks) {
+                    status.push('pass');
+                }
+                else {
+                    status.push('fail');
+                }
             }
-            else {
-                status.push('fail');
-            }
-        }
-        res.render('result.ejs', { data: data, status });
+
+            result_data.push(data,status,count);
+            //res.render('result.ejs', { data: data, status ,count});
+            res.json(result_data);
+
+            })
+
+            
+         });
+        
     }
+    
     static displayStudentResult =async(req,res)=>{
         var status = [];
         var exam_id = req.query.exam_id;

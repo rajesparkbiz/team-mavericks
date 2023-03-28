@@ -1,16 +1,11 @@
 <div class="user-exam-pagination-bar w- d-flex justify-content-between mx-2">
-    <div class="user-exam-status-card w-6">
-      Showing 1 to 10 of 57 entries
-    </div>
-
     
-
-
     <nav aria-label="Page navigation example">
       <ul class="pagination">
           <li class="page-item"><a class="page-link" href="#">Previous</a></li>
     <% for(let i=1; i<=count; i++){ %>
           <li class="page-item" id="list<%= i %>"><a class="page-link" href="/students/data?page=<%= i%>&column_name=<%= column_name %>"><%= i %></a></li>
+
     <% } %>
           <li class="page-item"><a class="page-link" href="#">Next</a></li>
       </ul>

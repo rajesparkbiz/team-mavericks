@@ -8,9 +8,13 @@ const routers=express.Router();
 
 routers.get('/status',examController.toogleSwitch);
 routers.get('/filter-exam',filterController.filterExams);
-routers.get('/showExamForm',examController.showExamForm);
-routers.post('/chooseQuestions',examController.createExam);
-routers.get('/chooseCategoryQuestion',examController.showCategoryQuestion);
-routers.post('/CreateQuestionPaper',examController.CreateQuestionPaper);
+routers.get('/createExam',examController.createExam);
+routers.get('/choosedQuestion',examController.choosedQuestions);
+routers.get('/choosed/questions',examController.displaychoosedQuestion);
+routers.post('/createExam',examController.addExam);
+routers.get('/checkexamname',examController.checkname);
+routers.get('/selectQuestions',examController.selectQuestions);
+routers.get('/insert/Question',examController.insertSelectQuestions);
+routers.get('/displaySelectQuestion',examController.displaySelectQuestion);
 
 module.exports=routers;

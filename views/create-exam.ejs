@@ -18,7 +18,7 @@
     <div class="page-content">
         <div class="wizard-v5-content">
             <div class="wizard-form">
-                <form class="form-register" method="POST" action="/exams/chooseQuestions" id="form-register">
+                <form class="form-register" id="form-register" action="/exams/createExam" method="POST">
                     <div id="form-total">
                         
                         <section>
@@ -29,8 +29,8 @@
                                 <div class="form-row">
                                     <div class="form-holder">
                                         <label for="first_name">Exam Name</label>
-                                        <input type="text" placeholder="write exam name here" class="form-control" oninput="validateExamTitle()"
-                                            id="examname" name="examname" autocomplete="off"
+                                        <input type="text" placeholder="write exam name here" class="form-control" onkeyup="validateExamTitle();"
+                                         id="examname" name="examname" autocomplete="off"
                                             >
                                         <p id="examname-err"></p>
                                     </div>
@@ -38,7 +38,7 @@
                                     <div class="form-holder">
                                         <label>Exam Access Code</label>
                                         <input type="text" placeholder="write access code here" class="form-control"
-                                            id="examcode" name="examcode" autocomplete="off" oninput="validateExamAccessCode(); validateInfo();">
+                                            id="examcode" name="examcode" autocomplete="off" onkeyup="validateExamAccessCode();">
                                         <p id="examcode-err"></p>
                                     </div>
                                 </div>
@@ -50,16 +50,15 @@
                                         <label for="total_que">Total Questions</label>
                                         <input type="number" placeholder="write total questions here"
                                             class="form-control" min="5" id="totalque" name="totalque"
-                                            autocomplete="off" value="10" oninput="validateExamQuestion(); validateInfo();">
+                                            autocomplete="off" value="10" onkeyup="validateExamQuestion();">
                                             <p id="totalque-err"></p>
 
                                     </div>
                                     <div class="form-holder">
                                         <label for="duration">Duration Of Exam</label>
                                         <input type="number" min="10" placeholder="minimum 10 minutes"
-                                            class="form-control" id="duration" name="duration" autocomplete="off" value="10" oninput="validateExamDuration(); validateInfo();">
+                                            class="form-control" id="duration" name="duration" autocomplete="off" value="10" onkeyup="validateExamDuration();">
                                             <p id="duration-err"></p>
-
                                     </div>
                                 </div>
                                 
