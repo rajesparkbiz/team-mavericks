@@ -1,8 +1,8 @@
+const QueryHelper = require('../services/databaseQuery');
 const { assign } = require('nodemailer/lib/shared/index.js');
 const queryExecurter = require('../database/dbHelper.js');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
-const nodeoutlook = require('nodejs-nodemailer-outlook');
 var handlebars = require('handlebars');
 const google = require('googleapis');
 const OAuth2 = google.Auth.OAuth2Client;
@@ -32,7 +32,8 @@ class UserAuth {
 
   static userLoginchk = async (req, res) => {
     let { Username, Password } = req.body;
-    let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${Username}'`);
+    // let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${Username}'`);
+    let userchk = await QueryHelper.selectQuery('user_master',['username','password','role'],true,true,'username',Username,'=');
 
     if (userchk.length == 1 && userchk[0]['role'] == "admin") {
       bcrypt.compare(Password, userchk[0]['password'], function (err, hashres) {
@@ -79,7 +80,8 @@ class UserAuth {
   static forgotPass = async (req, res) => {
     let email = (req.query.email).toLowerCase();
     const accessToken = OAuth2_client.getAccessToken();
-    let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${email}'`);
+    // let userchk = await queryExecurter(`SELECT user_master.username,user_master.password,user_master.role FROM exam_admin.user_master WHERE username = '${email}'`);
+    let userchk = await QueryHelper.selectQuery('user_master',['username','password','role'],true,true,'username',`${email}`,'=');
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     let ftoken = '';
@@ -87,7 +89,8 @@ class UserAuth {
       for (let i = 0; i < 30; i++) {
         ftoken += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
-      await queryExecurter(`UPDATE user_master SET forgot_token = '${ftoken}' WHERE (username = '${email}');`);
+      // await queryExecurter(`UPDATE user_master SET forgot_token = '${ftoken}' WHERE (username = '${email}');`);
+      await QueryHelper.updateQuery('user_master','forgot_token',`${ftoken}`,'username',`${email}`,'=',true);
       var fullUrl = req.protocol + '://' + req.get('host')+`/user/changePassword/${ftoken}`;
       readHTMLFile(__dirname + '/emailTemplet.html', function (err, html) {
         if (err) {
@@ -118,9 +121,11 @@ class UserAuth {
         }
         transport.sendMail(mail_option,function (err,result){
           if (err) {
+            // console.log(err);
             res.render('login', { status: "Some Error Occured Contact To admin!" });
           }
           else{
+            // console.log(result);
             res.render('login', { status: "Email Sended Successfully." });
           }
           transport.close();
@@ -133,7 +138,8 @@ class UserAuth {
   }
   static changePassword = async (req, res) => {
     let ftoken = req.params['ftoken'];
-    let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
+    // let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
+    let userTokenChk = await QueryHelper.selectQuery('user_master','*',true,true,'forgot_token',`${ftoken}`,'=');
     if (userTokenChk.length == 1) {
       res.render('forgotpassword', { ftoken });
     }
@@ -144,11 +150,13 @@ class UserAuth {
   static changePasswordChk = async (req, res) => {
     let saltround = 10;
     let { ftoken, Password } = req.body;
-    let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
+    // let userTokenChk = await queryExecurter(`SELECT * FROM exam_admin.user_master WHERE forgot_token = '${ftoken}';`);
+    let userTokenChk = await QueryHelper.selectQuery('user_master','*',true,true,'forgot_token',`${ftoken}`,'=');
     if (userTokenChk.length == 1) {
       bcrypt.genSalt(saltround, function (err, salt) {
         bcrypt.hash(Password, salt, async function (err, hash) {
-          await queryExecurter(`UPDATE user_master SET password = '${hash}', forgot_token = null WHERE (forgot_token = '${ftoken}');`);
+          // await queryExecurter(`UPDATE user_master SET password = '${hash}', forgot_token = null WHERE (forgot_token = '${ftoken}');`);
+          await QueryHelper.updateQuery('user_master',['password','forgot_token'],[`${hash}`,null],'forgot_token',`${ftoken}`,'=',true);
           if (err) {
             res.render('login', { status: "Some Error Occured Contact To admin!" });
           }

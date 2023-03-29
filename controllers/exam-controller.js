@@ -1,15 +1,18 @@
 const { authPlugins } = require('mysql2');
+const { query } = require('../database/dbconnect.js');
 const queryExecurter = require('../database/dbHelper.js');
+const QueryHelper = require('../services/databaseQuery');
 class ExamController {
 
     static toogleSwitch = async (req, res) => {
 
-        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);
+        // const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_admin.exam_master where exam_master.exam_id=${req.query.id}`);
+        const currentStatus = await QueryHelper.selectQuery('exam_master','exam_isActive as status',true,true,'exam_id',`${req.query.id}`,'=');
         const isActive = currentStatus[0].status;
 
         var query = `update exam_admin.exam_master set exam_isActive = '${isActive == 'yes' ? 'no' : 'yes'}' where exam_id=${req.query.id}`;
-
         const toggleSwitchQuery = await queryExecurter(query);
+        // const toggleSwitchQuery = await QueryHelper.updateQuery('exam_master','exam_isActive',`${isActive == 'yes' ? 'no' : 'yes'}`,'exam_id',`${req.query.id}`,'=');
 
         res.redirect('/dashboard/exams');
     }
@@ -68,8 +71,9 @@ class ExamController {
 
     static checkname = async (req, res) => {
         let examname = req.query.examname;
-        let query = `SELECT exam_name FROM exam_master WHERE exam_name = '${examname}';`;
-        const examnamechk = await queryExecurter(query);
+        // let query = `SELECT exam_name FROM exam_master WHERE exam_name = '${examname}';`;
+        // const examnamechk = await queryExecurter(query);
+        const examnamechk = await QueryHelper.selectQuery('exam_master','exam_name',true,true,'exam_name',`${examname}`,'=');
         res.json({ "no_of_exam": examnamechk.length });
     }
 
@@ -78,13 +82,15 @@ class ExamController {
         const examId = req.query.exam_id;
         var choosedCategory = [];
 
-        const examResult = await queryExecurter(`select exam_category.category_id from exam_category where exam_category.exam_id=${examId}`);
+        // const examResult = await queryExecurter(`select exam_category.category_id from exam_category where exam_category.exam_id=${examId}`);
+        const examResult = await QueryHelper.selectQuery('exam_category','category_id',true,true,'exam_id',`${examId}`,'=');
 
         if (examResult.length != 0) {
 
             for (let i = 0; i < examResult.length; i++) {
                 var categoryMap = [];
-                const categoryName = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category where question_category.category_id=${examResult[i].category_id}`);
+                // const categoryName = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category where question_category.category_id=${examResult[i].category_id}`);
+                const categoryName = await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,true,'category_id',`${examResult[i].category_id}`,'=');
 
                 choosedCategory[i] = {
                     "category": categoryName[0].category_name,
@@ -98,17 +104,16 @@ class ExamController {
 
             var categoryQuestions = [];
 
-            const questionsResult = await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+            // const questionsResult = await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+            const questionsResult = await QueryHelper.selectQuery('exam_category','question_id',true,true,['exam_id','category_id'],[`${examId}`,`${categoryId}`],'=','AND');
 
             const questionsId = questionsResult[0].question_id.split(",");
 
-
-
             for (let i = 0; i < questionsId.length; i++) {
-                const query = `SELECT question_master.question FROM question_master where question_master.question_id=${questionsId[i]}`;
+                // const query = `SELECT question_master.question FROM question_master where question_master.question_id=${questionsId[i]}`;
 
-
-                const question = await queryExecurter(query);
+                // const question = await queryExecurter(query);
+                const question = await QueryHelper.selectQuery('question_master','question',true,true,'question_id',`${questionsId[i]}`,'=');
                 categoryQuestions[i] = question[0].question;
             }
 

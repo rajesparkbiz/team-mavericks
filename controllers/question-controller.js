@@ -8,7 +8,7 @@ class QuestionController {
     static deleteQuestion = async (req, res) => {
         const questionId = req.query.id;
         if (questionId) {
-            const deleteQuery = await QueryHelper.updateQuery('question_master','isDeleted','0','question_id',questionId,'=');
+            const deleteQuery = await QueryHelper.updateQuery('question_master','isDeleted','0','question_id',questionId,'=',true);
             res.json({ msg: "Deleted successfully" });
         }
 
@@ -39,22 +39,27 @@ class QuestionController {
         if (question.trim() != '' && question != undefined) {
             if (total_option >= 4) {
                 if (optionid != undefined) {
-                    let que_adder, que_id;
+                    let que_adder = [], que_id;
                     if (coding_question_chkbox != undefined && coding_question != undefined && coding_question.trim() != '') {
-                        que_adder = await queryExecurter(`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '1');`);
-                        que_id = await que_adder.insertId;
-                        await queryExecurter(`INSERT INTO question_coding (question_id, coding_question) VALUES ('${que_id}', '${coding_question}');`);
+                        // que_adder = await queryExecurter(`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '1');`);
+                        que_adder[0] = await QueryHelper.insertQuery('question_master',['category_id', 'question', 'question_answer','isCoding'],[categories_id, question, option[optionid], '1'],false);
+                        // await queryExecurter(`INSERT INTO question_coding (question_id, coding_question) VALUES ('${que_id}', '${coding_question}');`);
+                        que_adder[1] = await QueryHelper.insertQuery('question_coding',['question_id', 'coding_question'],['lastQuestionId', coding_question],false);
                     }
                     else {
-                        que_adder = await queryExecurter(`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '0');`);
-                        que_id = que_adder.insertId;
-
+                        // que_adder[0] = await queryExecurter(`INSERT INTO question_master (category_id, question, question_answer,isCoding) VALUES ('${categories_id}', '${question}', '${option[optionid]}', '0');`);
+                        // que_id = que_adder.insertId;
+                        que_adder[0] = await QueryHelper.insertQuery('question_master',['category_id','question','question_answer','isCoding'],[categories_id,question,`${option[optionid]}`,'0'],false);
                     }
+                    let optionCounter=(que_adder.length);
                     for (let index = 0; index < option.length; index++) {
                         if (option[index] != undefined && option[index] != null && option[index].trim() != '') {
-                            await queryExecurter(`INSERT INTO option_master (question_id, option_value) VALUES ('${que_id}', '${option[index]}');`);
+                            // await queryExecurter(`INSERT INTO option_master (question_id, option_value) VALUES ('${que_id}', '${option[index]}');`);
+                            que_adder[optionCounter] = await QueryHelper.insertQuery('option_master',['question_id', 'option_value'],['lastQuestionId',`${option[index]}`],false);
+                            optionCounter++;
                         }
                     }
+                    await dbTransaction.queryExec(0,que_adder,'insert');
                 }
                 else {
                     res.end("select right answer");
@@ -77,17 +82,17 @@ class QuestionController {
         const optionTitle = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 
-        let questionCategories = await QueryHelper.selectQuery('question_category','*',false);
+        let questionCategories = await QueryHelper.selectQuery('question_category','*',true,false);
 
         let cols = ['category_name','category_id'];
-        const question_category = await QueryHelper.selectQuery('question_category',cols,false);
-        const allQuestions = await QueryHelper.selectQuery('question_master','*',true,['isDeleted','category_id'],['1',categoryId],'=','AND');
+        const question_category = await QueryHelper.selectQuery('question_category',cols,true,false);
+        const allQuestions = await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',categoryId],'=','AND');
 
         const questions = [];
 
         for (let i = 0; i < allQuestions.length; i++) {
 
-            const question_options = await QueryHelper.selectQuery('option_master','*',true,'question_id',`${allQuestions[i].question_id}`,'=');
+            const question_options = await QueryHelper.selectQuery('option_master','*',true,true,'question_id',`${allQuestions[i].question_id}`,'=');
             var options = [];
 
             var trueOption = [];
@@ -125,20 +130,21 @@ class QuestionController {
         const optionTitle = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
         //get all question category 
-        let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
+        // let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
+        // const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+        // const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+        // const allQuestions = await queryExecurter(questionQuery);
 
-        
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
-
-        const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
-        const allQuestions = await queryExecurter(questionQuery);
+        let questionCategories = await QueryHelper.selectQuery('question_category','*',true,false);
+        const question_category = await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,false);
+        const allQuestions = await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',categoryId],'=','AND');
         const questions = [];
 
 
         for (let i = 0; i < allQuestions.length; i++) {
 
-            const question_options = await queryExecurter(`SELECT * FROM option_master where question_id=${allQuestions[i].question_id}`);
-
+            // const question_options = await queryExecurter(`SELECT * FROM option_master where question_id=${allQuestions[i].question_id}`);
+            const question_options = await QueryHelper.selectQuery('option_master','*',true,true,'question_id',`${allQuestions[i].question_id}`,'=');
 
             var options = [];
 
@@ -177,18 +183,18 @@ class QuestionController {
         const examId = req.query.examId;
 
         //get all question category 
-        let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
+        // let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
 
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
-
-
+        // const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+        let questionCategories = await QueryHelper.selectQuery('question_category','*',true);
+        const question_category = await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,false);
         //case 1
 
         //get all questions for specific category
-        const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+        // const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
 
-        const allQuestions = await queryExecurter(questionQuery);
-
+        // const allQuestions = await queryExecurter(questionQuery);
+        const allQuestions = await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',categoryId],'=','AND');
         var questions = [];
 
 
@@ -208,8 +214,8 @@ class QuestionController {
         }
 
         //get selected ids for filter
-        const defaultQuestionIds = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
-
+        // const defaultQuestionIds = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+        const defaultQuestionIds = await QueryHelper.selectQuery('exam_category','question_id',true,true,['exam_id','category_id'],[examId,categoryId], '=','AND');
 
         var defaultQuestionId = [];
 
@@ -242,9 +248,10 @@ class QuestionController {
 
             for (let i = 0; i < filteredArr.length; i++) {
 
-                const query = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId} and question_master.question_id=${filteredArr[i]}`
+                // const query = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId} and question_master.question_id=${filteredArr[i]}`
 
-                const allQuestions = await queryExecurter(query);
+                // const allQuestions = await queryExecurter(query);
+                const allQuestions = await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id','question_id'],['1',categoryId,`${filteredArr[i]}`]);
                 questions[count] = {
                     "question_id": allQuestions[0].question_id,
                     "question": allQuestions[0].question,
@@ -258,9 +265,10 @@ class QuestionController {
             questions = [];
 
 
-            const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+            // const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
 
-            const allQuestions = await queryExecurter(questionQuery);
+            // const allQuestions = await queryExecurter(questionQuery);
+            const allQuestions = await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',categoryId]);
 
             for (let i = 0; i < allQuestions.length; i++) {
                 questions[i] = {
@@ -275,17 +283,17 @@ class QuestionController {
 
     static question = async (req, res) => {
         const id = req.query.id;
-        const questionData = await queryExecurter(`SELECT * FROM exam_admin.question_master where question_master.question_id=${parseInt(id)}`);
+        // const questionData = await queryExecurter(`SELECT * FROM exam_admin.question_master where question_master.question_id=${parseInt(id)}`);
 
-        const questionoption = await queryExecurter(`SELECT option_master.option_id,option_master.option_value FROM exam_admin.option_master where option_master.question_id=${parseInt(id)}`);
-
+        // const questionoption = await queryExecurter(`SELECT option_master.option_id,option_master.option_value FROM exam_admin.option_master where option_master.question_id=${parseInt(id)}`);
+        const questionData = await QueryHelper.selectQuery('question_master','*',true,true,'question_id',`${parseInt(id)}`,'=');
+        const questionoption = await QueryHelper.selectQuery('option_master',['option_id','option_value'],true,true,'question_id',`${parseInt(id)}`,'=');
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
         
     static displayChooseQuestion = async (req, res) => {
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
-        // let cols = ['category_name','category_id'];
-        // const question_category = await QueryHelper.selectQuery('question_category',cols,false);
+        // const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+        const question_category = await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,false);
         res.render('select-question', { categories: question_category });
     }
 }

@@ -27,7 +27,7 @@ class dbTransaction {
                         console.log("hello: " + insertedId);
                     }
                     else {
-                        let updatedQuery1 = args[index].split("lastQuestionId");
+                        let updatedQuery1 = args[index].toString().split("lastQuestionId");
                         for (let k = 0; k < updatedQuery1.length; k++) {
                             if (k == 0) {
                                 updatedQuery = updatedQuery1[k];
