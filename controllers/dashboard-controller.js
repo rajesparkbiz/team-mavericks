@@ -49,19 +49,12 @@ class StdentQuestion {
     }
 
     static displayExams=async(req,res)=>{
-        // var exam_master = await queryExecurter(`SELECT * FROM exam_master`);
-        // var questionStatus=[];
-        // for(let i=0;i<exam_master.length;i++){
-        //     const isAddedQuestions=await queryExecurter(`SELECT count(*) as status FROM exam_admin.exam_category where exam_category.exam_id=${exam_master[i].exam_id}`);
-        //     questionStatus[i]=isAddedQuestions[0].status;
-        // }
-
-        // res.render('exam.ejs', { data: exam_master,questionStatus:questionStatus });
-
+        
         var limit = 10;
         var page = req.query.page || 1;
         var offset = (page - 1) * limit;
-
+        var ajax = req.query.AJAX || false;
+        var exam_data  ;
          con.query(`SELECT * FROM exam_master LIMIT  ${offset} , ${limit};`,(err,exam_master)=>{
             if(err) throw err;
 
@@ -69,8 +62,18 @@ class StdentQuestion {
                 if(err) throw err;
                 console.log(result[0].count);
                 var count = Math.ceil(result[0].count/limit);
-                console.log("dashboardCount",count);
-                res.render('exam.ejs', { data: exam_master, count , column_name: "" });
+                
+
+                exam_data = exam_master 
+                console.log("count and data",exam_data);
+
+                if(!ajax)
+                {
+                    res.render('exam.ejs', { data: exam_master, count , column_name: "" });
+                }else{
+                    res.json(exam_data);
+                }
+                
                 
                 
             })

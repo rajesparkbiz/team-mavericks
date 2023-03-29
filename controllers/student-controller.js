@@ -15,6 +15,9 @@ class StudentController {
         var column_name = req.query.column_name || 'student_id';
         var order = req.query.order || 'ASC';
         var offset = (page - 1) * limit;
+        var ajax = req.query.AJAX || false;
+
+        var student_data;
 
         con.query(`SELECT * FROM student_master ORDER BY ${column_name} ${order} LIMIT ${offset}, ${limit};`,(err,student_master)=>{
 
@@ -23,7 +26,16 @@ class StudentController {
                 console.log(result[0].count);
                 var count = Math.ceil(result[0].count/limit);
                 console.log(count);
-                res.render('user.ejs', { data: student_master, order, count ,column_name });
+
+                student_data = student_master;
+                //console.log(student_master);
+                if(!ajax)
+                {
+                    res.render('user.ejs', { data: student_master, order, count ,column_name });
+                }
+                else{
+                    res.json(student_data);
+                }
                 
             })
 

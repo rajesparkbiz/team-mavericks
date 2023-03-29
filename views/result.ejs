@@ -87,7 +87,7 @@
               <li class="page-item"><a class="page-link" href="#">Previous</a></li>
         <% for(let i=1; i<=count; i++){ %>
 
-              <li class="page-item" id="list<%= i %>"><p class="page-link" onclick="resultID(`/result/results?page=<%= i %>`)"><%= i %></p></li>
+              <li class="page-item" id="list<%= i %>"><p class="page-link" onclick="resultID(`/result/results?page=<%= i %>&&AJAX=true`)"><%= i %></p></li>
     
         <% } %>
               <li class="page-item"><a class="page-link" href="#">Next</a></li>
@@ -109,14 +109,64 @@
         {
             var resultid = id;
             console.log(resultid);
-
             var pageId = await fetch(resultid);
+            console.log("page id",pageId);
+            var result_data = await pageId.json();
+            console.log("result data",result_data);
+            var student_string = "";
 
-            var result_data = await   pageId.json();
-            console.log(result_data);
-
-            console.log(pageId);
             
+            var studenttable = document.getElementById('studenttable');
+
+            
+
+            student_string += `
+            
+          <thead>
+            <tr>
+              <th>No</th>
+              <th scope="col">Student Name</th>
+              <th scope="col">Exam Name</th>
+              <th scope="col">Total Marks</th>
+              <th scope="col">Marks</th>
+              <th scope="col">status</th>
+             
+            </tr>
+          </thead>`;
+
+          for(let i=0; i<result_data.length; i++){
+            student_string += `
+            <tbody id="table">
+           
+             <tr>
+               <td>
+                   ${result_data[i].id}
+               </td>
+               <td>
+                 ${result_data[i].fname}
+               </td>
+               <td>
+                 ${result_data[i].exam_name}
+               </td>
+               <td>
+                 ${result_data[i].exam_total_question}
+               </td>
+               <td>
+                 ${result_data[i].exam_result}
+               </td>
+               <td>
+                   
+                  ${result_data[i]}
+
+               </td>
+             </tr>
+             
+         </tbody>
+            `;
+          }
+
+            studenttable.innerHTML = student_string;
+            console.log("your student table",studenttable);
         }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
