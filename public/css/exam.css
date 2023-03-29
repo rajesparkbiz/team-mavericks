@@ -6,6 +6,10 @@
     color: red;
 }
 
+body{
+    background-color: rgb(245,246,254);
+}
+
 .search-input {
     padding: 10px;
 }

@@ -16,6 +16,11 @@
 
 }
 
+body{
+    background-color: rgb(245,246,254);
+
+}
+
 .blur-card{
     opacity: 0.5;
 }
