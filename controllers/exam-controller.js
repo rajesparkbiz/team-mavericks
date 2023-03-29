@@ -1,5 +1,7 @@
 const { authPlugins } = require('mysql2');
 const queryExecurter = require('../database/dbHelper.js');
+const session = require('express-session');
+var last_id;
 class ExamController {
 
     static toogleSwitch = async (req, res) => {
@@ -10,6 +12,7 @@ class ExamController {
         var query = `update exam_master set exam_isActive = '${isActive == 'yes' ? 'no' : 'yes'}',exam_master.action_time=CURRENT_TIMESTAMP where exam_id=${req.query.id}`;
 
         const toggleSwitchQuery = await queryExecurter(query);
+        console.log(toggleSwitchQuery);
 
         res.redirect('/dashboard/exams');
     }

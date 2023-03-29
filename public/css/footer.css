@@ -1,7 +1,12 @@
 .footer-card{
     position: fixed;
     left: 0;
+<<<<<<< HEAD
     width: 100%;
     bottom: 0;
     margin-left: 237px;
+=======
+    width: 80%;
+    bottom: 0;
+>>>>>>> fdece5ef8962e98c948affcef602e070db33023a
 }

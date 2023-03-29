@@ -12,3 +12,4 @@ const queryExecurter = (query) => {
 }
 
 module.exports=queryExecurter;
+
