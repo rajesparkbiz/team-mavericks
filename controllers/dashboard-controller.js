@@ -35,16 +35,31 @@ class StdentQuestion {
             questionsRatio[i] = `width:${Math.floor((questionCount / data[4].length) * 10)}%`;
         }
     
-        const exam_attempt = await queryExecurter(`SELECT * FROM exam_attempt_master`);
-        var s_id = req.body.student_id;
-    
-        var student_name = await queryExecurter(`select student_master.fname from student_master inner join  exam_attempt_master on exam_attempt_master.student_id=student_master.student_id `);
 
 
-       
+        const exam_action = await queryExecurter(`SELECT exam_master.exam_name,exam_master.exam_isActive,exam_master.action_time FROM test.exam_master;`);
+
+        var exam_data=[];
+        for(let i=0;i<exam_action.length;i++){
+            const date=new Date(exam_action[i].action_time);
+            var status;
+
+            if(exam_action[i].exam_isActive=='yes'){
+                status='Active'
+            }
+            if (exam_action[i].exam_isActive=='no'){
+                status='InActive'   
+            }
+
+            exam_data[i]={
+                "exam_name":exam_action[i].exam_name,
+                "exam_isActive":status,
+                "action_time":date.toLocaleString()
+            }
+        }
 
 
-        res.render('dashboard', { data: data, questionsRatio: questionsRatio, exam_attempt: exam_attempt, student_name});
+        res.render('dashboard', { data: data, questionsRatio: questionsRatio,exam_action:exam_data});
     }
 
     static displayExams=async(req,res)=>{
