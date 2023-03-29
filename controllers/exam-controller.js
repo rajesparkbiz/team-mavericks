@@ -24,7 +24,8 @@ class ExamController {
 
         let { examname, examcode, totalque, duration } = req.body;
 
-        let query = `INSERT INTO exam_master (exam_name, exam_access_code, exam_total_question, exam_isActive) VALUES ('${examname}', '${examcode}', '${totalque}', '${duration}');`;
+        let query = `INSERT INTO exam_master (exam_name, exam_access_code, exam_total_question, exam_isActive, exam_duration) VALUES ('${examname}', '${examcode}', '${totalque}', 'no', '${duration}');
+        `;
         addExam = await queryExecurter(query);
 
         res.redirect('/dashboard/exams');

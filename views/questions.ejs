@@ -22,7 +22,7 @@
         <section class="col">
           <div class="col">
 
-            <div class="d-flex question-category-card my-3">
+            <div class="d-flex question-category-card m-3">
 
               <ul class="nav nav-tabs">
 
@@ -48,43 +48,50 @@
             </div>
 
             <div class="col" id="question-container">
-
-              <!-- all questions -->
+             
+                <!-- all questions -->
+              
               <% for(let i=0;i<questions.length;i++){%>
 
-                <div class="container-fluid my-1">
-                  <div class="question pt-2 mt-2">
+                <div class="container-fluid mx-2 my-4">
+                  <div class="question">
+                   <div class="question-highlight">
+
+                   </div>
+                   <div class="question-body pt-1 pb-1">
                     <div class="py-2 h5"><b>
-                        <%= (i+1) %>. <%= questions[i].question %>
-                      </b></div>
-                    <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                      <%= (i+1) %>. <%= questions[i].question %>
+                    </b></div>
+                  <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
 
-                      <!-- all question options -->
-                      <%for (let j=0;j<questions[i].option.length;j++){%>
+                    <!-- all question options -->
+                    <%for (let j=0;j<questions[i].option.length;j++){%>
 
-                        <!-- check true question answer -->
-                        <% if(questions[i].correct_ans[j]){ %>
-                          <p class="true-answer">
+                      <!-- check true question answer -->
+                      <% if(questions[i].correct_ans[j]){ %>
+                        <p class="true-answer">
+                          <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
+                        </p>
+                        <%}else{%>
+                          <p class="false-answer">
                             <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
                           </p>
-                          <%}else{%>
-                            <p class="false-answer">
-                              <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
-                            </p>
+                          <%}%>
                             <%}%>
-                              <%}%>
 
-                    </div>
-                    <div class="question-btns">
-                      <button class="btn btn-primary" onclick="showModal(this.id)"
-                        id="<%= questions[i].question_id%>">Edit</button>
-                      <input type="button" class="btn btn-danger"
-                        onclick="deleteQuestion('<%=questions[i].question_id%>')" value="Delete">
-                    </div>
+                  </div>
+                  <div class="question-btns">
+                    <button class="btn btn-primary" onclick="showModal(this.id)"
+                      id="<%= questions[i].question_id%>">Edit</button>
+                    <input type="button" class="btn btn-danger"
+                      onclick="deleteQuestion('<%=questions[i].question_id%>')" value="Delete">
+                  </div>
+                   </div>
                   </div>
                 </div>
 
-                <%}%>
+              <%}%>
+            
             </div>
           </div>
       </div>

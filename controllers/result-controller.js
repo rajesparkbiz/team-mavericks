@@ -47,7 +47,7 @@ class ResultController {
         for(let i=0;i<ids.length;i++){
             const currectAnswer=await queryExecurter(`SELECT question_master.question,question_master.question_answer FROM question_master where question_master.question_id=${ids[i]}`);
             var status;
-            if(currectAnswer[0].question_answer==answer[i]){
+            if(currectAnswer[0].question_answer==answer[i].replaceAll('"','')){
                 status='true';
             }else{
                 status='false';

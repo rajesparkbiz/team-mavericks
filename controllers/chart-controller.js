@@ -12,9 +12,9 @@ class ChartController {
         for (let i = 1; i < category.length; i++) {
             const data = [];
 
-            data.push(category[i].category_name);
+            data.push(category[i-1].category_name);
 
-            const id = category[i].category_id;
+            const id = category[i-1].category_id;
 
             var que = await queryExecurter(`SELECT count(*) as questions FROM question_master where question_master.category_id=${id}`);
 
@@ -39,7 +39,7 @@ class ChartController {
     
             const questionCount = que[0].questions;
             questionsRatio[i] = `width:${Math.floor((questionCount / category.length) * 10)}%`;
-        }
+        }   
 
         
         res.json({category,questionsRatio});
