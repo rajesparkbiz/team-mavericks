@@ -32,7 +32,14 @@ async function toogle(value, examId) {
     var content = ``;
     const question_container = document.getElementById("question-container");
     if (questions.length == 0 || questions == undefined) {
-        content += '<h3 class="data-eror">Question Not Found</h3>'
+        content += `
+        <h3 class="data-eror">Question Not Found</h3>
+        <div id="select-action-btn">
+        <div id="saveSelectQuestion">
+          <a href="/exams/choosedQuestion/?exam_id=${examId}" class="btn btn-primary">Next</a>
+        </div>
+      </div>
+        `;
         question_container.innerHTML = content;
     } else {
 

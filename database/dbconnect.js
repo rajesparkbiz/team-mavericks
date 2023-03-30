@@ -11,7 +11,7 @@ const con=mysql.createConnection({
 });
 
 con.connect(()=>{
-    console.log(`${database} database Connect Successfully`);
+    console.log(`${process.env.DATABASE} database Connect Successfully`);
 })
 
 

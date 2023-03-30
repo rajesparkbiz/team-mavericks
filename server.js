@@ -1,8 +1,10 @@
 const express = require('express');
 require('dotenv').config();
 const ejs = require('ejs');
+const url = require('url');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+
 const authRoute = require('./routes/auth-route.js');
 const dashboardRoute = require('./routes/dashboard-route.js');
 const questionRoute = require('./routes/question-route.js');
@@ -14,7 +16,6 @@ const chartRoute = require('./routes/chart-route.js');
 const reportRoute = require('./routes/view-report-route.js');
 
 
-var nodeoutlook = require('nodejs-nodemailer-outlook')
 const auth = require('./middleware/auth-middlware.js');
 const queryExecurter = require('./database/dbHelper.js');
 const session = require('express-session');
@@ -37,8 +38,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs')
 app.use(express.json());
 
+//root
 app.use('/',authRoute);
 
+//all routes
 app.use('/auth', auth.alreadyLogin, authRoute);
 app.use('/dashboard', auth.userAuth, dashboardRoute);
 app.use('/question', auth.userAuth, questionRoute);

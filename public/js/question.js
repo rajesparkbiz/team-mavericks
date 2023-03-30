@@ -360,6 +360,7 @@ function editquebtn() {
 
 async function toogle(value) {
 
+
     const categoryId = value.id;
     //this code use for chnage the tab 
     const allTabs = document.querySelectorAll('.nav-link');
@@ -397,8 +398,12 @@ async function toogle(value) {
         for (let i = 0; i < questions.length; i++) {
             content +=
                 `
-                    <div class="container-fluid my-1">
-                        <div class="question pt-2 mt-2">
+                    <div class="container-fluid mx-2 my-4">
+                        <div class="question">
+                        <div class="question-highlight">
+
+                        </div>
+                        <div class="question-body pt-1 pb-1">
                         <div class="py-2 h5"><b>
                             ${(i + 1)}. ${questions[i].question} 
                             </b></div>
@@ -432,7 +437,7 @@ async function toogle(value) {
                         </div>
                         </div>
                     </div>
-
+                    </div>
                     `;
         }
 

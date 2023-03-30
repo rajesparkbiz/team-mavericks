@@ -61,7 +61,7 @@ async function displayTimeLine() {
                         ${category[i].category_name.toUpperCase()}
                     </div>
                     <div class="progress">
-                        <div class="progress-bar bg-success"
+                        <div class="bg-success progress-bar progress-bar-striped progress-bar-animated"
                             role="progressbar"
                             style="${questionsRatio[i]}"
                             aria-valuenow="25" aria-valuemin="0"

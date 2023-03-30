@@ -1,3 +1,4 @@
+ 
 * {
    margin: 0;
    padding: 0;
@@ -8,25 +9,9 @@
 /* Option 2: Import via CSS */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
 
-.body {
-   max-height: 100vh;
-   background-color: rgb(255, 255, 255);
-}
 
-
-#style-1::-webkit-scrollbar-track {
-   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-   background-color: #F5F5F5;
-}
-
-#style-1::-webkit-scrollbar {
-   width: 6px;
-   background-color: #F5F5F5;
-}
-
-#style-1::-webkit-scrollbar-thumb {
-   background-color: rgb(78, 115, 223);
-   border-radius: 50px;
+body{
+   background-color: rgb(245,246,254);
 }
 
 .card {
@@ -63,10 +48,6 @@
 .category_list {
    display: flex;
    flex-wrap: wrap;
-   height: 400px;
-   overflow-y: scroll;
-   scrollbar-color: #6969dd #e0e0e0;
-   scrollbar-width: thin;
 }
 
 .card-col {
@@ -84,6 +65,10 @@
    padding: 10px 1rem;
 }
 
+.add-category{
+   color: white;
+   background-color: rgb(78,115,223);
+}
 .category_div {
    display: flex;
    flex-wrap: wrap;
@@ -96,10 +81,9 @@
    border-color: #adbfca;
    height: 35px;
 
-}
-
-
+}  
 .card-title {
    color: white;
    font-weight: 600;
 }
+
