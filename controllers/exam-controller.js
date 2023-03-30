@@ -31,7 +31,7 @@ class ExamController {
 
         let { examname, examcode, totalque, duration } = req.body;
 
-        addExam=await QueryHelper.insertQuery('exam_master',['exam_name', 'exam_access_code', 'exam_total_question', 'exam_isActive'],[`${examname}`, `${examcode}`, `${totalque}`, `${duration}`],true);
+        addExam=await QueryHelper.insertQuery('exam_master',['exam_name', 'exam_access_code', 'exam_total_question', 'exam_isActive','exam_duration'],[`${examname}`, `${examcode}`, `${totalque}`, 'no',`${duration}`],true);
 
         res.redirect('/dashboard/exams');
     }
