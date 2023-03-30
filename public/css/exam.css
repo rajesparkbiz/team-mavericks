@@ -45,3 +45,14 @@ body{
 .blur-card {
     opacity: 0.5;
 }
+
+
+.tab-active{
+    color: white;
+    background-color: green;
+}
+
+.tab-disable{
+    color: white;
+    background-color: blue;
+}
