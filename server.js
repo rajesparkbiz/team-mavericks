@@ -10,7 +10,6 @@ const examRoute = require('./routes/exam-route.js');
 const studentRoute = require('./routes/students-route.js');
 const resultRoute = require('./routes/result-route.js');
 const categoryRoute = require('./routes/category-route.js');
-var nodeoutlook = require('nodejs-nodemailer-outlook')
 const auth = require('./middleware/auth-middlware.js');
 const queryExecurter = require('./database/dbHelper.js');
 const session = require('express-session');

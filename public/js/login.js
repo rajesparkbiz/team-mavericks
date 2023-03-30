@@ -75,7 +75,11 @@ function changePassBtn() {
         document.getElementById('changePassBtn').disabled = true;
     }
 }
-
+function forgot(){
+    let email = document.getElementById('email');
+    email.setAttribute("placeholder","Enter your email address!");
+    email.focus();
+}
 function forgotpass(){
     if (emailflaglog == 1) {
         let email = document.getElementById('email').value;
