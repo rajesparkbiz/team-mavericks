@@ -65,25 +65,13 @@ class StdentQuestion {
 
     static displayExams=async(req,res)=>{
     
-        // var exam_master = await queryExecurter(`SELECT * FROM exam_master`);
-        // var questionStatus=[];
-        // for(let i=0;i<exam_master.length;i++){
-        //     const isAddedQuestions=await queryExecurter(`SELECT count(*) as status FROM exam_category where exam_category.exam_id=${exam_master[i].exam_id}`);
-        //     questionStatus[i]=isAddedQuestions[0].status;
-        // }
-        
-        // console.log(questionStatus);
-
         var limit = 5;
         var page = req.query.page || 1;
-        console.log(page);
         var offset = (page-1) * limit;
         var ajax = req.query.AJAX || false;
         var exam_data  ;
          con.query(`SELECT * FROM exam_master LIMIT ${offset},${limit};`,(err,exam_master)=>{
             if(err) throw err;
-
-            console.log(exam_master);
 
             con.query('SELECT count(*) as count from exam_master;',(err,result)=>{
                 if(err) throw err;
