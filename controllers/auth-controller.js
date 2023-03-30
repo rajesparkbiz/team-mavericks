@@ -35,16 +35,17 @@ class UserAuth {
   static login =async(req,res)=>{
     res.redirect('/auth/login');
   }
+  
 
   static userLoginchk = async (req, res) => {
     let { Username, Password } = req.body;
+    
     let userchk = await QueryHelper.selectQuery('user_master',['username','password','role'],true,true,'username',Username,'=');
 
-    if (userchk[0]['role'] == "admin") {
+    if (userchk.length == 1 && userchk[0]['role'] == "admin") {
       bcrypt.compare(Password, userchk[0]['password'], function (err, hashres) {
         if (hashres) {
           req.session.regenerate(function (err) {
-            
             if (err) next(err)
 
             // store user information in session, typically a user id
@@ -65,7 +66,6 @@ class UserAuth {
       res.render('login', { status: "username or password incorrect" });
     }
   }
-
   static alreadyLogin = async (req, res, next) => {
     let session = req.session;
     if (session.username) {
