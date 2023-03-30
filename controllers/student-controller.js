@@ -40,8 +40,7 @@ class StudentController {
             })
 
         });
-        
-        
+            
     }
 
     static filterExams = async (req, res) => {

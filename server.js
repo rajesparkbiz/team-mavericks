@@ -38,9 +38,9 @@ app.use(session({
 //404 page found 
 
 
-app.get("*", (req, res) => {
-    res.render('404.ejs')
-    })
+// app.get("*", (req, res) => {
+//     res.render('404.ejs')
+//     })
 
 
 
