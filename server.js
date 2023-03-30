@@ -53,7 +53,7 @@ app.use('/chart', auth.userAuth, chartRoute);
 app.use('/report', auth.userAuth, reportRoute);
 
 app.use('/user', authRoute);
-app.use(express.static(__dirname + "/public"))  
+app.use(express.static(__dirname + "/public"))
 
 app.listen(3000, () => {
     console.log(`Server is Running on port`);

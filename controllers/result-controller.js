@@ -50,17 +50,14 @@ class ResultController {
   };
 
   static displayStudentResult = async (req, res) => {
-
     const examId = req.query.examId;
-    var limit = 5;
+    var limit = 2;
     var page = req.query.page || 1;
+    
     var column_name = req.query.column_name || 'student_id';
     var order = req.query.order || 'ASC';
     var offset = (page - 1) * limit;
     var ajax = req.query.AJAX || false;
-
-    var student_data;
-
 
     const student_master = await queryExecurter(`select result_master.obtain_mark,result_master.total_mark,exam_master.exam_name,student_master.fname,student_master.student_id from result_master inner join exam_master on
         result_master.exam_id=exam_master.exam_id inner join student_master on result_master.student_id=student_master.student_id where 
@@ -70,14 +67,11 @@ class ResultController {
 
     var count = Math.ceil(result[0].count / limit);
 
-
-    student_data = student_master;
-
     if (!ajax) {
       res.render('studentresult', { data: student_master, order, count, column_name, examId: examId });
     }
     else {
-      res.json(student_data);
+      res.json(student_master);
     }
   };
 

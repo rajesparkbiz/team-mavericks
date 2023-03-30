@@ -1,18 +1,22 @@
 const { authPlugins } = require('mysql2');
 const queryExecurter = require('../database/dbHelper.js');
 const session = require('express-session');
+const QueryHelper = require('../services/databaseQuery');
+const { template } = require('handlebars');
+
 var last_id;
 class ExamController {
 
     static toogleSwitch = async (req, res) => {
 
-        const currentStatus = await queryExecurter(`SELECT exam_master.exam_isActive as status FROM exam_master where exam_master.exam_id=${req.query.id}`);
+        
+        const currentStatus = await QueryHelper.selectQuery('exam_master','exam_isActive as status',true,true,'exam_id',`${req.query.id}`,'=');
         const isActive = currentStatus[0].status;
 
-        var query = `update exam_master set exam_isActive = '${isActive == 'yes' ? 'no' : 'yes'}',exam_master.action_time=CURRENT_TIMESTAMP where exam_id=${req.query.id}`;
+       
+        var query = `update exam_master set exam_isActive = '${isActive == 'yes' ? 'no' : 'yes'}' where exam_id=${req.query.id}`;
 
         const toggleSwitchQuery = await queryExecurter(query);
-        console.log(toggleSwitchQuery);
 
         res.redirect('/dashboard/exams');
     }
@@ -27,12 +31,11 @@ class ExamController {
 
         let { examname, examcode, totalque, duration } = req.body;
 
-        let query = `INSERT INTO exam_master (exam_name, exam_access_code, exam_total_question, exam_isActive, exam_duration) VALUES ('${examname}', '${examcode}', '${totalque}', 'no', '${duration}');
-        `;
-        addExam = await queryExecurter(query);
+        addExam=await QueryHelper.insertQuery('exam_master',['exam_name', 'exam_access_code', 'exam_total_question', 'exam_isActive'],[`${examname}`, `${examcode}`, `${totalque}`, `${duration}`],true);
 
         res.redirect('/dashboard/exams');
     }
+
 
     static displaySelectQuestion = async (req, res) => {
       
@@ -40,17 +43,19 @@ class ExamController {
         const examId = req.query.exam_id;
 
         //get all question category 
-        let questionCategories = await queryExecurter(`SELECT * FROM question_category;`);
 
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+        let questionCategories=await QueryHelper.selectQuery('question_category','*',true,false);
+
+      
+        const question_category=await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,false);
 
 
         //case 1
 
         //get all questions for specific category
-        const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
 
-        const allQuestions = await queryExecurter(questionQuery);
+
+        const allQuestions=await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',`${categoryId}`],'=','AND');
 
         var questions = [];
 
@@ -71,7 +76,10 @@ class ExamController {
         }
 
         //get selected ids for filter
-        const defaultQuestionIds = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+       
+
+
+        const defaultQuestionIds=await QueryHelper.selectQuery('exam_category','exam_category.question_id as id',true,true,['exam_id','category_id'],[`${examId}`,`${categoryId}`],'=','AND');
 
 
         var defaultQuestionId = [];
@@ -105,9 +113,9 @@ class ExamController {
 
             for (let i = 0; i < filteredArr.length; i++) {
 
-                const query = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId} and question_master.question_id=${filteredArr[i]}`
+                const allQuestions=await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id','question_id'],['1',`${categoryId}`,`${filteredArr[i]}`],'=','AND');
 
-                const allQuestions = await queryExecurter(query);
+                // const allQuestions = await queryExecurter(query);
                 questions[count] = {
                     "question_id": allQuestions[0].question_id,
                     "question": allQuestions[0].question,
@@ -121,9 +129,10 @@ class ExamController {
             questions = [];
 
 
-            const questionQuery = `SELECT * FROM question_master where question_master.isDeleted=1 and question_master.category_id=${categoryId}`
+          
+            const allQuestions=await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',`${categoryId}`]);
 
-            const allQuestions = await queryExecurter(questionQuery);
+    
 
             for (let i = 0; i < allQuestions.length; i++) {
                 questions[i] = {
@@ -149,13 +158,12 @@ class ExamController {
         var choosedCategory = [];
 
         try{
-            const examResult = await queryExecurter(`select exam_category.category_id from exam_category where exam_category.exam_id=${examId}`);
-
+            const examResult = await QueryHelper.selectQuery('exam_category','category_id',true,true,'exam_id',`${examId}`,'=');
             if (examResult.length != 0) {
     
                 for (let i = 0; i < examResult.length; i++) {
                     var categoryMap = [];
-                    const categoryName = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category where question_category.category_id=${examResult[i].category_id}`);
+                    const categoryName = await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,true,'category_id',`${examResult[i].category_id}`,'=');
     
                     choosedCategory[i] = {
                         "category": categoryName[0].category_name,
@@ -169,14 +177,15 @@ class ExamController {
     
                 var categoryQuestions = [];
     
-                const questionsResult = await queryExecurter(`select exam_category.question_id,exam_category.category_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+                
+                const questionsResult = await QueryHelper.selectQuery('exam_category','question_id',true,true,['exam_id','category_id'],[`${examId}`,`${categoryId}`],'=','AND');
                 
                 const questionsId = questionsResult[0].question_id.split(",");
                 if(questionsId.length!=0 && questionsId[0]!=''){
+
                     for (let i = 0; i < questionsId.length; i++) {
-                        const query = `SELECT question_master.question,question_master.category_id FROM question_master where question_master.question_id=${questionsId[i]}`;
                         
-                        const question = await queryExecurter(query);
+                        const question = await QueryHelper.selectQuery('question_master',['question','category_id'],true,true,'question_id',`${questionsId[i]}`,'=','AND');
                         categoryQuestions[i] = {
                             "question": question[0].question,
                             "id": questionsId[i],
@@ -194,6 +203,7 @@ class ExamController {
                 res.render('choosed-question', { status: false });
             }
         }catch(err){
+            throw err;
         }
       
 
@@ -205,34 +215,39 @@ class ExamController {
 
         var categoryQuestions = [];
 
-        const questionsResult = await queryExecurter(`select exam_category.question_id from exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
+        const questionsResult=await QueryHelper.selectQuery('exam_category','question_id',true,true,['exam_id','category_id'],[`${examId}`,`${categoryId}`],'=','AND');
 
         const questionsId = questionsResult[0].question_id.split(",");
 
         for (let i = 0; i < questionsId.length; i++) {
-            const query = `SELECT question_master.question,question_master.question_id FROM question_master where question_master.question_id=${questionsId[i]}`;
+            
+
+            const question=await QueryHelper.selectQuery('question_master',['question','question_id'],true,true,'question_id',`${questionsId[i]}`,'=')
 
 
-            const question = await queryExecurter(query);
             categoryQuestions[i] = question[0];
         }
         res.json({ categoryQuestions, questionCount: questionsId.length });
     }
 
+   
     static selectQuestions = async (req, res) => {
-        const question_category = await queryExecurter(`SELECT question_category.category_name,question_category.category_id FROM question_category;`);
+      
+
+        const question_category=await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,false);
 
         res.render('select-question', { categories: question_category });
     }
 
+     //REQUIRED TO CHANGE QUERY
     static insertSelectQuestions = async (req, res) => {
         const { examid, categoryid, questions } = req.query;
         const question = questions.split(",");
         const questionCount = question.length;
 
 
-        //check avialable inserted question 
-        const isAvialbale = await queryExecurter(`SELECT exam_category.question_id as id FROM exam_category where exam_category.exam_id=${examid} and exam_category.category_id=${categoryid}`);
+
+        const isAvialbale=await QueryHelper.selectQuery('exam_category','exam_category.question_id as id',true,true,['exam_id','category_id'],[`${examid}`,`${categoryid}`],'=','AND');
 
 
         // make update query
@@ -246,18 +261,15 @@ class ExamController {
             }
             const isAvialbaleUpdate = await queryExecurter(`update exam_category set exam_category.question_id='${ids}' where exam_category.exam_id=${examid} and exam_category.category_id=${categoryid}`);
 
-
         } else {
-            //insert query
-            const insertQuery = `INSERT INTO exam_category (exam_id, category_count, question_id, category_id) VALUES ('${examid}', '${questionCount}', '${questions}', '${categoryid}');
-            `;
+            
 
-            const result = await queryExecurter(insertQuery);
+            const result=await QueryHelper.insertQuery('exam_category',['exam_id', 'category_count', 'question_id', 'category_id'],[`${examid}`, `${questionCount}`, `${questions}`, `${categoryid}`],true);
+
         }
         res.json();
 
     }
-
 
 }
 

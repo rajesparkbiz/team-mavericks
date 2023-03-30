@@ -87,6 +87,11 @@ function forgotpass(){
         document.getElementById( "forgotpass" ).setAttribute( "onClick", "forgot()" );
     }
 }
+function forgot(){
+    let email = document.getElementById('email');
+    email.setAttribute("placeholder","Enter your email address!");
+    email.focus();
+}
 function forgotRedirector(email){
    let host = location.host;
    let protocol = location.protocol;

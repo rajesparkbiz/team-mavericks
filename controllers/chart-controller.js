@@ -1,7 +1,9 @@
 const queryExecurter = require('../database/dbHelper.js');
+const QueryHelper = require('../services/databaseQuery');
+
 class ChartController {
     static displayChart = async (req, res) => {
-        var category = await queryExecurter(`SELECT * FROM question_category;`);
+        var category=await QueryHelper.selectQuery('question_category','*',true,false);
 
         let questionsRatio = [];
 
@@ -16,7 +18,8 @@ class ChartController {
 
             const id = category[i-1].category_id;
 
-            var que = await queryExecurter(`SELECT count(*) as questions FROM question_master where question_master.category_id=${id}`);
+            
+            var que=await QueryHelper.selectQuery('question_master','count(*) as questions',true,true,'category_id',`${id}`,'=');
 
             const questionCount = que[0].questions;
             data.push(questionCount);
@@ -36,7 +39,8 @@ class ChartController {
             const id = category[i].category_id;
     
             var que = await queryExecurter(`SELECT count(*) as questions FROM question_master where question_master.category_id=${id}`);
-    
+
+           
             const questionCount = que[0].questions;
             questionsRatio[i] = `width:${Math.floor((questionCount / category.length) * 10)}%`;
         }   

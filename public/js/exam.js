@@ -100,6 +100,7 @@ async function examID(id,link) {
   var result = await exam_id.json();
   var exam_data = result.exam_data;
 
+
   var questionStatus = result.status;
 
   var exam_table_string = "";
@@ -163,7 +164,7 @@ async function examID(id,link) {
                 </div>
               </td>
               <td>
-                <a href="/result/student/?exam_id=${exam_data[i].exam_id}"> View Result</a>
+                <a href="/result/student/?examId=${exam_data[i].exam_id}"> View Result</a>
               </td>
               <td>
                 <a href="/exams/displaySelectQuestion/?exam_id=${exam_data[i].exam_id}" id="${exam_data[i].exam_id}" 
