@@ -3,6 +3,9 @@ body {
 	margin: 0;
 	box-sizing: border-box;
 	/* background: #383a4f; */
+
+    background-color: rgb(245,246,254);
+
 }
 .page-content {
 	width: 100%;

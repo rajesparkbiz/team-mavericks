@@ -44,7 +44,6 @@ function showAddQuestionModal() {
     questionModal.classList.add("show");
     questionModal.style.display = "block";
     questionModal.classList.add("modal-open");
-
     questionPage.classList.add('blur-card');
 }
 
@@ -283,6 +282,7 @@ function codingquechk() {
     }
     addquebtn();
 }
+
 function editquestionchk() {
     let question = document.getElementById("question-add-input").value;
     let warning = document.getElementById("editquestionwarn");
@@ -337,6 +337,7 @@ function editoptionschk() {
         editquebtn();
     }
 }
+
 function addquebtn() {
     let addque = document.getElementById("addque-btn");
     if (questionchk_flag == 1 && optionschk_flag == 1 && optionsradiochk_flag == 1 && coding_question_flag == 1) {
@@ -346,6 +347,7 @@ function addquebtn() {
         addque.disabled = true;
     }
 }
+
 function editquebtn() {
     let editquebtn = document.getElementsByName('editbtn');
     if (editquestionchk_flag == 1 && editoptionschk_flag == 1) {
@@ -355,7 +357,9 @@ function editquebtn() {
         editquebtn[0].disabled = true;
     }
 }
+
 async function toogle(value) {
+
 
     const categoryId = value.id;
     //this code use for chnage the tab 
@@ -394,8 +398,12 @@ async function toogle(value) {
         for (let i = 0; i < questions.length; i++) {
             content +=
                 `
-                    <div class="container-fluid my-1">
-                        <div class="question pt-2 mt-2">
+                    <div class="container-fluid mx-2 my-4">
+                        <div class="question">
+                        <div class="question-highlight">
+
+                        </div>
+                        <div class="question-body pt-1 pb-1">
                         <div class="py-2 h5"><b>
                             ${(i + 1)}. ${questions[i].question} 
                             </b></div>
@@ -429,7 +437,7 @@ async function toogle(value) {
                         </div>
                         </div>
                     </div>
-
+                    </div>
                     `;
         }
 

@@ -11,7 +11,7 @@ const connection = mysql.createPool(
 )
 
 class dbTransaction {
-    static async queryExec(id, args, querytype) {
+    static async queryExec(id,args, querytype) {
         let con = await connection.getConnection();
         let result = [];
         let updatedQuery;

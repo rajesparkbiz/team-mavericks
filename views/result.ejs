@@ -9,13 +9,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/search-bar.css">
-
+  <link id="theme-style" rel="stylesheet" href="/css/navbar.css">
 </head>
 
-<body>
- 
- 
-  <section>
+<body onload="navbar_changer('Results');">
+  <%- include('navbar.ejs') %>
+  <section class="app-wrapper">
 
     <div class="contaner-fluid">
       <div class="action-btn">
@@ -27,6 +26,10 @@
       </div>
 
       <div class="user-table warpper m-2">
+
+        <% if(data.length==0 || data==undefined){%>
+          <p>Students Not Submit Exam</p>
+        <%}else{%>
 
         <table class="table table-hover " id="studenttable" border="1">
           <thead>
@@ -47,7 +50,7 @@
             
               <tr>
                 <td>
-                  <%= (i+1)%>
+                  <%=  data[i].id %>
                 </td>
                 <td>
                   <%= data[i].fname%>
@@ -73,19 +76,102 @@
 
 
         </table>
+        <%}%>
+
       </div>
-      <%- include('pagination-tab.ejs') %>
+
+      <div class="user-exam-pagination-bar w- d-flex justify-content-between mx-2">
+    
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <% for(let i=1; i<=count; i++){ %>
+
+              <li class="page-item" id="list<%= i %>"><p class="page-link" onclick="resultID(`/result/results?page=<%= i %>&&AJAX=true`)"><%= i %></p></li>
+    
+        <% } %>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>
+    
+    
+    
 
     </div>
+    <%- include('footer.ejs') %>
   </section>
-  <%- include('footer.ejs') %>
 
 </body>
+
+<script>
+        async function resultID(id)
+        {
+            var resultid = id;
+            console.log(resultid);
+            var pageId = await fetch(resultid);
+            console.log("page id",pageId);
+            var result_data = await pageId.json();
+            console.log("result data",result_data);
+            var student_string = "";
+
+            
+            var studenttable = document.getElementById('studenttable');
+          
+            student_string += `
+            
+          <thead>
+            <tr>
+              <th>No</th>
+              <th scope="col">Student Name</th>
+              <th scope="col">Exam Name</th>
+              <th scope="col">Total Marks</th>
+              <th scope="col">Marks</th>
+              <th scope="col">status</th>
+             
+            </tr>
+          </thead>`;
+
+          for(let i=0; i<result_data.length; i++){
+            student_string += `
+            <tbody id="table">
+           
+             <tr>
+               <td>
+                   ${result_data[i].id}
+               </td>
+               <td>
+                 ${result_data[i].fname}
+               </td>
+               <td>
+                 ${result_data[i].exam_name}
+               </td>
+               <td>
+                 ${result_data[i].exam_total_question}
+               </td>
+               <td>
+                 ${result_data[i].exam_result}
+               </td>
+               <td>
+                   
+                  ${result_data[i]}
+
+               </td>
+             </tr>
+             
+         </tbody>
+            `;
+          }
+
+            studenttable.innerHTML = student_string;
+            console.log("your student table",studenttable);
+        }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
 
   </script>
    
-
+   <script src="/js/navbar.js"></script>
 
 </html>
