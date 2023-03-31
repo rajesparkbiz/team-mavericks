@@ -181,8 +181,6 @@ class ExamController {
         res.json();
 
     }
-
-
 }
 
 module.exports = ExamController;
