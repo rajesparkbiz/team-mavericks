@@ -19,9 +19,7 @@ class StdentQuestion {
 
         var user = await QueryHelper.selectQuery('student_master','count(*) as students',true,false);
         data[3] = user[0].students;
-
-
-
+        
         var category = await QueryHelper.selectQuery('question_category','*',true,false);
 
         data[4] = category;
