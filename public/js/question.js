@@ -4,39 +4,39 @@ var questionPage = document.getElementById('question-page-container');
 async function showModal(question_id) {
     //get request for get perticular one question
     const questionDataReq = await fetch(`/question/questions/data/one/?id=${question_id}`);
-     const questionData = await questionDataReq.json();
- 
-     const question = questionData.questionData.question;
-     const questionAnswer = questionData.questionData.question_answer;
- 
-     const options = questionData.questionOption;
- 
-     var option_content = '';
-     for (let i = 0; i < options.length; i++) {
-         option_content +=
-             `<div class="form-check my-3">
+    const questionData = await questionDataReq.json();
+
+    const question = questionData.questionData.question;
+    const questionAnswer = questionData.questionData.question_answer;
+
+    const options = questionData.questionOption;
+
+    var option_content = '';
+    for (let i = 0; i < options.length; i++) {
+        option_content +=
+            `<div class="form-check my-3">
                  <input class="form-check-input mt-check question-option-input-radio" type="radio" name="option" value="${options[i].option_value}">
                  <input type='hidden' value='${options[i].option_id}' class='option-id'>
                  <input class="form-control question-option-input" type="text" value="${options[i].option_value}" name="option-value" onkeyup="editoptionschk()">
                </div>`;
-     }
-     option_content += `<small class="warn" id="editoptionquestionwarn"></small>`;
-     totaloptions = options.length;
-     document.getElementById("question-option").innerHTML = option_content;
- 
-     //set dynamic edit modal save btn id
-     const editQuestionBn = document.getElementsByClassName("editQuestion-btn");
-     editQuestionBn[0].id = question_id;
- 
-     //display modal sheet
-     var questionModal = document.getElementById("question-modal");
-     questionModal.classList.add("show");
-     questionModal.style.display = "block";
-     questionModal.classList.add("modal-open");
- 
-     questionPage.classList.add('blur-card');
- 
-     bindModalData(question, questionAnswer, options);
+    }
+    option_content += `<small class="warn" id="editoptionquestionwarn"></small>`;
+    totaloptions = options.length;
+    document.getElementById("question-option").innerHTML = option_content;
+
+    //set dynamic edit modal save btn id
+    const editQuestionBn = document.getElementsByClassName("editQuestion-btn");
+    editQuestionBn[0].id = question_id;
+
+    //display modal sheet
+    var questionModal = document.getElementById("question-modal");
+    questionModal.classList.add("show");
+    questionModal.style.display = "block";
+    questionModal.classList.add("modal-open");
+
+    questionPage.classList.add('blur-card');
+
+    bindModalData(question, questionAnswer, options);
 }
 
 function showAddQuestionModal() {
@@ -94,6 +94,9 @@ async function editQuestionBtn(id) {
     const optionsAnswer = document.getElementsByClassName("question-option-input-radio");
     const options = document.getElementsByClassName("question-option-input");
     const option_ids = document.getElementsByClassName("option-id");
+    const imagePath=document.getElementById("questionImage");
+    const filename=imagePath.files[0].name;
+    
     //check the currect answer
     let ansindex;
     for (let i = 0; i < optionsAnswer.length; i++) {
@@ -114,7 +117,7 @@ async function editQuestionBtn(id) {
     }
     const url = "/question/update";
     questionAnswer = questionOptions[ansindex];
-    const data = { questionId, question, questionAnswer, questionOptions, optionsId };
+    const data = { questionId, question, questionAnswer, questionOptions,optionsId,filename};
     const fetchOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -219,7 +222,7 @@ function optionschk() {
     let warning = document.getElementById("optionquestionwarn");
     let rightwarning = document.getElementById("rightoptionwarn");
     rightwarning.innerHTML = "select right option!";
-    optionsradiochk_flag =0;
+    optionsradiochk_flag = 0;
     let sameoptionsflag = 0;
     for (let index = 0; index < optionslen; index++) {
         if (options[index].value.trim().length > 0) {
@@ -232,7 +235,7 @@ function optionschk() {
         }
     }
     for (let i = 0; i < optionslen; i++) {
-        for (let j = i+1; j < optionslen; j++) {
+        for (let j = i + 1; j < optionslen; j++) {
             if (((options[i].value).trim()).toUpperCase() == ((options[j].value).trim()).toUpperCase()) {
                 if ((options[i].value).trim() != '') {
                     sameoptionsflag++;
@@ -249,11 +252,11 @@ function optionschk() {
             if (noofoption >= 4) {
                 warning.innerHTML = 'Two or more options are same!';
             }
-            else{
+            else {
                 warning.innerHTML = "Enter at least 4 options!";
             }
         }
-        else{
+        else {
             warning.innerHTML = "Enter at least 4 options!";
         }
         optionschk_flag = 0;
@@ -300,7 +303,7 @@ function editquestionchk() {
 }
 
 function editoptionschk() {
-    let noofoptions = 0,sameoptionsflag=0;
+    let noofoptions = 0, sameoptionsflag = 0;
     let warning = document.getElementById("editoptionquestionwarn");
     const options = document.getElementsByClassName("question-option-input");
 
@@ -310,7 +313,7 @@ function editoptionschk() {
         }
     }
     for (let i = 0; i < totaloptions; i++) {
-        for (let j = i+1; j < totaloptions; j++) {
+        for (let j = i + 1; j < totaloptions; j++) {
             if (((options[i].value).trim()).toUpperCase() == ((options[j].value).trim()).toUpperCase()) {
                 sameoptionsflag++;
             }
@@ -326,11 +329,11 @@ function editoptionschk() {
             if (noofoptions == totaloptions) {
                 warning.innerHTML = 'Two or more options are same!';
             }
-            else{
+            else {
                 warning.innerHTML = "Enter at least 4 options!";
             }
         }
-        else{
+        else {
             warning.innerHTML = 'Enter all options!';
         }
         editoptionschk_flag = 0;
@@ -375,6 +378,7 @@ async function toogle(value) {
     tab.classList.add('active');
 
     const questionRequest = await fetch(`/question/questions/category/?category=${categoryId}`)
+
     const data = await questionRequest.json();
     const questions = data.questions;
     const optionTitle = data.optionTitle;
@@ -396,9 +400,16 @@ async function toogle(value) {
 
 
         for (let i = 0; i < questions.length; i++) {
+
+            var imageContent=``;
+
+            if(questions[i].image!=null){
+                imageContent+=`<img src="/upload/${questions[i].image}" alt="">`
+            }
             content +=
                 `
                     <div class="container-fluid mx-2 my-4">
+                    <div class="qustion-container">
                         <div class="question">
                         <div class="question-highlight">
 
@@ -436,6 +447,11 @@ async function toogle(value) {
                             onclick="deleteQuestion('${questions[i].question_id}')" value="Delete">
                         </div>
                         </div>
+                     
+                    </div>
+                    <div class="question-image">
+                    ${imageContent}
+                    </div>
                     </div>
                     </div>
                     `;
@@ -446,4 +462,3 @@ async function toogle(value) {
         question_container.innerHTML = content;
     }
 }
-
