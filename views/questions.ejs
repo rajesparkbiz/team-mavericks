@@ -54,38 +54,50 @@
                 <% for(let i=0;i<questions.length;i++){%>
 
                   <div class="container-fluid mx-2 my-4">
-                    <div class="question">
-                      <div class="question-highlight">
+                    <div class="qustion-container">
+                      <div class="question">
 
-                      </div>
-                      <div class="question-body pt-1 pb-1">
-                        <div class="py-2 h5"><b>
-                            <%= (i+1) %>. <%= questions[i].question %>
-                          </b></div>
-                        <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+                        <div class="question-highlight">
+  
+                        </div>
 
-                          <!-- all question options -->
-                          <%for (let j=0;j<questions[i].option.length;j++){%>
-
-                            <!-- check true question answer -->
-                            <% if(questions[i].correct_ans[j]){ %>
-                              <p class="true-answer">
-                                <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
-                              </p>
-                              <%}else{%>
-                                <p class="false-answer">
+                        <div class="question-body pt-1 pb-1">
+                          <div class="py-2 h5"><b>
+                              <%= (i+1) %>. <%= questions[i].question %>
+                            </b></div>
+                          <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+  
+                            <!-- all question options -->
+                            <%for (let j=0;j<questions[i].option.length;j++){%>
+  
+                              <!-- check true question answer -->
+                              <% if(questions[i].correct_ans[j]){ %>
+                                <p class="true-answer">
                                   <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
                                 </p>
+                                <%}else{%>
+                                  <p class="false-answer">
+                                    <%= optionTitle[j].toUpperCase() %> ) <%= questions[i].option[j] %>
+                                  </p>
                                 <%}%>
-                                  <%}%>
+                              <%}%>
+  
+                          </div>
+                          <div class="question-btns">
+                            <button class="btn btn-primary" onclick="showModal(this.id)"
+                              id="<%= questions[i].question_id%>">Edit</button>
+                            <input type="button" class="btn btn-danger"
+                              onclick="deleteQuestion('<%=questions[i].question_id%>')" value="Delete">
+                             
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <div class="question-image">
 
-                        </div>
-                        <div class="question-btns">
-                          <button class="btn btn-primary" onclick="showModal(this.id)"
-                            id="<%= questions[i].question_id%>">Edit</button>
-                          <input type="button" class="btn btn-danger"
-                            onclick="deleteQuestion('<%=questions[i].question_id%>')" value="Delete">
-                        </div>
+                          <%if(questions[i].image!=null){%>
+                            <img src="/upload/<%=questions[i].image%>" alt="">  
+                          <%}%>
                       </div>
                     </div>
                   </div>
@@ -112,7 +124,7 @@
                 onclick="disableAddQuestionModal()"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="/question/add">
+              <form method="POST" action="/question/add" enctype="multipart/form-data">
                 <div>
                   <div class="form-outline mb-4">
                     <label class="form-label" for="question">Question</label>
@@ -129,6 +141,11 @@
                 </div>
 
                 <div id="coding-input-div">
+                  <label class="form-label" for="filename">Select Image</label>
+                  <input type="file" class="form-control" name="filename">
+                </div>
+
+                <div id="question-image">
 
                 </div>
 
@@ -152,6 +169,7 @@
                     <input class="form-control form-control-sm" type="text" name="option" onkeyup="optionschk()">
                   </div>
                 </div>
+                
                 <small class="warn" id="optionquestionwarn"></small>
                 <small class="warn" id="rightoptionwarn"></small>
                 <p><strong>Select Question Category</strong></p>
@@ -186,22 +204,29 @@
         <div class="modal-dialog d-flex justify-content-center">
           <div class="modal-content w-100">
             <div class="modal-header">
+
               <h5 class="modal-title">Edit Question</h5>
               <button type="button" id="disable-modal" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
                 onclick="disableModal()"></button>
             </div>
             <div class="modal-body p-4">
-              <form action="/question/update" method="post">
+              <form action="/question/update" method="post" enctype="multipart/form-data">
 
                 <div class="form-outline mb-4">
+
                   <div class="form-outline mb-4">
                     <label class="form-label" for="question">Question</label>
                     <textarea id="question-add-input" rows="4" class="form-control" name="question"
-                      onkeyup="editquestionchk()"></textarea>
+                      onkeyup="editquestionchk()"></textarea>  
+                         
                     <small class="warn" id="editquestionwarn"></small>
                   </div>
 
-
+                  <div id="coding-input-div my-3">
+                    <label class="form-label" for="update_filename">Select Image</label>
+                    <input type="file" class="form-control" name="update_filename" id="questionImage">
+                  </div>
+  
                   <div class="question-option" id="question-option">
 
 

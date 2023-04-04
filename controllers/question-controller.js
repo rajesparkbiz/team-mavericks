@@ -3,6 +3,9 @@ const queryExecurter = require('../database/dbHelper.js');
 const question_config = require('../public/js/question-config.js');
 const dbTransaction = require('../database/dbTransaction.js');
 const QueryHelper = require('../services/databaseQuery');
+const con = require('../database/dbconnect.js');
+const multer=require('../config/multer-config.js');
+const { storage } = require('googleapis/build/src/apis/storage/index.js');
 
 class QuestionController {
 
@@ -20,9 +23,15 @@ class QuestionController {
 
     static updateQuestion = async (req, res) => {
 
-        const { questionId, question, questionAnswer, questionOptions, optionsId } = req.body;
+        const { questionId, question, questionAnswer, questionOptions, optionsId,filename } = req.body;
 
-        const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer'], [`${question}`, `${questionAnswer}`], 'question_id', `${questionId}`, '=', true);
+        
+
+        if(filename !=null || filename!=""){
+            const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer','isImage'], [`${question}`, `${questionAnswer}`,`${filename}`], 'question_id', `${questionId}`, '=', true);
+        }else{
+            const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer'], [`${question}`, `${questionAnswer}`], 'question_id', `${questionId}`, '=', true);
+        }
 
         for (let i = 0; i < questionOptions.length; i++) {
             const updateOptionQuery = await queryExecurter(`UPDATE option_master SET option_value = '${questionOptions[i]}' WHERE option_id = ${optionsId[i]}`);
@@ -32,6 +41,8 @@ class QuestionController {
 
     static addQuestion = async (req, res) => {
 
+        const image = req.file? req.file.filename : "";
+        
         let total_option = 0;
         let { question, coding_question, optionid, option, categories_id, coding_question_chkbox } = req.body;
 
@@ -50,7 +61,7 @@ class QuestionController {
                     }
                     else {
 
-                        que_adder[0] = await QueryHelper.insertQuery('question_master', ['category_id', 'question', 'question_answer', 'isCoding'], [categories_id, question, `${option[optionid]}`, '0'], false);
+                        que_adder[0] = await QueryHelper.insertQuery('question_master', ['category_id', 'question', 'question_answer', 'isCoding','isImage'], [categories_id, question, `${option[optionid]}`, '0',`${image}`], false);
                     }
                     let optionCounter = (que_adder.length);
                     for (let index = 0; index < option.length; index++) {
@@ -121,7 +132,8 @@ class QuestionController {
                 "question": allQuestions[i].question,
                 "answer": allQuestions[i].question_answer,
                 "option": options,
-                "correct_ans": trueOption
+                "correct_ans": trueOption,
+                "image":allQuestions[i].isImage
             }
         }
         res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
@@ -137,6 +149,7 @@ class QuestionController {
         let questionCategories = await QueryHelper.selectQuery('question_category', '*', true, false);
         const question_category = await QueryHelper.selectQuery('question_category', ['category_name', 'category_id'], true, false);
         const allQuestions = await QueryHelper.selectQuery('question_master', '*', true, true, ['isDeleted', 'category_id'], ['1', categoryId], '=', 'AND');
+
         const questions = [];
 
 
@@ -168,7 +181,8 @@ class QuestionController {
                 "question": allQuestions[i].question,
                 "answer": allQuestions[i].question_answer,
                 "option": options,
-                "correct_ans": trueOption
+                "correct_ans": trueOption,
+                "image":allQuestions[i].isImage
             }
 
         }
@@ -209,7 +223,7 @@ class QuestionController {
             allQuestionIds[i] = allQuestions[i].question_id;
         }
 
-        const defaultQuestionIds = await QueryHelper.selectQuery('exam_category','question_id as id',true,true,['exam_id','category_id'],[examId,categoryId], '=','AND');
+        const defaultQuestionIds = await QueryHelper.selectQuery('exam_category', 'question_id as id', true, true, ['exam_id', 'category_id'], [examId, categoryId], '=', 'AND');
 
 
         var defaultQuestionId = [];
@@ -281,14 +295,13 @@ class QuestionController {
         res.json({ questionData: questionData[0], questionOption: questionoption });
     }
 
-
     //REQUIRED TO CHANGE QUERY
     static discardChoosedQuestion = async (req, res) => {
         const { examId, questionId, categoryId } = req.query;
 
         // const choosedQuestionResult = await queryExecurter(`SELECT exam_category.question_id FROM exam_category where exam_category.exam_id=${examId} and exam_category.category_id=${categoryId}`);
 
-        const choosedQuestionResult=await QueryHelper.selectQuery('exam_category','question_id',true,true,['exam_id','category_id'],[`${examId}`,`${categoryId}`])
+        const choosedQuestionResult = await QueryHelper.selectQuery('exam_category', 'question_id', true, true, ['exam_id', 'category_id'], [`${examId}`, `${categoryId}`])
 
         const questionIds = (choosedQuestionResult[0].question_id).split(",");
 
