@@ -150,7 +150,8 @@
               <% for(let i=1; i<=count; i++){ %>
 
                 <li class="page-item" id="list<%= i %>">
-                  <p class="page-link pagination-tab <%if(i==1){%>tab-active<%}%>" onclick="examID(`/dashboard/exams?page=<%= i%>&AJAX=true`,this)" id="tab-<%= i %>">
+                  <p class="page-link pagination-tab <%if(i==1){%>tab-active<%}%>"
+                    onclick="examID(`/dashboard/exams?page=<%= i%>&AJAX=true`,this)" id="tab-<%= i %>">
                     <%= i %>
                   </p>
                 </li>
@@ -173,10 +174,15 @@
   </script>
 
 
-<script src="/js/exam.js"></script>
 <script src="/js/create-exam.js"></script>
 <script src="/js/navbar.js"></script>
+<script type = "text/JavaScript" src = "https://MomentJS.com/downloads/moment.js"></script>
 
-
+<script src="/js/exam.js"></script>
+<script>
+  var a = moment.utc('2023-04-04 13:14:13');
+  var localDate=moment(a).local();
+  console.log(localDate.toDate())  
+</script>
 
 </html>
