@@ -11,6 +11,7 @@ const OAuth2 = google.Auth.OAuth2Client;
 const OAuth2_client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
 OAuth2_client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 var fs = require('fs');
+
 var readHTMLFile = function (path, callback) {
   fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
     if (err) {
@@ -21,6 +22,7 @@ var readHTMLFile = function (path, callback) {
     }
   });
 };
+
 class UserAuth {
 
   static userLogin = async (req, res) => {
@@ -152,6 +154,7 @@ class UserAuth {
       res.render('login', { status: "email not found!" });
     }
   }
+
   static changePasswordChk = async (req, res) => {
     let saltround = 10;
     let { ftoken, Password } = req.body;
