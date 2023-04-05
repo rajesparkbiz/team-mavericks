@@ -69,13 +69,28 @@ class StdentQuestion {
 
     static displayExams = async (req, res) => {
 
+
+        // if (page == 1) {
+        //     prev = 0;
+        // }
+        // else {
+        //     prev = parseInt(page) - 1;
+        // }
+        // if (page == parseInt(total_records / limit) || page == 0) {
+        //     page = 1;
+        // } else {
+        //     page++;
+        // }
+
         var limit = 5;
         var page = req.query.page || 1;
+        var nextpage=parseInt(page)+1;
         var offset = (page - 1) * limit;
         var ajax = req.query.AJAX || false;
 
 
-        const exam_data = await queryExecurter(`SELECT * FROM exam_master LIMIT ${offset},${limit};`);
+
+        const exam_data = await queryExecurter(`SELECT * FROM exam_master where exam_master.isDeleted='0' LIMIT ${offset},${limit};`);
         var status=[];
         for(let i=0;i<exam_data.length;i++){
            
@@ -89,14 +104,14 @@ class StdentQuestion {
         }
 
 
-        const result=await QueryHelper.selectQuery('exam_master','count(*) as count',true,false);
+        const result=await QueryHelper.selectQuery('exam_master','count(*) as count',true,true,'isDeleted','0','=');
 
         var count = Math.ceil((result[0].count) / limit);
         
         if (!ajax) {
-            res.render('exam.ejs', { data: exam_data, count,status:status});
+            res.render('exam.ejs', { data: exam_data, count,status:status,page,nextpage});
         } else {
-            res.json({exam_data,status});
+            res.json({exam_data,status,page,count,nextpage});
         }
 
 

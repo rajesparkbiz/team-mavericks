@@ -6,7 +6,6 @@ async function toggleSwitch(exam_id) {
 
 async function Search(str) {
 
-
   const flag = document.getElementById("filter-box").value;
 
   var searching = document.getElementById("search").value;
@@ -101,6 +100,12 @@ async function examID(id,link) {
   var exam_data = result.exam_data;
 
 
+  // var count=result.count;
+  // var disableContent=``;
+  // if(count==1){
+  //   disableContent+`disabled`
+  // }
+
   var questionStatus = result.status;
 
   var exam_table_string = "";
@@ -118,6 +123,7 @@ async function examID(id,link) {
             <th scope="col">Status</th>
             <th scope="col">Result</th>
             <th scope="col">View Questions</th>
+            <th scope="col">Delete</th>
           </tr>
         </thead>
         `;
@@ -172,7 +178,9 @@ async function examID(id,link) {
                   View Question
                 </a>
               </td>
-                
+              <td>
+              <input type="button" value="Delete" class="btn btn-primary" onclick="deleteExam('${exam_data[i].exam_id}')">
+              </td>
             </tr>
             
         </tbody>           
@@ -181,4 +189,22 @@ async function examID(id,link) {
     exam_table.innerHTML = exam_table_string;
   }
 
+}
+
+async function deleteExam(id){
+
+  const isDelete=confirm("Are you sure?");
+
+  if(isDelete){
+    const deleteRequest=await fetch(`/exams/delete/?id=${id}`);
+    const res=await deleteRequest.json();
+    
+    const status=res.status;
+    if(status==false){
+      alert("you can't delete this exam because currently exam is active!");
+    }else{
+      location.reload()  
+    }
+  }
+ 
 }

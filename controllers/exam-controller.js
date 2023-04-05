@@ -26,12 +26,10 @@ class ExamController {
     }
 
     static addExam = async (req, res) => {
-
-        var addExam
-
+        
         let { examname, examcode, totalque, duration } = req.body;
 
-        addExam=await QueryHelper.insertQuery('exam_master',['exam_name', 'exam_access_code', 'exam_total_question', 'exam_isActive','exam_duration'],[`${examname}`, `${examcode}`, `${totalque}`, 'no',`${duration}`],true);
+        var addExam=await QueryHelper.insertQuery('exam_master',['exam_name', 'exam_access_code', 'exam_total_question', 'exam_isActive','exam_duration'],[`${examname}`, `${examcode}`, `${totalque}`, 'no',`${duration}`],true);
 
         res.redirect('/dashboard/exams');
     }
@@ -230,7 +228,6 @@ class ExamController {
         res.json({ categoryQuestions, questionCount: questionsId.length });
     }
 
-   
     static selectQuestions = async (req, res) => {
       
 
@@ -269,6 +266,30 @@ class ExamController {
         }
         res.json();
 
+    }
+
+    static deleteExam=async(req,res)=>{
+        try{
+            const id=req.query.id;
+            const examResult=await QueryHelper.selectQuery('exam_master','exam_isActive',true,true,'exam_id',`${id}`,'=');
+
+            const status=examResult[0].exam_isActive;
+    
+            if(status=='yes'){
+                res.json({status:false});
+            }else{
+                const deleteExam=await queryExecurter(`UPDATE exam_master SET isDeleted = '1' WHERE exam_id = '${id}';
+                `);
+                const deleteChoosedQuestions=await queryExecurter(`UPDATE exam_category SET isDeleted = '1' WHERE exam_id = '${id}';
+                `)
+                res.json({status:true});
+            }
+        }catch(err){
+            throw err
+        }
+
+        
+        
     }
 
 }

@@ -24,6 +24,7 @@
             <a type="button" class="btn btn-success" onclick="showAddExamModal()">Create Exam</a>
           </div>
         </div>
+        
         <div class="modal fade" id="question-edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
           aria-hidden="true">
           <div class="modal-dialog mx-0 mx-sm-auto">
@@ -91,6 +92,7 @@
                 <th scope="col">Status</th>
                 <th scope="col">Result</th>
                 <th scope="col">View Questions</th>
+                <th scope="col">Delete</th>
               </tr>
             </thead>
             <tbody id="table">
@@ -98,7 +100,7 @@
                 <% if(data[i]){%>
                   <tr>
                     <td>
-                      <%= data[i].exam_id%>
+                      <%= (i+1)%>
                     </td>
                     <td>
                       <%= data[i].exam_name %>
@@ -134,6 +136,10 @@
                         View Question
                       </a>
                     </td>
+                    <td>
+                      <input type="button" value="Delete" class="btn btn-primary" onclick="deleteExam('<%=data[i].exam_id%>')">
+                        
+                    </td>
                   </tr>
                   <%}%>
                     <% }%>
@@ -145,18 +151,19 @@
 
           <nav aria-label="Page navigation example">
             <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item <%if(page==2){%>disabled<%}%>"><a class="page-link" href="#">Previous</a></li>
 
               <% for(let i=1; i<=count; i++){ %>
 
                 <li class="page-item" id="list<%= i %>">
                   <p class="page-link pagination-tab <%if(i==1){%>tab-active<%}%>"
-                    onclick="examID(`/dashboard/exams?page=<%= i%>&AJAX=true`,this)" id="tab-<%= i %>">
+                    onclick="examID(`/dashboard/exams?page=<%=i%>&AJAX=true`,this)" id="tab-<%= i %>">
                     <%= i %>
                   </p>
                 </li>
-                <% } %>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              <% } %>
+              
+              <li class="page-item <%if(nextpage==page){%>disabled<%}%>"><a class="page-link" href="#">Next</a></li>
             </ul>
           </nav>
         </div>

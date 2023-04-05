@@ -66,7 +66,7 @@ function disableAddQuestionModal() {
     questionPage.classList.remove('blur-card');
 }
 
-function bindModalData(question, answer, ...questionOptions) {
+function bindModalData(question, answer,...questionOptions) {
 
     const option = questionOptions[0];
     const options = document.getElementsByClassName('question-option-input-radio');
@@ -95,7 +95,13 @@ async function editQuestionBtn(id) {
     const options = document.getElementsByClassName("question-option-input");
     const option_ids = document.getElementsByClassName("option-id");
     const imagePath=document.getElementById("questionImage");
-    const filename=imagePath.files[0].name;
+    console.log(imagePath.files[0]);
+    var filename;
+    if(imagePath.files[0]!=undefined || imagePath.files[0]!=null){
+        filename=imagePath.files[0].name;
+    }else{
+        filename=null;
+    }
     
     //check the currect answer
     let ansindex;

@@ -25,9 +25,7 @@ class QuestionController {
 
         const { questionId, question, questionAnswer, questionOptions, optionsId,filename } = req.body;
 
-        
-
-        if(filename !=null || filename!=""){
+        if(filename !=null || filename!=undefined){
             const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer','isImage'], [`${question}`, `${questionAnswer}`,`${filename}`], 'question_id', `${questionId}`, '=', true);
         }else{
             const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer'], [`${question}`, `${questionAnswer}`], 'question_id', `${questionId}`, '=', true);

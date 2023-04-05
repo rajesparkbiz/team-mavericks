@@ -2,15 +2,17 @@ const { assign } = require('nodemailer/lib/shared/index.js');
 const queryExecurter = require('../database/dbHelper.js');
 const nodemailer = require('nodemailer');
 const QueryHelper = require('../services/databaseQuery');
+var fs = require('fs');
 
 const bcrypt = require('bcrypt');
 const nodeoutlook = require('nodejs-nodemailer-outlook');
 var handlebars = require('handlebars');
 const google = require('googleapis');
 const OAuth2 = google.Auth.OAuth2Client;
+
 const OAuth2_client = new OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET);
 OAuth2_client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
-var fs = require('fs');
+
 
 var readHTMLFile = function (path, callback) {
   fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
@@ -105,11 +107,15 @@ class UserAuth {
         if (err) {
           return;
         }
+
+        //change dynamic html content
         var template = handlebars.compile(html);
         var replacements = {
           forgoturl: fullUrl
         };
         var htmlToSend = template(replacements);
+
+
         const transport = nodemailer.createTransport({
           service: 'gmail',
           auth: {
