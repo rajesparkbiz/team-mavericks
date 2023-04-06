@@ -80,31 +80,32 @@ function disableAddExamModal() {
   questionModal.classList.remove("modal-open");
 }
 
-async function examID(id,link) {
+async function examID(id,link,flag) {
   
-  const tabId=link.id;
+  if(flag==0){
+    const tabId=link.id;
 
-  const tab=document.getElementById(tabId);
-
-  var allPageLink=document.getElementsByClassName("pagination-tab");
-
-  for(let i=0;i<allPageLink.length;i++){
-    allPageLink[i].classList.remove('tab-active');
+    const tab=document.getElementById(tabId);
+  
+    var allPageLink=document.getElementsByClassName("pagination-tab");
+  
+    for(let i=0;i<allPageLink.length;i++){
+      allPageLink[i].classList.remove('tab-active');
+    }
+  
+    tab.classList.add('tab-active');
   }
-
-  tab.classList.add('tab-active');
+  
   
 
   var exam_id = await fetch(id);
   var result = await exam_id.json();
   var exam_data = result.exam_data;
+  var page=result.page;
+  var nextpage=result.nextpage;
+  var count=result.count;
+  var prev=result.prev;
 
-
-  // var count=result.count;
-  // var disableContent=``;
-  // if(count==1){
-  //   disableContent+`disabled`
-  // }
 
   var questionStatus = result.status;
 
@@ -187,6 +188,44 @@ async function examID(id,link) {
             `;
 
     exam_table.innerHTML = exam_table_string;
+
+    var paginationTag=document.getElementById("pagination-control");
+
+    var tabContent=``;
+    for(let i=1;i<=count;i++){
+
+      var activeTab=``;
+      if(i==page){
+        activeTab+='tab-active'
+      }
+
+      var  prevDisable=``;
+
+      if(prev==0){
+        prevDisable+='disabled';
+      }
+
+      tabContent+=`  <li class="page-item" id="list${i}">
+      <p class="page-link pagination-tab ${activeTab}"
+        onclick="examID('/dashboard/exams?page=${i}&AJAX=true',this,0)" id="tab-${i}">
+        ${i}
+      </p>
+    </li>`
+    }
+
+    var paginationContent=` 
+      <li class="page-item ${prevDisable}">
+      <input class="page-link" type="button" value="Previous" onclick="examID('/dashboard/exams?page=${prev}&AJAX=true',this,1)">    
+      </li>
+
+     ${tabContent}
+  
+    <li class="page-item">
+      <input class="page-link" type="button" value="Next" onclick="examID('/dashboard/exams?page=${nextpage}&AJAX=true',this,1)">  
+    </li>
+  `
+
+  paginationTag.innerHTML=paginationContent;
   }
 
 }

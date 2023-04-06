@@ -150,20 +150,26 @@
         <div class="user-exam-pagination-bar w- d-flex justify-content-between mx-2">
 
           <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item <%if(page==2){%>disabled<%}%>"><a class="page-link" href="#">Previous</a></li>
+
+            <ul class="pagination" id="pagination-control">
+              
+              <li class="page-item <%if(page==1){%>disabled<%}%>">
+                <input class="page-link" type="button" value="Previous" onclick="examID(`/dashboard/exams?page=<%=prev%>&AJAX=true`,this,1)">    
+              </li>
 
               <% for(let i=1; i<=count; i++){ %>
 
                 <li class="page-item" id="list<%= i %>">
                   <p class="page-link pagination-tab <%if(i==1){%>tab-active<%}%>"
-                    onclick="examID(`/dashboard/exams?page=<%=i%>&AJAX=true`,this)" id="tab-<%= i %>">
+                    onclick="examID(`/dashboard/exams?page=<%=i%>&AJAX=true`,this,0)" id="tab-<%= i %>">
                     <%= i %>
                   </p>
                 </li>
               <% } %>
               
-              <li class="page-item <%if(nextpage==page){%>disabled<%}%>"><a class="page-link" href="#">Next</a></li>
+              <li class="page-item <%if(nextpage==page){%>disabled<%}%>">
+                <input class="page-link" type="button" value="Next" onclick="examID(`/dashboard/exams?page=<%=nextpage%>&AJAX=true`,this,1)">  
+              </li>
             </ul>
           </nav>
         </div>

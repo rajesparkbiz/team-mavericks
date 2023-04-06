@@ -4,7 +4,7 @@ const QueryHelper = require('../services/databaseQuery');
 const con = require("../database/dbconnect.js")
 class StdentQuestion {
 
-
+    
     static dashboardPage = async (req, res) => {
         var data = [];
 
@@ -69,27 +69,31 @@ class StdentQuestion {
 
     static displayExams = async (req, res) => {
 
-
-        // if (page == 1) {
-        //     prev = 0;
-        // }
-        // else {
-        //     prev = parseInt(page) - 1;
-        // }
-        // if (page == parseInt(total_records / limit) || page == 0) {
-        //     page = 1;
-        // } else {
-        //     page++;
-        // }
-
         var limit = 5;
         var page = req.query.page || 1;
-        var nextpage=parseInt(page)+1;
         var offset = (page - 1) * limit;
         var ajax = req.query.AJAX || false;
+        var prev,nextpage;
 
+        const result=await QueryHelper.selectQuery('exam_master','count(*) as count',true,true,'isDeleted','0','=');
 
+        var count = Math.ceil((result[0].count) / limit);
 
+        if (page == 1) {
+            prev = 0;
+        }
+        else {
+            prev = parseInt(page) - 1;
+        }
+        if ((page-1) == count || page == 0) {
+            page = 1;
+        }else{
+            nextpage=parseInt(page)+1;
+        }
+        if(nextpage>count){
+            nextpage=1
+        }
+    
         const exam_data = await queryExecurter(`SELECT * FROM exam_master where exam_master.isDeleted='0' LIMIT ${offset},${limit};`);
         var status=[];
         for(let i=0;i<exam_data.length;i++){
@@ -103,20 +107,16 @@ class StdentQuestion {
             }
         }
 
-
-        const result=await QueryHelper.selectQuery('exam_master','count(*) as count',true,true,'isDeleted','0','=');
-
-        var count = Math.ceil((result[0].count) / limit);
-        
         if (!ajax) {
-            res.render('exam.ejs', { data: exam_data, count,status:status,page,nextpage});
+            res.render('exam.ejs', { data: exam_data, count,status:status,page,nextpage,prev});
         } else {
-            res.json({exam_data,status,page,count,nextpage});
+            res.json({exam_data,status,page,count,nextpage,prev});
         }
 
 
 
     }
+
 
 }
 
