@@ -13,7 +13,7 @@
     }
 
     const url = `/category/addCategory/?category=${categoryNameTag.value.toUpperCase()}`;
-
+    
 
     const categoryRequest = await fetch(url);
 

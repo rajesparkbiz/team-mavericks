@@ -100,7 +100,7 @@
           <nav aria-label="Page navigation example">
             <ul class="pagination">
               <li class="page-item">
-                <input type="button"class="page-link">
+                <input type="button"class="page-link" value="Previous" onclick="studentID('/students/data?page=<%= prev%>&column_name=<%= column_name %>&&AJAX=true')">
               </li>
               <% for(let i=1; i<=count; i++){ %>
 
@@ -112,7 +112,10 @@
                 </li>
 
                 <% } %>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  <li class="page-item">
+
+                    <input type="button"class="page-link" value="Next" onclick="studentID('/students/data?page=<%= nextpage%>&column_name=<%= column_name %>&&AJAX=true')">
+                  </li>
             </ul>
           </nav>
         </div>
