@@ -9,7 +9,7 @@ class ResultController {
     var offset = (page - 1) * limit;
     var ajax = req.query.AJAX || false;
     var result_data = [];
-    
+
     var status = [];
     con.query(
       `select fname, exam_name,exam_total_question,exam_result ,id
@@ -53,11 +53,12 @@ class ResultController {
     const examId = req.query.examId;
     var limit = 2;
     var page = req.query.page || 1;
-    
+
     var column_name = req.query.column_name || 'student_id';
     var order = req.query.order || 'ASC';
     var offset = (page - 1) * limit;
     var ajax = req.query.AJAX || false;
+    var prev, nextpage;
 
     const student_master = await queryExecurter(`select result_master.obtain_mark,result_master.total_mark,exam_master.exam_name,student_master.fname,student_master.student_id from result_master inner join exam_master on
         result_master.exam_id=exam_master.exam_id inner join student_master on result_master.student_id=student_master.student_id where 
@@ -67,11 +68,26 @@ class ResultController {
 
     var count = Math.ceil(result[0].count / limit);
 
-    if (!ajax) {
-      res.render('studentresult', { data: student_master, order, count, column_name, examId: examId });
+    if (page == 1) {
+      prev = 0;
     }
     else {
-      res.json(student_master);
+      prev = parseInt(page) - 1;
+    }
+    if ((page - 1) == count || page == 0) {
+      page = 1;
+    } else {
+      nextpage = parseInt(page) + 1;
+    }
+    if (nextpage > count) {
+      nextpage = 1
+    }
+
+    if (!ajax) {
+      res.render('studentresult', { data: student_master, order, count, column_name, examId: examId ,page,nextpage,prev,count});
+    }
+    else {
+      res.json({student_master,page,nextpage,prev,count,examId});
     }
   };
 

@@ -83,7 +83,7 @@
                     <td>
                       <%= data[i].birthdate%>
                     </td>
-                    <td>
+                    <td class="student-date">
                       <%= data[i].createdate%>
                     </td>
                     <% } %>
@@ -98,8 +98,8 @@
         <div class="user-exam-pagination-bar w- d-flex justify-content-between mx-2">
 
           <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
+            <ul class="pagination" id="pagination-control">
+              <li class="page-item <%if(page==1){%>disabled<%}%>">
                 <input type="button"class="page-link" value="Previous" onclick="studentID('/students/data?page=<%= prev%>&column_name=<%= column_name %>&&AJAX=true')">
               </li>
               <% for(let i=1; i<=count; i++){ %>
@@ -114,7 +114,7 @@
                 <% } %>
                   <li class="page-item">
 
-                    <input type="button"class="page-link" value="Next" onclick="studentID('/students/data?page=<%= nextpage%>&column_name=<%= column_name %>&&AJAX=true')">
+                    <input type="button"class="page-link <%if(nextpage==page){%>disabled<%}%>" value="Next" onclick="studentID('/students/data?page=<%= nextpage%>&column_name=<%= column_name %>&&AJAX=true')">
                   </li>
             </ul>
           </nav>
@@ -136,6 +136,14 @@
   </script>
 <script>
 
+getAllDatesTags()
+
+function getAllDatesTags(){
+  const dateTds = document.querySelectorAll('.student-date');
+  dateTds.forEach((e) => {
+    e.innerText = convertUTCTime(e.innerText.split("GMT")[0]);
+  });
+}
   async function sort(id){
 
     console.log("sort id",id);
@@ -226,17 +234,21 @@
 
     student_table.innerHTML = student_table_string;
 
+    
   }
 
   async function studentID(id) {
-    console.log("your student id", id);
 
     var studentid = await fetch(id);
-    var student_data = await studentid.json();
+    var data = await studentid.json();
+    var student_data=data.student_data;
+    var nextpage=data.nextpage;
+    var page=data.page;
+    var prev=data.prev
+    var count=data.count;
     var student_table = document.getElementById('studenttable');
     var student_table_string = "";
-    console.log(student_data);
-
+    
     student_table_string += `
     <thead>
             <tr>
@@ -300,7 +312,7 @@
     <td>
       ${student_data[i].birthdate}
     </td>
-    <td>
+    <td class='student-date'>
       ${student_data[i].createdate}
     </td>
      
@@ -314,6 +326,43 @@
 
 
     student_table.innerHTML = student_table_string;
+    var paginationTag=document.getElementById("pagination-control");
+
+    var tabContent=``;
+    for(let i=1;i<=count;i++){
+
+      var activeTab=``;
+      if(i==page){
+        activeTab+='tab-active'
+      }
+
+      var  prevDisable=``;
+
+      if(prev==0){
+        prevDisable+='disabled';
+      }
+
+      tabContent+=`  <li class="page-item" id="list${i}">
+      <p class="page-link pagination-tab ${activeTab}"
+        onclick="studentID('/students/data/?page=${i}&AJAX=true',this,0)" id="tab-${i}">
+        ${i}
+      </p>
+    </li>`
+    }
+
+    var paginationContent=` 
+      <li class="page-item ${prevDisable}">
+      <input class="page-link" type="button" value="Previous" onclick="studentID('/students/data/?page=${prev}&AJAX=true',this,1)">    
+      </li>
+
+     ${tabContent}
+  
+    <li class="page-item">
+      <input class="page-link" type="button" value="Next" onclick="studentID('/students/data/?page=${nextpage}&AJAX=true',this,1)">  
+    </li>
+  `
+
+  paginationTag.innerHTML=paginationContent;
   }
 
 
@@ -353,6 +402,10 @@
 
   }
 
+  function convertUTCTime(time) {
+  let userTime = moment.utc(time).local().format("YYYY-MM-DD h:mm:ss A")
+  return userTime;                                    
+}  
 </script>
 <script src="/js/navbar.js"></script>
 

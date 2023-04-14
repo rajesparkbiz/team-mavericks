@@ -1,3 +1,11 @@
+getAllDatesTags()
+
+function getAllDatesTags(){
+  const dateTds = document.querySelectorAll('.exam-date');
+  dateTds.forEach((e) => {
+    e.innerText = convertUTCTime(e.innerText.split("GMT")[0]);
+  });
+}
 
 async function toggleSwitch(exam_id) {
 
@@ -71,8 +79,12 @@ function showAddExamModal() {
   questionModal.classList.add("modal-open");
 }
 
-
 function disableAddExamModal() {
+  document.getElementById("examname").value="";
+  document.getElementById("examcode").value="";
+  document.getElementById("totalque").value="";
+  document.getElementById("duration").value="";
+
   var questionModal = document.getElementById("question-edit-modal");
 
   questionModal.classList.remove("show");
@@ -80,31 +92,33 @@ function disableAddExamModal() {
   questionModal.classList.remove("modal-open");
 }
 
-async function examID(id,link,flag) {
-  
-  if(flag==0){
-    const tabId=link.id;
+async function examID(id, link, flag) {
 
-    const tab=document.getElementById(tabId);
-  
-    var allPageLink=document.getElementsByClassName("pagination-tab");
-  
-    for(let i=0;i<allPageLink.length;i++){
+
+
+  if (flag == 0) {
+    const tabId = link.id;
+
+    const tab = document.getElementById(tabId);
+
+    var allPageLink = document.getElementsByClassName("pagination-tab");
+
+    for (let i = 0; i < allPageLink.length; i++) {
       allPageLink[i].classList.remove('tab-active');
     }
-  
+
     tab.classList.add('tab-active');
   }
-  
-  
+
+
 
   var exam_id = await fetch(id);
   var result = await exam_id.json();
   var exam_data = result.exam_data;
-  var page=result.page;
-  var nextpage=result.nextpage;
-  var count=result.count;
-  var prev=result.prev;
+  var page = result.page;
+  var nextpage = result.nextpage;
+  var count = result.count;
+  var prev = result.prev;
 
 
   var questionStatus = result.status;
@@ -141,7 +155,7 @@ async function examID(id,link,flag) {
     var switchStatus = "";
 
     if (exam_data[i].exam_isActive == 'yes') {
-      switchStatus+='checked';
+      switchStatus += 'checked';
     }
 
     exam_table_string += `
@@ -160,7 +174,7 @@ async function examID(id,link,flag) {
               <td>
                 ${exam_data[i].exam_total_question}
               </td>
-              <td>
+              <td class='exam-date'>
                 ${exam_data[i].createdDate} 
               </td>
               <td>
@@ -186,26 +200,26 @@ async function examID(id,link,flag) {
             
         </tbody>           
             `;
-
+    
     exam_table.innerHTML = exam_table_string;
 
-    var paginationTag=document.getElementById("pagination-control");
+    var paginationTag = document.getElementById("pagination-control");
 
-    var tabContent=``;
-    for(let i=1;i<=count;i++){
+    var tabContent = ``;
+    for (let i = 1; i <= count; i++) {
 
-      var activeTab=``;
-      if(i==page){
-        activeTab+='tab-active'
+      var activeTab = ``;
+      if (i == page) {
+        activeTab += 'tab-active'
       }
 
-      var  prevDisable=``;
+      var prevDisable = ``;
 
-      if(prev==0){
-        prevDisable+='disabled';
+      if (prev == 0) {
+        prevDisable += 'disabled';
       }
 
-      tabContent+=`  <li class="page-item" id="list${i}">
+      tabContent += `  <li class="page-item" id="list${i}">
       <p class="page-link pagination-tab ${activeTab}"
         onclick="examID('/dashboard/exams?page=${i}&AJAX=true',this,0)" id="tab-${i}">
         ${i}
@@ -213,7 +227,7 @@ async function examID(id,link,flag) {
     </li>`
     }
 
-    var paginationContent=` 
+    var paginationContent = ` 
       <li class="page-item ${prevDisable}">
       <input class="page-link" type="button" value="Previous" onclick="examID('/dashboard/exams?page=${prev}&AJAX=true',this,1)">    
       </li>
@@ -225,25 +239,31 @@ async function examID(id,link,flag) {
     </li>
   `
 
-  paginationTag.innerHTML=paginationContent;
+    paginationTag.innerHTML = paginationContent;
+
+    getAllDatesTags()
   }
 
 }
 
-async function deleteExam(id){
+async function deleteExam(id) {
 
-  const isDelete=confirm("Are you sure?");
+  const isDelete = confirm("Are you sure?");
 
-  if(isDelete){
-    const deleteRequest=await fetch(`/exams/delete/?id=${id}`);
-    const res=await deleteRequest.json();
-    
-    const status=res.status;
-    if(status==false){
+  if (isDelete) {
+    const deleteRequest = await fetch(`/exams/delete/?id=${id}`);
+    const res = await deleteRequest.json();
+
+    const status = res.status;
+    if (status == false) {
       alert("you can't delete this exam because currently exam is active!");
-    }else{
-      location.reload()  
+    } else {
+      location.reload()
     }
   }
- 
 }
+
+function convertUTCTime(time) {
+  let userTime = moment.utc(time).local().format("YYYY-MM-DD h:mm:ss A")
+  return userTime;                                    
+}  

@@ -1,5 +1,4 @@
 const queryExecuter = require('../database/dbHelper.js');
-
 async function whereHandler(WhereFields, whereValue, whereOperator, condition, update) {
     let whereQuery;
     if (whereOperator == undefined || whereOperator == null) {

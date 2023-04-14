@@ -24,7 +24,6 @@ class dbTransaction {
                     if (index == 0) {
                         result[index] = await con.execute(args[index]);
                         insertedId = result[index][id]['insertId'];
-                        console.log("hello: " + insertedId);
                     }
                     else {
                         let updatedQuery1 = args[index].split("lastQuestionId");
@@ -35,7 +34,6 @@ class dbTransaction {
                             else {
                                 updatedQuery += insertedId;
                                 updatedQuery += updatedQuery1[k];
-                                console.log(updatedQuery);
                                 result[index] = await con.execute(updatedQuery);
                             }
                         }

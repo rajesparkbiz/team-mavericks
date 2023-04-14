@@ -111,8 +111,8 @@
                     <td>
                       <%= data[i].exam_total_question %>
                     </td>
-                    <td>
-                      <%= data[i].createdDate %>
+                    <td class="exam-date">
+                      <%= data[i].createdDate%>
                     </td>
                     <td>
                       <div class="form-check form-switch">
@@ -193,9 +193,10 @@
 
 <script src="/js/exam.js"></script>
 <script>
-  var a = moment.utc('2023-04-04 13:14:13');
-  var localDate=moment(a).local();
-  console.log(localDate.toDate())  
-</script>
 
+  
+
+
+  
+</script>
 </html>

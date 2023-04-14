@@ -42,8 +42,7 @@ class UserAuth {
 
   static userLoginchk = async (req, res) => {
     let { Username, Password } = req.body;
-    let userchk = await QueryHelper.selectQuery('user_master',['username','password','role'],true,true,'username',Username,'=');
-
+    let userchk = await QueryHelper.selectQuery('user_master',['username','password','role','user_image'],true,true,'username',Username,'=');
     if (userchk.length==1 && userchk[0]['role'] == "admin") {
       bcrypt.compare(Password, userchk[0]['password'], function (err, hashres) {
         if (hashres) {
@@ -53,6 +52,7 @@ class UserAuth {
 
             // store user information in session, typically a user id
             req.session.username = Username;
+            
 
             // save the session before redirection to ensure page
             // load does not happen before session is saved
@@ -84,6 +84,8 @@ class UserAuth {
 
     req.session.destroy(null);
     res.clearCookie('connect.sid');
+    res.clearCookie('username');
+    res.clearCookie('password');
     return res.redirect('/auth/login');
 
   }

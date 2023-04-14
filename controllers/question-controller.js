@@ -4,7 +4,7 @@ const question_config = require('../public/js/question-config.js');
 const dbTransaction = require('../database/dbTransaction.js');
 const QueryHelper = require('../services/databaseQuery');
 const con = require('../database/dbconnect.js');
-const multer=require('../config/multer-config.js');
+const multer = require('../config/multer-config.js');
 const { storage } = require('googleapis/build/src/apis/storage/index.js');
 
 class QuestionController {
@@ -23,11 +23,12 @@ class QuestionController {
 
     static updateQuestion = async (req, res) => {
 
-        const { questionId, question, questionAnswer, questionOptions, optionsId,filename } = req.body;
+        const { questionId, question, questionAnswer, questionOptions, optionsId, filename } = req.body;
 
-        if(filename !=null || filename!=undefined){
-            const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer','isImage'], [`${question}`, `${questionAnswer}`,`${filename}`], 'question_id', `${questionId}`, '=', true);
-        }else{
+        if (filename != null || filename != undefined) {
+       
+            const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer', 'isImage'], [`${question}`, `${questionAnswer}`, `${filename}`], 'question_id', `${questionId}`, '=', true);
+        } else {
             const updateQuery = await QueryHelper.updateQuery('question_master', ['question', 'question_answer'], [`${question}`, `${questionAnswer}`], 'question_id', `${questionId}`, '=', true);
         }
 
@@ -39,7 +40,7 @@ class QuestionController {
 
     static addQuestion = async (req, res) => {
 
-        const image = req.file? req.file.filename : "";
+        const image = req.file ? req.file.filename : "";
         
         let total_option = 0;
         let { question, coding_question, optionid, option, categories_id, coding_question_chkbox } = req.body;
@@ -59,7 +60,7 @@ class QuestionController {
                     }
                     else {
 
-                        que_adder[0] = await QueryHelper.insertQuery('question_master', ['category_id', 'question', 'question_answer', 'isCoding','isImage'], [categories_id, question, `${option[optionid]}`, '0',`${image}`], false);
+                        que_adder[0] = await QueryHelper.insertQuery('question_master', ['category_id', 'question', 'question_answer', 'isCoding', 'isImage'], [categories_id, question, `${option[optionid]}`, '0', `${image}`], false);
                     }
                     let optionCounter = (que_adder.length);
                     for (let index = 0; index < option.length; index++) {
@@ -131,7 +132,7 @@ class QuestionController {
                 "answer": allQuestions[i].question_answer,
                 "option": options,
                 "correct_ans": trueOption,
-                "image":allQuestions[i].isImage
+                "image": allQuestions[i].isImage
             }
         }
         res.render('questions', { questions: questions, optionTitle, categories: question_category, questionCategories: questionCategories });
@@ -180,7 +181,7 @@ class QuestionController {
                 "answer": allQuestions[i].question_answer,
                 "option": options,
                 "correct_ans": trueOption,
-                "image":allQuestions[i].isImage
+                "image": allQuestions[i].isImage
             }
 
         }

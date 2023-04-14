@@ -6,7 +6,10 @@ class StdentQuestion {
 
     
     static dashboardPage = async (req, res) => {
+        
         var data = [];
+
+        const image=await queryExecurter(`SELECT user_image FROM test.user_master where username='${req.session.username}';`);
 
         var categories = await QueryHelper.selectQuery('question_category','count(*) as totalCategories',true,false);
         data[0] = categories[0].totalCategories;
@@ -63,7 +66,7 @@ class StdentQuestion {
         }
 
 
-        res.render('dashboard', { data: data, questionsRatio: questionsRatio, exam_action: exam_data });
+        res.render('dashboard', { data: data, questionsRatio: questionsRatio, exam_action: exam_data ,user_image:image[0].user_image});
     }
 
 

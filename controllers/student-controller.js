@@ -39,17 +39,14 @@ class StudentController {
 
 
         var student_data;
-
-
-        console.log(page,prev,nextpage,count)
-
+        
         student_data = await queryExecurter(`SELECT * FROM student_master ORDER BY ${column_name} ${order} LIMIT ${offset}, ${limit};`)
 
         if (!ajax) {
             res.render('user.ejs', { data: student_data, order, count, column_name ,page,nextpage,prev});
         }
         else {
-            res.json(student_data,page,nextpage,prev);
+            res.json({student_data,page,nextpage,prev,count});
         }
 
 

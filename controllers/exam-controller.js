@@ -42,7 +42,7 @@ class ExamController {
 
         //get all question category 
 
-        let questionCategories=await QueryHelper.selectQuery('question_category','*',true,false);
+        // let questionCategories=await QueryHelper.selectQuery('question_category','*',true,false);
 
       
         const question_category=await QueryHelper.selectQuery('question_category',['category_name','category_id'],true,false);
@@ -51,7 +51,6 @@ class ExamController {
         //case 1
 
         //get all questions for specific category
-
 
         const allQuestions=await QueryHelper.selectQuery('question_master','*',true,true,['isDeleted','category_id'],['1',`${categoryId}`],'=','AND');
 
@@ -92,7 +91,7 @@ class ExamController {
 
             //split question id array
             defaultQuestionId = (defaultQuestionIds[0].id).split(",");
-
+            
             //convert string array into number
             for (let i = 0; i < defaultQuestionId.length; i++) {
                 defaultQuestionId[i] = parseInt(defaultQuestionId[i]);
